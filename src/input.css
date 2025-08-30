@@ -16,6 +16,6 @@
   }
   
   .gbbo-gradient {
-    @apply bg-gradient-to-br from-gbbo-buttercream-yellow via-gbbo-mint-green to-gbbo-powder-blue;
+    @apply bg-gradient-to-br from-gbbo-mint-green to-gbbo-clotted-cream;
   }
 } 
