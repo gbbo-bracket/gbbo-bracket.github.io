@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './gbbo-loading-container.js';
 import { airtableService } from '../js/airtable-service.js';
 
 export class GBBOStandings extends LitElement {
@@ -126,33 +127,11 @@ export class GBBOStandings extends LitElement {
       text-align: center;
     }
 
-    .loading {
-      text-align: center;
-      padding: 3rem;
-      color: #7C7467;
-      font-size: 1.25rem;
-    }
-
     .error {
       text-align: center;
       padding: 3rem;
       color: #D94C57;
       font-size: 1.1rem;
-    }
-
-    .loading-spinner {
-      display: inline-block;
-      width: 2rem;
-      height: 2rem;
-      border: 3px solid rgba(169, 208, 245, 0.3);
-      border-radius: 50%;
-      border-top-color: #A9D0F5;
-      animation: spin 1s ease-in-out infinite;
-      margin-bottom: 1rem;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
     }
 
     .medal {
@@ -258,10 +237,7 @@ export class GBBOStandings extends LitElement {
             <p class="standings-subtitle">Current bracket leaderboard</p>
           </div>
           <div class="glass-card">
-            <div class="loading">
-              <div class="loading-spinner"></div>
-              <div>Loading standings...</div>
-            </div>
+            <gbbo-loading-container></gbbo-loading-container>
           </div>
         </div>
       `;

@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './gbbo-loading-container.js';
 
 export class GBBORulesCard extends LitElement {
   static styles = css`
@@ -125,72 +126,7 @@ export class GBBORulesCard extends LitElement {
       }
     }
     
-    .emoji-container {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    
-    @media (max-width: 768px) {
-      .emoji-container {
-        gap: 1rem;
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .emoji-container {
-        gap: 0.75rem;
-      }
-    }
-    
-    .emoji {
-      font-size: 1.875rem;
-      animation: bounce 3s infinite;
-    }
-    
-    @media (max-width: 768px) {
-      .emoji {
-        font-size: 1.5rem;
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .emoji {
-        font-size: 1.25rem;
-      }
-    }
-    
-    .emoji:nth-child(1) {
-      animation-delay: 0s;
-    }
-    
-    .emoji:nth-child(2) {
-      animation-delay: 0.25s;
-    }
-    
-    .emoji:nth-child(3) {
-      animation-delay: .5s;
-    }
-    
-    .emoji:nth-child(4) {
-      animation-delay: 1s;
-    }
-    
-    @keyframes bounce {
-      0%, 100% {
-        transform: translate3d(0, 0, 0);
-      }
-      25% {
-        transform: translate3d(0, -15px, 0);
-      }
-      50% {
-        transform: translate3d(0, -8px, 0);
-      }
-      75% {
-        transform: translate3d(0, -4px, 0);
-      }
-    }
+
   `;
 
   render() {
@@ -241,13 +177,6 @@ export class GBBORulesCard extends LitElement {
               <span class="points">+7 points</span>
             </div>
           </div>
-        </div>
-
-        <div class="emoji-container">
-          <span class="emoji">🥖</span>
-          <span class="emoji">🍰</span>
-          <span class="emoji">🥧</span>
-          <span class="emoji">🍪</span>
         </div>
       </div>
     `;
