@@ -7,9 +7,7 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     rollupOptions: {
-      input: {
-        main: 'index.html'
-      }
+      input: 'index.html'
     },
     // Ensure CSS is properly extracted and assets are handled correctly
     cssCodeSplit: false,
