@@ -195,4 +195,3 @@ export class GBBOWelcomeCard extends LitElement {
 }
 
 customElements.define('gbbo-welcome-card', GBBOWelcomeCard); 
-customElements.define('gbbo-welcome-card', GBBOWelcomeCard); 
