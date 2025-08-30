@@ -5,7 +5,8 @@ export class GBBONextWeekCard extends LitElement {
   static properties = {
     nextWeek: { type: Object },
     loading: { type: Boolean },
-    error: { type: String }
+    error: { type: String },
+    countdownText: { type: String }
   };
 
   constructor() {
@@ -13,6 +14,8 @@ export class GBBONextWeekCard extends LitElement {
     this.nextWeek = null;
     this.loading = false;
     this.error = '';
+    this.countdownText = '';
+    this.countdownInterval = null;
   }
 
   static styles = css`
@@ -142,6 +145,46 @@ export class GBBONextWeekCard extends LitElement {
       margin-bottom: 1rem;
     }
     
+    .countdown-container {
+      margin: 1.5rem 0;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, rgba(169, 208, 245, 0.1), rgba(247, 198, 217, 0.1));
+      border-radius: 1rem;
+      border: 1px solid rgba(169, 208, 245, 0.2);
+    }
+    
+    .countdown-timer {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #214177;
+      margin-bottom: 0.5rem;
+    }
+    
+    .countdown-label {
+      font-size: 0.875rem;
+      color: #7C7467;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+    
+    @media (max-width: 768px) {
+      .countdown-timer {
+        font-size: 1.5rem;
+      }
+      
+      .countdown-container {
+        padding: 1rem;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .countdown-timer {
+        font-size: 1.25rem;
+      }
+    }
+    
     .loading, .error {
       padding: 2rem;
       text-align: center;
@@ -172,6 +215,13 @@ export class GBBONextWeekCard extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     this.fetchNextWeek();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
   }
 
   async fetchNextWeek() {
@@ -232,6 +282,58 @@ export class GBBONextWeekCard extends LitElement {
     return (match && match[2].length === 11) ? match[2] : null;
   }
 
+  startCountdown() {
+    if (this.countdownInterval) {
+      clearInterval(this.countdownInterval);
+    }
+    
+    this.updateCountdown();
+    this.countdownInterval = setInterval(() => {
+      this.updateCountdown();
+    }, 1000);
+  }
+
+  updateCountdown() {
+    if (!this.nextWeek?.parsedAirDate) {
+      this.countdownText = '';
+      return;
+    }
+
+    // Create target date at 8PM GMT+1
+    const airDate = new Date(this.nextWeek.parsedAirDate);
+    const targetDate = new Date(airDate);
+    targetDate.setHours(20, 0, 0, 0); // Set to 8PM
+    
+    // Convert to GMT+1 (CET/CEST)
+    const gmtPlus1Offset = 1 * 60; // GMT+1 in minutes
+    const targetDateGMTPlus1 = new Date(targetDate.getTime() - (gmtPlus1Offset * 60 * 1000));
+
+    const now = new Date();
+    const timeDiff = targetDateGMTPlus1.getTime() - now.getTime();
+    const oneHourInMs = 60 * 60 * 1000;
+    
+    if (Math.abs(timeDiff) <= oneHourInMs) {
+      this.countdownText = 'Episode is live!';
+      if (this.countdownInterval) {
+        clearInterval(this.countdownInterval);
+      }
+      return;
+    }
+
+    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+    let countdownParts = [];
+    if (days > 0) countdownParts.push(`${days}d`);
+    if (hours > 0) countdownParts.push(`${hours}h`);
+    if (minutes > 0) countdownParts.push(`${minutes}m`);
+    if (seconds > 0) countdownParts.push(`${seconds}s`);
+
+    this.countdownText = countdownParts.join(' ') || '0s';
+  }
+
   renderLoading() {
     return html`
       <div class="next-week-card">
@@ -272,9 +374,17 @@ export class GBBONextWeekCard extends LitElement {
     
     const youtubeId = this.extractYouTubeId(trailerUrl);
 
+    // Start countdown when we have the next week data
+    if (!this.countdownInterval) {
+      setTimeout(() => this.startCountdown(), 100);
+    }
+
     return html`
       <div class="next-week-card">
-        <div class="coming-soon-badge">Coming Up Next</div>
+      ${this.countdownText ? html`
+        <div class="coming-soon-badge">Coming Up in ${this.countdownText}</div>
+      ` : ''}
+        
         <h2>${title}</h2>
         
         ${youtubeId ? html`
