@@ -187,6 +187,7 @@ export class GBBOHeader extends LitElement {
         
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
+          <li><a href="/rules">Rules</a></li>
           <li><a href="/contestants">Contestants</a></li>
         </ul>
         
@@ -202,6 +203,7 @@ export class GBBOHeader extends LitElement {
           <ul class="mobile-nav-links">
             <li><a href="/" @click="${this.toggleMobileMenu}">Home</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
+            <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
           </ul>
         </div>
       </nav>
