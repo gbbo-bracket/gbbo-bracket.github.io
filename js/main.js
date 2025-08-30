@@ -5,6 +5,7 @@ import '../src/input.css';
 import '../components/gbbo-header.js';
 import '../components/gbbo-welcome-card.js';
 import '../components/gbbo-contestants-data.js';
+import '../components/gbbo-rules-card.js';
 import '../components/gbbo-footer.js';
 
 // Main application class

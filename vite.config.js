@@ -9,7 +9,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: 'index.html',
-        contestants: 'contestants.html'
+        contestants: 'contestants.html',
+        rules: 'rules.html'
       }
     },
     // Ensure CSS is properly extracted and assets are handled correctly
