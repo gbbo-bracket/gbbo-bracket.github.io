@@ -9,9 +9,7 @@
     "build": "vite build",
     "build:gh-pages": "vite build --base=./",
     "preview": "vite preview",
-    "build:css": "tailwindcss -i ./src/input.css -o ./dist/output.css",
-    "build:prod": "npm run build:css && vite build",
-    "start": "concurrently \"npm run build:css -- --watch\" \"vite\""
+    "start": "vite"
   },
   "author": "",
   "license": "MIT",
