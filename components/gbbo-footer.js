@@ -16,11 +16,26 @@ export class GBBOFooter extends LitElement {
       font-weight: 300;
     }
     
+    .bunting {
+      width: 100%;
+      height: 120px;
+      margin: 0 auto 1rem auto;
+      display: block;
+      background-image: url('./assets/images/bunting.png');
+      background-repeat: repeat-x;
+      background-position: center;
+      background-size: auto 100%;
+    }
+    
     p {
       font-size: 1.125rem;
     }
     
     @media (max-width: 640px) {
+      .bunting {
+        height: 40px;
+      }
+      
       p {
         font-size: 1rem;
       }
@@ -30,7 +45,7 @@ export class GBBOFooter extends LitElement {
   render() {
     return html`
       <footer>
-        <p>Brought to you with love and a pinch of salt 🧂</p>
+        <div class="bunting"></div>
       </footer>
     `;
   }
