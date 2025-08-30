@@ -310,8 +310,9 @@ export class GBBONextWeekCard extends LitElement {
 
     const now = new Date();
     const timeDiff = targetDateGMTPlus1.getTime() - now.getTime();
-
-    if (timeDiff <= 0) {
+    const oneHourInMs = 60 * 60 * 1000;
+    
+    if (Math.abs(timeDiff) <= oneHourInMs) {
       this.countdownText = 'Episode is live!';
       if (this.countdownInterval) {
         clearInterval(this.countdownInterval);
