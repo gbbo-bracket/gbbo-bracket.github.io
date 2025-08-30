@@ -189,6 +189,7 @@ export class GBBOHeader extends LitElement {
           <li><a href="/">Home</a></li>
           <li><a href="/rules">Rules</a></li>
           <li><a href="/contestants">Contestants</a></li>
+          <li><a href="/standings">Standings</a></li>
         </ul>
         
         <button 
@@ -204,6 +205,7 @@ export class GBBOHeader extends LitElement {
             <li><a href="/" @click="${this.toggleMobileMenu}">Home</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
+            <li><a href="/standings" @click="${this.toggleMobileMenu}">Standings</a></li>
           </ul>
         </div>
       </nav>

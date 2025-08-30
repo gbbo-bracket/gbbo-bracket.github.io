@@ -2,6 +2,9 @@
 export default {
   content: [
     "./index.html",
+    "./standings.html",
+    "./contestants.html",
+    "./rules.html",
     "./components/**/*.js",
     "./js/**/*.js"
   ],

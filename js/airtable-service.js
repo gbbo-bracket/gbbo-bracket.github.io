@@ -8,6 +8,7 @@ class AirtableService {
     this.apiKey = import.meta.env.VITE_AIRTABLE_API_KEY || 'YOUR_PAT_HERE';
     this.baseId = 'appSJQe0OFR0pEtOj';
     this.tableId = 'tblr3HgyuPk2rOLQJ';
+    this.standingsTableId = 'tblX7SVGLgZ59tiWB';
     this.fieldId = 'fld0jifHbIykXaoqm';
     
     // Initialize Airtable with Personal Access Token
@@ -20,18 +21,20 @@ class AirtableService {
 
   /**
    * Fetch all records from the specified table
+   * @param {string} tableId - Optional table ID, defaults to the main table
    * @returns {Promise<Array>} Array of records with the specified field data
    */
-  async fetchRecords() {
+  async fetchRecords(tableId = null) {
     try {
-      const airtableRecords = await this.base(this.tableId).select().all();
+      const targetTableId = tableId || this.tableId;
+      const airtableRecords = await this.base(targetTableId).select().all();
       
       const records = airtableRecords.map(record => ({
         id: record.id,
         data: record.fields
       }));
 
-      console.log(`Fetched ${records.length} records from Airtable`);
+      console.log(`Fetched ${records.length} records from table ${targetTableId}`);
       return records;
       
     } catch (error) {
