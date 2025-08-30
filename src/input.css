@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap');
+
+@layer base {
+  body {
+    @apply font-source text-gbbo-text-dark leading-relaxed;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/80 backdrop-blur-sm border border-white/20 rounded-3xl shadow-2xl shadow-gbbo-rustic-brown/10;
+  }
+  
+  .gbbo-gradient {
+    @apply bg-gradient-to-br from-gbbo-cream to-gbbo-soft-blue;
+  }
+} 
