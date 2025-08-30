@@ -13,8 +13,6 @@ export class GBBORulesCard extends LitElement {
       padding: 3rem;
       border-radius: 1.5rem;
       text-align: center;
-      max-width: 64rem;
-      width: 100%;
       box-shadow: 0 25px 50px -12px rgba(139, 69, 19, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.3);
     }
