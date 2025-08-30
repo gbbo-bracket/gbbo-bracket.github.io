@@ -32,17 +32,25 @@ npm start
 
 ## 🏗️ Building
 
+### GitHub Pages (Recommended)
+This project is configured to automatically deploy to GitHub Pages using GitHub Actions.
+
+1. Push your changes to the `main` branch
+2. GitHub Actions will automatically build and deploy to GitHub Pages
+3. Your site will be available at `https://gbbo-bracket.github.io/`
+
+### Manual Deployment
+If you prefer to deploy manually:
+
+1. Build the project: `npm run build:gh-pages`
+2. The built files will be in the `dist/` directory
+3. Push the contents of `dist/` to the `gh-pages` branch
+
+### Local Testing
+You can test the production build locally:
+
 ```bash
-# Build for production with Vite
-npm run build
-
-# Build Tailwind CSS only
-npm run build:css
-
-# Build everything for production
-npm run build:prod
-
-# Preview production build
+npm run build:gh-pages
 npm run preview
 ```
 
