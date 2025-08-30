@@ -1,3 +1,6 @@
+// Import Tailwind CSS
+import '../src/input.css';
+
 // Import all LitElement web components
 import '../components/gbbo-header.js';
 import '../components/gbbo-welcome-card.js';
