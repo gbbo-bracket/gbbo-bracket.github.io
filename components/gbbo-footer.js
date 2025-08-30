@@ -11,7 +11,7 @@ export class GBBOFooter extends LitElement {
       text-align: center;
       margin-top: 3rem;
       padding: 1.5rem;
-      color: #1e40af;
+      color: #214177;
       font-style: italic;
       font-weight: 300;
     }
@@ -30,7 +30,7 @@ export class GBBOFooter extends LitElement {
   render() {
     return html`
       <footer>
-        <p>Brought to you with love and a pinch of salt</p>
+        <p>Brought to you with love and a pinch of salt 🧂</p>
       </footer>
     `;
   }

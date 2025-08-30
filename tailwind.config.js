@@ -12,13 +12,29 @@ export default {
     extend: {
       colors: {
         'gbbo': {
-          'cream': '#fdf6e3',
-          'warm-cream': '#f5e6d3',
-          'soft-blue': '#e8f4f8',
-          'rustic-brown': '#8b4513',
-          'deep-brown': '#654321',
-          'accent-blue': '#4a90a4',
-          'text-dark': '#2c1810',
+          // Primary Pastels (Playful + Inviting)
+          'icing-pink': '#F7C6D9',
+          'buttercream-yellow': '#FBE8A6', 
+          'mint-green': '#BEE4D2',
+          'powder-blue': '#A9D0F5',
+          
+          // Secondary Accents (Bold + Festive)
+          'berry-red': '#D94C57',
+          'royal-blue': '#214177',
+          'golden-brown': '#C58940',
+          
+          // Neutrals (Balancing + Readable)
+          'clotted-cream': '#FFFDF5',
+          'earl-grey': '#7C7467',
+          
+          // Legacy colors for backward compatibility
+          'cream': '#FFFDF5', // Map to clotted-cream
+          'warm-cream': '#FBE8A6', // Map to buttercream-yellow
+          'soft-blue': '#A9D0F5', // Map to powder-blue
+          'rustic-brown': '#C58940', // Map to golden-brown
+          'deep-brown': '#7C7467', // Map to earl-grey
+          'accent-blue': '#214177', // Map to royal-blue
+          'text-dark': '#7C7467', // Map to earl-grey
         }
       },
       fontFamily: {

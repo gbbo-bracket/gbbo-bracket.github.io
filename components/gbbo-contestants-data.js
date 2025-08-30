@@ -27,12 +27,12 @@ export class GBBOContestantsData extends LitElement {
     }
     
     .data-container {
-      background-color: rgba(255, 255, 255, 0.9);
+      background-color: rgba(255, 253, 245, 0.9);
       padding: 2rem;
       border-radius: 1rem;
       margin-top: 2rem;
-      box-shadow: 0 10px 25px -5px rgba(139, 69, 19, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 25px -5px rgba(33, 65, 119, 0.1);
+      border: 1px solid rgba(247, 198, 217, 0.3);
     }
     
     .header {
@@ -40,30 +40,30 @@ export class GBBOContestantsData extends LitElement {
       margin-bottom: 1.5rem;
     }
     
-    .header h3 {
+        .header h3 {
       font-family: 'Playfair Display', serif;
       font-size: 1.875rem;
-      color: #8b4513;
+      color: #214177;
       margin: 0 0 0.5rem 0;
     }
     
     .header p {
-      color: #6b7280;
+      color: #7C7467;
       margin: 0;
     }
     
     .loading {
       text-align: center;
       padding: 2rem;
-      color: #8b4513;
+      color: #7C7467;
     }
-    
+
     .loading-spinner {
       display: inline-block;
       width: 2rem;
       height: 2rem;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #8b4513;
+      border: 3px solid rgba(190, 228, 210, 0.3);
+      border-top: 3px solid #BEE4D2;
       border-radius: 50%;
       animation: spin 1s linear infinite;
       margin-bottom: 1rem;
@@ -75,9 +75,9 @@ export class GBBOContestantsData extends LitElement {
     }
     
     .error {
-      background-color: #fef2f2;
-      border: 1px solid #fecaca;
-      color: #dc2626;
+      background-color: rgba(247, 198, 217, 0.1);
+      border: 1px solid rgba(217, 76, 87, 0.3);
+      color: #D94C57;
       padding: 1rem;
       border-radius: 0.5rem;
       margin-bottom: 1rem;
@@ -100,17 +100,17 @@ export class GBBOContestantsData extends LitElement {
       align-items: center;
       justify-content: center;
       max-height: 400px;
-      background-color: rgba(139, 69, 19, 0.05);
+      background-color: rgba(190, 228, 210, 0.1);
       padding: 1.5rem;
       border-radius: 0.75rem;
-      border: 1px solid rgba(139, 69, 19, 0.1);
+      border: 1px solid rgba(169, 208, 245, 0.3);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
     }
     
     .record-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(139, 69, 19, 0.15);
+      box-shadow: 0 4px 12px rgba(247, 198, 217, 0.2);
     }
 
     .record-name {
@@ -127,7 +127,7 @@ export class GBBOContestantsData extends LitElement {
     }
     
     .record-content {
-      color: #374151;
+      color: #7C7467;
       font-size: 1rem;
       line-height: 1.5;
       word-break: break-word;
@@ -136,7 +136,7 @@ export class GBBOContestantsData extends LitElement {
     .empty-state {
       text-align: center;
       padding: 3rem;
-      color: #6b7280;
+      color: #7C7467;
     }
     
     .empty-state .emoji {
@@ -146,8 +146,8 @@ export class GBBOContestantsData extends LitElement {
     }
     
     .refresh-button {
-      background-color: #8b4513;
-      color: white;
+      background-color: #BEE4D2;
+      color: #214177;
       border: none;
       padding: 0.75rem 1.5rem;
       border-radius: 0.5rem;
@@ -159,17 +159,17 @@ export class GBBOContestantsData extends LitElement {
     }
     
     .refresh-button:hover {
-      background-color: #7c3aed;
+      background-color: #A9D0F5;
     }
     
     .refresh-button:disabled {
-      background-color: #d1d5db;
+      background-color: rgba(124, 116, 103, 0.2);
       cursor: not-allowed;
     }
     
     .record-count {
       text-align: center;
-      color: #6b7280;
+      color: #7C7467;
       font-size: 0.875rem;
       margin-bottom: 1rem;
     }

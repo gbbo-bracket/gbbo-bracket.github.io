@@ -39,13 +39,13 @@ export class GBBOContestantsModal extends LitElement {
     }
 
     .modal-content {
-      background-color: white;
+      background-color: #FFFDF5;
       border-radius: 1rem;
       max-width: 600px;
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 25px 50px -12px rgba(33, 65, 119, 0.25);
       transform: scale(0.95) translateY(20px);
       transition: transform 0.3s ease;
     }
@@ -59,7 +59,7 @@ export class GBBOContestantsModal extends LitElement {
       align-items: center;
       justify-content: space-between;
       padding: 2rem 2rem 1rem 2rem;
-      border-bottom: 1px solid rgba(139, 69, 19, 0.1);
+      border-bottom: 1px solid rgba(247, 198, 217, 0.3);
     }
 
     .modal-title {
@@ -73,14 +73,14 @@ export class GBBOContestantsModal extends LitElement {
       height: 60px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(139, 69, 19, 0.2);
+      border: 2px solid rgba(169, 208, 245, 0.4);
     }
 
     .modal-contestant-name {
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
       font-weight: 700;
-      color: #8b4513;
+      color: #214177;
       margin: 0;
     }
 
@@ -88,7 +88,7 @@ export class GBBOContestantsModal extends LitElement {
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #6b7280;
+      color: #7C7467;
       cursor: pointer;
       padding: 0.5rem;
       border-radius: 0.25rem;
@@ -96,8 +96,8 @@ export class GBBOContestantsModal extends LitElement {
     }
 
     .modal-close-button:hover {
-      background-color: rgba(139, 69, 19, 0.1);
-      color: #8b4513;
+      background-color: rgba(247, 198, 217, 0.2);
+      color: #D94C57;
     }
 
     .modal-body {
@@ -111,7 +111,7 @@ export class GBBOContestantsModal extends LitElement {
     }
 
     .modal-bio {
-      color: #374151;
+      color: #7C7467;
       font-size: 1rem;
       line-height: 1.6;
       margin: 0;
@@ -119,7 +119,7 @@ export class GBBOContestantsModal extends LitElement {
 
     .modal-bio-label {
       font-weight: 600;
-      color: #8b4513;
+      color: #214177;
       margin-bottom: 0.5rem;
       display: block;
     }

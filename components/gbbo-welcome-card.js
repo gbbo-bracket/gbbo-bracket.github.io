@@ -22,12 +22,12 @@ export class GBBOWelcomeCard extends LitElement {
     
     .welcome-card {
       margin-top: 2rem;
-      background-color: rgba(255, 255, 255, 0.9);
+      background-color: rgba(255, 253, 245, 0.9);
       padding: 3rem;
       border-radius: 1.5rem;
       text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(139, 69, 19, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 25px 50px -12px rgba(33, 65, 119, 0.1);
+      border: 1px solid rgba(247, 198, 217, 0.3);
     }
     
     @media (max-width: 768px) {
@@ -45,7 +45,7 @@ export class GBBOWelcomeCard extends LitElement {
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 2.5rem;
-      color: #8b4513;
+      color: #214177;
       margin-top: 0;
       margin-bottom: 1.5rem;
     }
@@ -64,7 +64,7 @@ export class GBBOWelcomeCard extends LitElement {
     
     p {
       font-size: 1.25rem;
-      color: #374151;
+      color: #7C7467;
       margin-bottom: 2rem;
       line-height: 1.625;
     }
@@ -82,16 +82,16 @@ export class GBBOWelcomeCard extends LitElement {
     }
     
     .season-info {
-      background-color: rgba(139, 69, 19, 0.1);
+      background-color: rgba(251, 232, 166, 0.2);
       padding: 1rem;
       border-radius: 0.75rem;
       margin-bottom: 2rem;
-      border: 1px solid rgba(139, 69, 19, 0.2);
+      border: 1px solid rgba(190, 228, 210, 0.3);
     }
     
     .season-info h3 {
       font-size: 1.25rem;
-      color: #8b4513;
+      color: #214177;
       margin-top: 0;
       margin-bottom: 0.5rem;
       font-weight: 600;
@@ -99,7 +99,7 @@ export class GBBOWelcomeCard extends LitElement {
     
     .season-info p {
       font-size: 1rem;
-      color: #6b7280;
+      color: #7C7467;
       margin-bottom: 0;
     }
     

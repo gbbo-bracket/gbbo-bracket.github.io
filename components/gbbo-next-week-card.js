@@ -23,12 +23,12 @@ export class GBBONextWeekCard extends LitElement {
     
     .next-week-card {
       margin-top: 2rem;
-      background-color: rgba(255, 255, 255, 0.9);
+      background-color: rgba(255, 253, 245, 0.9);
       padding: 3rem;
       border-radius: 1.5rem;
       text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(139, 69, 19, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 25px 50px -12px rgba(33, 65, 119, 0.1);
+      border: 1px solid rgba(247, 198, 217, 0.3);
       position: relative;
       overflow: hidden;
     }
@@ -40,7 +40,7 @@ export class GBBONextWeekCard extends LitElement {
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #8b4513, #d2691e, #cd853f);
+      background: linear-gradient(90deg, #D94C57, #F7C6D9, #A9D0F5);
     }
     
     @media (max-width: 768px) {
@@ -58,7 +58,7 @@ export class GBBONextWeekCard extends LitElement {
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 2.5rem;
-      color: #8b4513;
+      color: #214177;
       margin-top: 0;
       margin-bottom: 1rem;
       font-weight: 700;
@@ -79,7 +79,7 @@ export class GBBONextWeekCard extends LitElement {
     .week-title {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
-      color: #8b4513;
+      color: #214177;
       margin-bottom: 1rem;
       font-weight: 600;
     }
@@ -98,7 +98,7 @@ export class GBBONextWeekCard extends LitElement {
     
     .week-description {
       font-size: 1.125rem;
-      color: #6b7280;
+      color: #7C7467;
       margin-bottom: 2rem;
       line-height: 1.625;
     }
@@ -131,8 +131,8 @@ export class GBBONextWeekCard extends LitElement {
     
     .coming-soon-badge {
       display: inline-block;
-      background: linear-gradient(135deg, #8b4513, #d2691e);
-      color: white;
+      background: linear-gradient(135deg, #D94C57, #F7C6D9);
+      color: #FFFDF5;
       padding: 0.5rem 1rem;
       border-radius: 2rem;
       font-size: 0.875rem;
@@ -145,16 +145,16 @@ export class GBBONextWeekCard extends LitElement {
     .loading, .error {
       padding: 2rem;
       text-align: center;
-      color: #6b7280;
+      color: #7C7467;
     }
     
     .error {
-      color: #dc2626;
+      color: #D94C57;
     }
     
     .retry-button {
-      background-color: #8b4513;
-      color: white;
+      background-color: #D94C57;
+      color: #FFFDF5;
       border: none;
       padding: 0.75rem 1.5rem;
       border-radius: 0.5rem;
@@ -165,7 +165,7 @@ export class GBBONextWeekCard extends LitElement {
     }
     
     .retry-button:hover {
-      background-color: #6d3410;
+      background-color: #214177;
     }
   `;
 
@@ -259,7 +259,7 @@ export class GBBONextWeekCard extends LitElement {
     if (!this.nextWeek) {
       return html`
         <div class="next-week-card">
-          <h2>🎬 Coming Up Next</h2>
+          <h2>That's all for now!</h2>
           <p>All weeks have been completed! Check back for the next season.</p>
         </div>
       `;
@@ -275,7 +275,7 @@ export class GBBONextWeekCard extends LitElement {
     return html`
       <div class="next-week-card">
         <div class="coming-soon-badge">Coming Up Next</div>
-        <h2>🎬 ${title}</h2>
+        <h2>${title}</h2>
         
         ${youtubeId ? html`
           <div class="video-container">

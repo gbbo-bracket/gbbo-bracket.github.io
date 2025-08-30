@@ -6,16 +6,16 @@
 
 @layer base {
   body {
-    @apply font-source-sans text-gbbo-text-dark leading-relaxed;
+    @apply font-source-sans text-gbbo-earl-grey leading-relaxed;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20 rounded-3xl shadow-2xl shadow-gbbo-rustic-brown/10;
+    @apply bg-gbbo-clotted-cream/90 backdrop-blur-sm border border-gbbo-icing-pink/30 rounded-3xl shadow-2xl shadow-gbbo-royal-blue/10;
   }
   
   .gbbo-gradient {
-    @apply bg-gradient-to-br from-gbbo-cream to-gbbo-soft-blue;
+    @apply bg-gradient-to-br from-gbbo-buttercream-yellow via-gbbo-mint-green to-gbbo-powder-blue;
   }
 } 
