@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  base: './', // This ensures assets use relative paths for GitHub Pages
   root: '.',
   build: {
     outDir: 'dist',
@@ -9,7 +10,10 @@ export default defineConfig({
       input: {
         main: 'index.html'
       }
-    }
+    },
+    // Ensure CSS is properly extracted and assets are handled correctly
+    cssCodeSplit: false,
+    assetsInlineLimit: 0
   },
   server: {
     port: 3000,
