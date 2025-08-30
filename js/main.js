@@ -4,6 +4,7 @@ import '../src/input.css';
 // Import all LitElement web components
 import '../components/gbbo-header.js';
 import '../components/gbbo-welcome-card.js';
+import '../components/gbbo-next-week-card.js';
 import '../components/gbbo-contestants-data.js';
 import '../components/gbbo-rules-card.js';
 import '../components/gbbo-standings.js';
