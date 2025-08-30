@@ -1,0 +1,324 @@
+import { LitElement, html, css } from 'lit';
+import { airtableService } from '../js/airtable-service.js';
+
+export class GBBOStandings extends LitElement {
+  static properties = {
+    standings: { type: Array },
+    loading: { type: Boolean },
+    error: { type: String }
+  };
+
+  constructor() {
+    super();
+    this.standings = [];
+    this.loading = true;
+    this.error = null;
+  }
+
+  static styles = css`
+    :host {
+      display: block;
+      width: 100%;
+      max-width: 4xl;
+    }
+
+    .standings-container {
+      width: 100%;
+    }
+
+    .standings-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .standings-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #8b4513;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .standings-subtitle {
+      font-size: 1.25rem;
+      color: #654321;
+      margin-bottom: 2rem;
+    }
+
+    .standings-table {
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 25px -5px rgba(139, 69, 19, 0.1), 0 10px 10px -5px rgba(139, 69, 19, 0.04);
+      overflow: hidden;
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background-color: rgba(139, 69, 19, 0.1);
+      color: #8b4513;
+      font-weight: 600;
+      padding: 1.5rem 2rem;
+      text-align: left;
+      font-size: 1.1rem;
+      border-bottom: 2px solid rgba(139, 69, 19, 0.1);
+    }
+
+    th:first-child {
+      text-align: center;
+      width: 80px;
+    }
+
+    th:last-child {
+      text-align: center;
+      width: 120px;
+    }
+
+    td {
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid rgba(139, 69, 19, 0.05);
+      transition: background-color 0.2s ease;
+    }
+
+    tr:hover td {
+      background-color: rgba(139, 69, 19, 0.02);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rank {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #8b4513;
+      text-align: center;
+    }
+
+    .rank.first {
+      color: #d4af37;
+    }
+
+    .rank.second {
+      color: #c0c0c0;
+    }
+
+    .rank.third {
+      color: #cd7f32;
+    }
+
+    .participant-name {
+      font-weight: 600;
+      color: #2c1810;
+      font-size: 1.1rem;
+    }
+
+    .points {
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #8b4513;
+      text-align: center;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 3rem;
+      color: #8b4513;
+      font-size: 1.25rem;
+    }
+
+    .error {
+      text-align: center;
+      padding: 3rem;
+      color: #dc2626;
+      font-size: 1.1rem;
+    }
+
+    .loading-spinner {
+      display: inline-block;
+      width: 2rem;
+      height: 2rem;
+      border: 3px solid rgba(139, 69, 19, 0.3);
+      border-radius: 50%;
+      border-top-color: #8b4513;
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .medal {
+      margin-right: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .standings-title {
+        font-size: 2.25rem;
+      }
+
+      .standings-subtitle {
+        font-size: 1.1rem;
+      }
+
+      th, td {
+        padding: 1rem;
+        font-size: 0.95rem;
+      }
+
+      .standings-title {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      th, td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .standings-title {
+        font-size: 1.75rem;
+      }
+
+      .participant-name {
+        font-size: 1rem;
+      }
+    }
+  `;
+
+  async connectedCallback() {
+    super.connectedCallback();
+    await this.fetchStandings();
+  }
+
+  async fetchStandings() {
+    try {
+      this.loading = true;
+      this.error = null;
+      
+      // Fetch standings data from the specific table using configurable fetchRecords
+      const records = await airtableService.fetchRecords('tblX7SVGLgZ59tiWB');
+      
+      // Process and sort the standings
+      this.standings = this.processStandingsData(records);
+      
+    } catch (error) {
+      console.error('Error fetching standings:', error);
+      this.error = 'Failed to load standings data. Please try again later.';
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  processStandingsData(records) {
+    // Extract participant names and total points, then sort by points descending
+    const standings = records
+      .map(record => ({
+        name: record.data.Name || record.data.Participant || 'Unknown',
+        points: parseInt(record.data['Total Points'] || 0)
+      }))
+      .filter(participant => participant.name !== 'Unknown')
+      .sort((a, b) => b.points - a.points);
+
+    return standings;
+  }
+
+  getRankDisplay(index) {
+    const rank = index + 1;
+    let medal = '';
+    
+    if (rank === 1) medal = '🥇';
+    else if (rank === 2) medal = '🥈';
+    else if (rank === 3) medal = '🥉';
+    
+    return { rank, medal };
+  }
+
+  getRankClass(index) {
+    if (index === 0) return 'first';
+    if (index === 1) return 'second';
+    if (index === 2) return 'third';
+    return '';
+  }
+
+  render() {
+    if (this.loading) {
+      return html`
+        <div class="standings-container">
+          <div class="standings-header">
+            <h1 class="standings-title">Standings</h1>
+            <p class="standings-subtitle">Current bracket leaderboard</p>
+          </div>
+          <div class="glass-card">
+            <div class="loading">
+              <div class="loading-spinner"></div>
+              <div>Loading standings...</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    if (this.error) {
+      return html`
+        <div class="standings-container">
+          <div class="standings-header">
+            <h1 class="standings-title">Standings</h1>
+            <p class="standings-subtitle">Current bracket leaderboard</p>
+          </div>
+          <div class="glass-card">
+            <div class="error">${this.error}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    return html`
+      <div class="standings-container">
+        <div class="standings-header">
+          <h1 class="standings-title">Standings</h1>
+          <p class="standings-subtitle">Current bracket leaderboard</p>
+        </div>
+        
+        <div class="glass-card standings-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Participant</th>
+                <th>Total Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${this.standings.map((participant, index) => {
+                const { rank, medal } = this.getRankDisplay(index);
+                const rankClass = this.getRankClass(index);
+                
+                return html`
+                  <tr>
+                    <td class="rank ${rankClass}">
+                      ${medal ? html`<span class="medal">${medal}</span>` : ''}
+                      ${rank}
+                    </td>
+                    <td class="participant-name">${participant.name}</td>
+                    <td class="points">${participant.points}</td>
+                  </tr>
+                `;
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  }
+}
+
+customElements.define('gbbo-standings', GBBOStandings); 

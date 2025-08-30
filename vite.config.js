@@ -10,7 +10,8 @@ export default defineConfig({
       input: {
         main: 'index.html',
         contestants: 'contestants.html',
-        rules: 'rules.html'
+        rules: 'rules.html',
+        standings: 'standings.html'
       }
     },
     // Ensure CSS is properly extracted and assets are handled correctly
