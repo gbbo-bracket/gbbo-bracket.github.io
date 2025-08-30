@@ -47,6 +47,7 @@ export class GBBOWelcomeCard extends LitElement {
       font-family: 'Playfair Display', serif;
       font-size: 2.5rem;
       color: #8b4513;
+      margin-top: 0;
       margin-bottom: 1.5rem;
     }
     
@@ -92,6 +93,7 @@ export class GBBOWelcomeCard extends LitElement {
     .season-info h3 {
       font-size: 1.25rem;
       color: #8b4513;
+      margin-top: 0;
       margin-bottom: 0.5rem;
       font-weight: 600;
     }
@@ -123,7 +125,7 @@ export class GBBOWelcomeCard extends LitElement {
     
     .emoji {
       font-size: 1.875rem;
-      animation: bounce 1s infinite;
+      animation: bounce 3s infinite;
     }
     
     @media (max-width: 768px) {
@@ -143,28 +145,28 @@ export class GBBOWelcomeCard extends LitElement {
     }
     
     .emoji:nth-child(2) {
-      animation-delay: 0.5s;
+      animation-delay: 0.25s;
     }
     
     .emoji:nth-child(3) {
-      animation-delay: 1s;
+      animation-delay: .5s;
     }
     
     .emoji:nth-child(4) {
-      animation-delay: 1.5s;
+      animation-delay: 1s;
     }
     
     @keyframes bounce {
-      0%, 20%, 53%, 80%, 100% {
+      0%, 100% {
         transform: translate3d(0, 0, 0);
       }
-      40%, 43% {
-        transform: translate3d(0, -30px, 0);
-      }
-      70% {
+      25% {
         transform: translate3d(0, -15px, 0);
       }
-      90% {
+      50% {
+        transform: translate3d(0, -8px, 0);
+      }
+      75% {
         transform: translate3d(0, -4px, 0);
       }
     }
@@ -190,11 +192,7 @@ export class GBBOWelcomeCard extends LitElement {
       </div>
     `;
   }
-
-  // Example of LitElement lifecycle method
-  firstUpdated() {
-    console.log('Welcome card component has been updated for the first time!');
-  }
 }
 
+customElements.define('gbbo-welcome-card', GBBOWelcomeCard); 
 customElements.define('gbbo-welcome-card', GBBOWelcomeCard); 
