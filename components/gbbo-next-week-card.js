@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './gbbo-loading-container.js';
 import { airtableService } from '../js/airtable-service.js';
 
 export class GBBONextWeekCard extends LitElement {
@@ -145,14 +146,6 @@ export class GBBONextWeekCard extends LitElement {
       margin-bottom: 1rem;
     }
     
-    .countdown-container {
-      margin: 1.5rem 0;
-      padding: 1.5rem;
-      background: linear-gradient(135deg, rgba(169, 208, 245, 0.1), rgba(247, 198, 217, 0.1));
-      border-radius: 1rem;
-      border: 1px solid rgba(169, 208, 245, 0.2);
-    }
-    
     .countdown-timer {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
@@ -173,10 +166,6 @@ export class GBBONextWeekCard extends LitElement {
       .countdown-timer {
         font-size: 1.5rem;
       }
-      
-      .countdown-container {
-        padding: 1rem;
-      }
     }
     
     @media (max-width: 640px) {
@@ -185,15 +174,13 @@ export class GBBONextWeekCard extends LitElement {
       }
     }
     
-    .loading, .error {
+    .error {
       padding: 2rem;
       text-align: center;
-      color: #7C7467;
-    }
-    
-    .error {
       color: #D94C57;
     }
+    
+
     
     .retry-button {
       background-color: #D94C57;
@@ -337,9 +324,7 @@ export class GBBONextWeekCard extends LitElement {
   renderLoading() {
     return html`
       <div class="next-week-card">
-        <div class="loading">
-          <p>Loading next week...</p>
-        </div>
+        <gbbo-loading-container></gbbo-loading-container>
       </div>
     `;
   }

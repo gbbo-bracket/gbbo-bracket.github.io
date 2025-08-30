@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './gbbo-loading-container.js';
 import airtableService from '../js/airtable-service.js';
 import './gbbo-contestants-modal.js';
 
@@ -52,27 +53,7 @@ export class GBBOContestantsData extends LitElement {
       margin: 0;
     }
     
-    .loading {
-      text-align: center;
-      padding: 2rem;
-      color: #7C7467;
-    }
 
-    .loading-spinner {
-      display: inline-block;
-      width: 2rem;
-      height: 2rem;
-      border: 3px solid rgba(190, 228, 210, 0.3);
-      border-top: 3px solid #BEE4D2;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-bottom: 1rem;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
     
     .error {
       background-color: rgba(247, 198, 217, 0.1);
@@ -230,10 +211,7 @@ export class GBBOContestantsData extends LitElement {
 
   renderLoading() {
     return html`
-      <div class="loading">
-        <div class="loading-spinner"></div>
-        <p>Loading contestants...</p>
-      </div>
+      <gbbo-loading-container></gbbo-loading-container>
     `;
   }
 
