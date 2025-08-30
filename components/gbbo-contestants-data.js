@@ -1,11 +1,14 @@
 import { LitElement, html, css } from 'lit';
 import airtableService from '../js/airtable-service.js';
+import './gbbo-contestants-modal.js';
 
 export class GBBOContestantsData extends LitElement {
   static properties = {
     records: { type: Array },
     loading: { type: Boolean },
     error: { type: String },
+    selectedRecord: { type: Object },
+    modalOpen: { type: Boolean }
   };
 
   constructor() {
@@ -13,6 +16,8 @@ export class GBBOContestantsData extends LitElement {
     this.records = [];
     this.loading = false;
     this.error = '';
+    this.selectedRecord = null;
+    this.modalOpen = false;
   }
 
   static styles = css`
@@ -100,6 +105,7 @@ export class GBBOContestantsData extends LitElement {
       border-radius: 0.75rem;
       border: 1px solid rgba(139, 69, 19, 0.1);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
     }
     
     .record-card:hover {
@@ -183,9 +189,23 @@ export class GBBOContestantsData extends LitElement {
     }
   `;
 
-  async connectedCallback() {
+  openModal(record) {
+    this.selectedRecord = record;
+    this.modalOpen = true;
+  }
+
+  closeModal() {
+    this.modalOpen = false;
+    this.selectedRecord = null;
+  }
+
+  handleModalClose() {
+    this.closeModal();
+  }
+
+  connectedCallback() {
     super.connectedCallback();
-    await this.fetchData();
+    this.fetchData();
   }
 
   async fetchData() {
@@ -212,7 +232,7 @@ export class GBBOContestantsData extends LitElement {
     return html`
       <div class="loading">
         <div class="loading-spinner"></div>
-        <p>Loading data from Airtable...</p>
+        <p>Loading contestants...</p>
       </div>
     `;
   }
@@ -224,10 +244,10 @@ export class GBBOContestantsData extends LitElement {
         <div>${this.error}</div>
         <button 
           class="refresh-button" 
-          @click=${this.handleRefresh}
-          ?disabled=${this.loading}
+          @click="${this.handleRefresh}"
+          ?disabled="${this.loading}"
         >
-          Try Again
+          ${this.loading ? 'Loading...' : 'Try Again'}
         </button>
       </div>
     `;
@@ -236,12 +256,12 @@ export class GBBOContestantsData extends LitElement {
   renderEmptyState() {
     return html`
       <div class="empty-state">
-        <span class="emoji">📋</span>
-        <p>No data found in the specified field.</p>
+        <span class="emoji">🔍</span>
+        <p>No contestants found</p>
         <button 
           class="refresh-button" 
-          @click=${this.handleRefresh}
-          ?disabled=${this.loading}
+          @click="${this.handleRefresh}"
+          ?disabled="${this.loading}"
         >
           Refresh
         </button>
@@ -253,9 +273,9 @@ export class GBBOContestantsData extends LitElement {
     return html`
       <div class="records-grid">
         ${this.records.map(record => html`
-          <div class="record-card">
-            <img class="record-image" src="${record.data.Image[0].url}" alt="${record.data.Name}" />
-            <p class="record-name">${record.data.Name}</p>
+          <div class="record-card" @click="${() => this.openModal(record)}">
+            <img class="record-image" src="${record.data.Image?.[0]?.url || ''}" alt="${record.data.Name || 'Contestant'}" />
+            <p class="record-name">${record.data.Name || 'Unknown Contestant'}</p>
           </div>
         `)}
       </div>
@@ -274,8 +294,14 @@ export class GBBOContestantsData extends LitElement {
         ${!this.loading && !this.error && this.records.length === 0 ? this.renderEmptyState() : ''}
         ${!this.loading && !this.error && this.records.length > 0 ? this.renderRecords() : ''}
       </div>
+
+      <gbbo-contestants-modal 
+        .open="${this.modalOpen}"
+        .contestant="${this.selectedRecord}"
+        @modal-close="${this.handleModalClose}"
+      ></gbbo-contestants-modal>
     `;
-  } 
+  }
 }
 
 customElements.define('gbbo-contestants-data', GBBOContestantsData); 
