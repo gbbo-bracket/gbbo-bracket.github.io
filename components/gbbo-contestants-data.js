@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import airtableService from '../js/airtable-service.js';
 
-export class GBBOAirtableData extends LitElement {
+export class GBBOContestantsData extends LitElement {
   static properties = {
     records: { type: Array },
     loading: { type: Boolean },
@@ -251,9 +251,6 @@ export class GBBOAirtableData extends LitElement {
 
   renderRecords() {
     return html`
-      <div class="record-count">
-        Showing ${this.records.length} record${this.records.length !== 1 ? 's' : ''}
-      </div>
       <div class="records-grid">
         ${this.records.map(record => html`
           <div class="record-card">
@@ -278,7 +275,7 @@ export class GBBOAirtableData extends LitElement {
         ${!this.loading && !this.error && this.records.length > 0 ? this.renderRecords() : ''}
       </div>
     `;
-  }
+  } 
 }
 
-customElements.define('gbbo-airtable-data', GBBOAirtableData); 
+customElements.define('gbbo-contestants-data', GBBOContestantsData); 
