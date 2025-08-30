@@ -40,6 +40,8 @@ jobs:
         
       - name: Build for GitHub Pages
         run: npm run build:gh-pages
+        env:
+          VITE_AIRTABLE_API_KEY: ${{ secrets.VITE_AIRTABLE_API_KEY }}
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
