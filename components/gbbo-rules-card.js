@@ -9,12 +9,12 @@ export class GBBORulesCard extends LitElement {
     
     .rules-card {
       margin-top: 2rem;
-      background-color: rgba(255, 255, 255, 0.9);
+      background-color: rgba(255, 253, 245, 0.9);
       padding: 3rem;
       border-radius: 1.5rem;
       text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(139, 69, 19, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 25px 50px -12px rgba(33, 65, 119, 0.1);
+      border: 1px solid rgba(247, 198, 217, 0.3);
     }
     
     @media (max-width: 768px) {
@@ -32,7 +32,7 @@ export class GBBORulesCard extends LitElement {
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 3rem;
-      color: #8b4513;
+      color: #214177;
       margin-top: 0;
       margin-bottom: 1.5rem;
       font-weight: 700;
@@ -52,7 +52,7 @@ export class GBBORulesCard extends LitElement {
     
     .subtitle {
       font-size: 1.25rem;
-      color: #6b7280;
+      color: #7C7467;
       margin-bottom: 2rem;
       line-height: 1.625;
     }
@@ -70,16 +70,16 @@ export class GBBORulesCard extends LitElement {
     }
     
     .rules-section {
-      background-color: rgba(139, 69, 19, 0.1);
+      background-color: rgba(251, 232, 166, 0.2);
       padding: 1rem;
       border-radius: 0.75rem;
       margin-bottom: 2rem;
-      border: 1px solid rgba(139, 69, 19, 0.2);
+      border: 1px solid rgba(190, 228, 210, 0.3);
     }
     
     .rules-section h3 {
       font-size: 1.25rem;
-      color: #8b4513;
+      color: #214177;
       margin-top: 0;
       margin-bottom: 0.5rem;
       font-weight: 600;
@@ -87,7 +87,7 @@ export class GBBORulesCard extends LitElement {
     
     .rules-section p {
       font-size: 1rem;
-      color: #6b7280;
+      color: #7C7467;
       margin-bottom: 0;
     }
     
@@ -102,21 +102,21 @@ export class GBBORulesCard extends LitElement {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background-color: white;
+      background-color: rgba(255, 253, 245, 0.8);
       padding: 0.75rem;
       border-radius: 0.5rem;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 3px 0 rgba(33, 65, 119, 0.1);
     }
     
     .scoring-item .label {
       font-weight: 500;
-      color: #374151;
+      color: #7C7467;
     }
     
     .scoring-item .points {
       font-weight: 700;
       font-size: 1.5rem;
-      color: #8b4513;
+      color: #D94C57;
     }
     
     @media (max-width: 640px) {
@@ -206,14 +206,6 @@ export class GBBORulesCard extends LitElement {
           <h3>⏰ Voting Deadline</h3>
           <p>
             Votes must be in by <strong>Tuesday at 8PM GMT / 3PM EST / 12PM PST</strong>
-          </p>
-        </div>
-        
-        <!-- Honor System -->
-        <div class="rules-section">
-          <h3>🤝 Fair Play</h3>
-          <p>
-            We're operating on the <strong>honor system</strong> so please play fair!
           </p>
         </div>
         

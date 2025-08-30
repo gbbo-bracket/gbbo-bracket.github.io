@@ -35,22 +35,22 @@ export class GBBOStandings extends LitElement {
       font-family: 'Playfair Display', serif;
       font-size: 3rem;
       font-weight: 700;
-      color: #8b4513;
+      color: #214177;
       margin-bottom: 0.5rem;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .standings-subtitle {
       font-size: 1.25rem;
-      color: #654321;
+      color: #7C7467;
       margin-bottom: 2rem;
     }
 
     .standings-table {
-      background-color: rgba(255, 255, 255, 0.9);
+      background-color: rgba(255, 253, 245, 0.9);
       backdrop-filter: blur(8px);
       border-radius: 1.5rem;
-      box-shadow: 0 20px 25px -5px rgba(139, 69, 19, 0.1), 0 10px 10px -5px rgba(139, 69, 19, 0.04);
+      box-shadow: 0 20px 25px -5px rgba(33, 65, 119, 0.1), 0 10px 10px -5px rgba(33, 65, 119, 0.04);
       overflow: hidden;
       width: 100%;
     }
@@ -61,13 +61,13 @@ export class GBBOStandings extends LitElement {
     }
 
     th {
-      background-color: rgba(139, 69, 19, 0.1);
-      color: #8b4513;
+      background-color: rgba(247, 198, 217, 0.2);
+      color: #214177;
       font-weight: 600;
       padding: 1.5rem 2rem;
       text-align: left;
       font-size: 1.1rem;
-      border-bottom: 2px solid rgba(139, 69, 19, 0.1);
+      border-bottom: 2px solid rgba(247, 198, 217, 0.3);
     }
 
     th:first-child {
@@ -82,12 +82,12 @@ export class GBBOStandings extends LitElement {
 
     td {
       padding: 1.25rem 2rem;
-      border-bottom: 1px solid rgba(139, 69, 19, 0.05);
+      border-bottom: 1px solid rgba(190, 228, 210, 0.3);
       transition: background-color 0.2s ease;
     }
 
     tr:hover td {
-      background-color: rgba(139, 69, 19, 0.02);
+      background-color: rgba(190, 228, 210, 0.1);
     }
 
     tr:last-child td {
@@ -97,46 +97,46 @@ export class GBBOStandings extends LitElement {
     .rank {
       font-weight: 700;
       font-size: 1.25rem;
-      color: #8b4513;
+      color: #214177;
       text-align: center;
     }
 
     .rank.first {
-      color: #d4af37;
+      color: #C58940;
     }
 
     .rank.second {
-      color: #c0c0c0;
+      color: #A9D0F5;
     }
 
     .rank.third {
-      color: #cd7f32;
+      color: #D94C57;
     }
 
     .participant-name {
       font-weight: 600;
-      color: #2c1810;
+      color: #7C7467;
       font-size: 1.1rem;
     }
 
     .points {
       font-weight: 700;
       font-size: 1.25rem;
-      color: #8b4513;
+      color: #214177;
       text-align: center;
     }
 
     .loading {
       text-align: center;
       padding: 3rem;
-      color: #8b4513;
+      color: #7C7467;
       font-size: 1.25rem;
     }
 
     .error {
       text-align: center;
       padding: 3rem;
-      color: #dc2626;
+      color: #D94C57;
       font-size: 1.1rem;
     }
 
@@ -144,9 +144,9 @@ export class GBBOStandings extends LitElement {
       display: inline-block;
       width: 2rem;
       height: 2rem;
-      border: 3px solid rgba(139, 69, 19, 0.3);
+      border: 3px solid rgba(169, 208, 245, 0.3);
       border-radius: 50%;
-      border-top-color: #8b4513;
+      border-top-color: #A9D0F5;
       animation: spin 1s ease-in-out infinite;
       margin-bottom: 1rem;
     }

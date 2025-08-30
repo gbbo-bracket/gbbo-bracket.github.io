@@ -21,10 +21,10 @@ export class GBBOHeader extends LitElement {
       align-items: center;
       justify-content: space-between;
       padding: 1rem 2rem;
-      background-color: rgba(255, 255, 255, 0.95);
+      background-color: rgba(255, 253, 245, 0.95);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(139, 69, 19, 0.1);
-      box-shadow: 0 4px 6px -1px rgba(139, 69, 19, 0.1);
+      border-bottom: 1px solid rgba(247, 198, 217, 0.3);
+      box-shadow: 0 4px 6px -1px rgba(33, 65, 119, 0.1);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -50,7 +50,7 @@ export class GBBOHeader extends LitElement {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
       font-weight: 700;
-      color: #8b4513;
+      color: #214177;
       margin: 0;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
@@ -69,7 +69,7 @@ export class GBBOHeader extends LitElement {
     
     .nav-links a {
       text-decoration: none;
-      color: #8b4513;
+      color: #214177;
       font-weight: 500;
       font-size: 1.1rem;
       padding: 0.5rem 1rem;
@@ -78,8 +78,25 @@ export class GBBOHeader extends LitElement {
     }
     
     .nav-links a:hover {
-      background-color: rgba(139, 69, 19, 0.1);
-      color: #654321;
+      background-color: rgba(247, 198, 217, 0.2);
+      color: #D94C57;
+    }
+    
+    .vote-button {
+      background-color: #D94C57 !important;
+      color: #FFFDF5 !important;
+      font-weight: 600 !important;
+      border-radius: 0.75rem !important;
+      padding: 0.75rem 1.5rem !important;
+      box-shadow: 0 2px 4px rgba(217, 76, 87, 0.2);
+      transition: all 0.2s ease !important;
+    }
+    
+    .vote-button:hover {
+      background-color: #214177 !important;
+      color: #FFFDF5 !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(33, 65, 119, 0.3);
     }
     
     .mobile-menu-button {
@@ -87,14 +104,14 @@ export class GBBOHeader extends LitElement {
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #8b4513;
+      color: #214177;
       cursor: pointer;
       padding: 0.5rem;
       border-radius: 0.25rem;
     }
     
     .mobile-menu-button:hover {
-      background-color: rgba(139, 69, 19, 0.1);
+      background-color: rgba(247, 198, 217, 0.2);
     }
     
     .mobile-menu {
@@ -103,10 +120,10 @@ export class GBBOHeader extends LitElement {
       top: 100%;
       left: 0;
       right: 0;
-      background-color: rgba(255, 255, 255, 0.98);
+      background-color: rgba(255, 253, 245, 0.98);
       backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(139, 69, 19, 0.1);
-      box-shadow: 0 4px 6px -1px rgba(139, 69, 19, 0.1);
+      border-bottom: 1px solid rgba(247, 198, 217, 0.3);
+      box-shadow: 0 4px 6px -1px rgba(33, 65, 119, 0.1);
       z-index: 999;
     }
     
@@ -127,7 +144,7 @@ export class GBBOHeader extends LitElement {
     .mobile-nav-links a {
       display: block;
       text-decoration: none;
-      color: #8b4513;
+      color: #214177;
       font-weight: 500;
       font-size: 1.1rem;
       padding: 1rem 2rem;
@@ -135,8 +152,8 @@ export class GBBOHeader extends LitElement {
     }
     
     .mobile-nav-links a:hover {
-      background-color: rgba(139, 69, 19, 0.1);
-      color: #654321;
+      background-color: rgba(247, 198, 217, 0.2);
+      color: #D94C57;
     }
     
     /* Mobile styles */
@@ -189,7 +206,7 @@ export class GBBOHeader extends LitElement {
           <li><a href="/">Home</a></li>
           <li><a href="/rules">Rules</a></li>
           <li><a href="/contestants">Contestants</a></li>
-          <li><a href="/standings">Standings</a></li>
+          <li><a href="/vote" class="vote-button">Vote now</a></li>
         </ul>
         
         <button 
@@ -203,9 +220,10 @@ export class GBBOHeader extends LitElement {
         <div class="mobile-menu ${this.mobileMenuOpen ? 'open' : ''}">
           <ul class="mobile-nav-links">
             <li><a href="/" @click="${this.toggleMobileMenu}">Home</a></li>
-            <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
+            <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
             <li><a href="/standings" @click="${this.toggleMobileMenu}">Standings</a></li>
+            <li><a href="/vote" @click="${this.toggleMobileMenu}" class="vote-button">Vote now</a></li>
           </ul>
         </div>
       </nav>
