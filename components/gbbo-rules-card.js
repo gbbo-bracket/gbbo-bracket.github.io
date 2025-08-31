@@ -10,7 +10,7 @@ export class GBBORulesCard extends LitElement {
     
     .rules-card {
       margin-top: 2rem;
-      background-color: rgba(255, 253, 245, 0.9);
+      background-color: var(--canvas);
       padding: 3rem;
       border-radius: 1.5rem;
       text-align: center;
@@ -33,7 +33,7 @@ export class GBBORulesCard extends LitElement {
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 3rem;
-      color: #214177;
+      color: var(--heading-text);
       margin-top: 0;
       margin-bottom: 1.5rem;
       font-weight: 700;
@@ -53,7 +53,7 @@ export class GBBORulesCard extends LitElement {
     
     .subtitle {
       font-size: 1.25rem;
-      color: #7C7467;
+      color: var(--body-text);
       margin-bottom: 2rem;
       line-height: 1.625;
     }
@@ -80,7 +80,7 @@ export class GBBORulesCard extends LitElement {
     
     .rules-section h3 {
       font-size: 1.25rem;
-      color: #214177;
+      color: var(--heading-text);
       margin-top: 0;
       margin-bottom: 0.5rem;
       font-weight: 600;
@@ -88,7 +88,7 @@ export class GBBORulesCard extends LitElement {
     
     .rules-section p {
       font-size: 1rem;
-      color: #7C7467;
+      color: var(--body-text);
       margin-bottom: 0;
     }
     
@@ -111,13 +111,13 @@ export class GBBORulesCard extends LitElement {
     
     .scoring-item .label {
       font-weight: 500;
-      color: #7C7467;
+      color: var(--body-text);
     }
     
     .scoring-item .points {
       font-weight: 700;
       font-size: 1.5rem;
-      color: #D94C57;
+      color: var(--berry-red);
     }
     
     @media (max-width: 640px) {

@@ -1,0 +1,24 @@
+:root {
+    /* Primary Pastels (Playful + Inviting) */
+    --icing-pink: #F7C6D9;
+    --buttercream-yellow: #FBE8A6;
+    --mint-green: #BEE4D2;
+    --powder-blue: #A9D0F5;
+
+    /* Secondary Accents (Bold + Festive) */
+    --berry-red: #D94C57;
+    --royal-blue: #214177;
+    --golden-brown: #C58940;
+    
+    /* Neutrals (Balancing + Readable) */
+    --clotted-cream: #FFFDF5;
+    --earl-grey: #7C7467;
+
+    /* Utility colors */
+    --canvas: var(--clotted-cream);
+    --body-text: var(--earl-grey);
+    --body-text-on-dark: var(--clotted-cream);
+    --heading-text: var(--royal-blue);
+    --link-text: var(--royal-blue);
+    --link-text-on-hover: var(--berry-red);
+}

@@ -36,14 +36,14 @@ export class GBBOStandings extends LitElement {
       font-family: 'Playfair Display', serif;
       font-size: 3rem;
       font-weight: 700;
-      color: #214177;
+      color: var(--heading-text);
       margin-bottom: 0.5rem;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .standings-subtitle {
       font-size: 1.25rem;
-      color: #7C7467;
+      color: var(--body-text);
       margin-bottom: 2rem;
     }
 
@@ -63,7 +63,7 @@ export class GBBOStandings extends LitElement {
 
     th {
       background-color: rgba(247, 198, 217, 0.2);
-      color: #214177;
+      color: var(--heading-text);
       font-weight: 600;
       padding: 1.5rem 2rem;
       text-align: left;
@@ -98,39 +98,39 @@ export class GBBOStandings extends LitElement {
     .rank {
       font-weight: 700;
       font-size: 1.25rem;
-      color: #214177;
+      color: var(--heading-text);
       text-align: center;
     }
 
     .rank.first {
-      color: #C58940;
+      color: var(--golden-brown);
     }
 
     .rank.second {
-      color: #A9D0F5;
+      color: var(--powder-blue);
     }
 
     .rank.third {
-      color: #D94C57;
+      color: var(--berry-red);
     }
 
     .participant-name {
       font-weight: 600;
-      color: #7C7467;
+      color: var(--body-text);
       font-size: 1.1rem;
     }
 
     .points {
       font-weight: 700;
       font-size: 1.25rem;
-      color: #214177;
+      color: var(--heading-text);
       text-align: center;
     }
 
     .error {
       text-align: center;
       padding: 3rem;
-      color: #D94C57;
+      color: var(--berry-red);
       font-size: 1.1rem;
     }
 

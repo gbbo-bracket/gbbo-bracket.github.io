@@ -50,7 +50,7 @@ export class GBBOHeader extends LitElement {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
       font-weight: 700;
-      color: #214177;
+      color: var(--heading-text);
       margin: 0;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
@@ -69,7 +69,7 @@ export class GBBOHeader extends LitElement {
     
     .nav-links a {
       text-decoration: none;
-      color: #214177;
+      color: var(--link-text);
       font-weight: 500;
       font-size: 1.1rem;
       padding: 0.5rem 1rem;
@@ -79,12 +79,12 @@ export class GBBOHeader extends LitElement {
     
     .nav-links a:hover {
       background-color: rgba(247, 198, 217, 0.2);
-      color: #D94C57;
+      color: var(--link-text-on-hover);
     }
     
     .vote-button {
-      background-color: #D94C57 !important;
-      color: #FFFDF5 !important;
+      background-color: var(--berry-red) !important;
+      color: var(--body-text-on-dark) !important;
       font-weight: 600 !important;
       border-radius: 0.75rem !important;
       padding: 0.75rem 1.5rem !important;
@@ -94,7 +94,7 @@ export class GBBOHeader extends LitElement {
     
     .vote-button:hover {
       background-color: #214177 !important;
-      color: #FFFDF5 !important;
+      color: var(--body-text-on-dark) !important;
       transform: translateY(-1px);
       box-shadow: 0 4px 8px rgba(33, 65, 119, 0.3);
     }
@@ -104,7 +104,7 @@ export class GBBOHeader extends LitElement {
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #214177;
+      color: var(--heading-text);
       cursor: pointer;
       padding: 0.5rem;
       border-radius: 0.25rem;
@@ -144,7 +144,7 @@ export class GBBOHeader extends LitElement {
     .mobile-nav-links a {
       display: block;
       text-decoration: none;
-      color: #214177;
+      color: var(--link-text);
       font-weight: 500;
       font-size: 1.1rem;
       padding: 1rem 2rem;
@@ -153,7 +153,7 @@ export class GBBOHeader extends LitElement {
     
     .mobile-nav-links a:hover {
       background-color: rgba(247, 198, 217, 0.2);
-      color: #D94C57;
+      color: var(--link-text-on-hover);
     }
     
     /* Mobile styles */
