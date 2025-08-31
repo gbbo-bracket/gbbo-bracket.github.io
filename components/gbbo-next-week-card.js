@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
-import './gbbo-loading-container.js';
 import { airtableService } from '../js/airtable-service.js';
+import './foundations/primary-button';
+import './gbbo-loading-container.js';
 
 export class GBBONextWeekCard extends LitElement {
   static properties = {
@@ -159,22 +160,6 @@ export class GBBONextWeekCard extends LitElement {
       text-align: center;
       color: var(--berry-red);
     }
-
-    .retry-button {
-      background-color: var(--berry-red);
-      color: var(--body-text-on-dark);
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-size: 1rem;
-      margin-top: 1rem;
-      transition: background-color 0.2s;
-    }
-    
-    .retry-button:hover {
-      background-color: #214177;
-    }
   `;
 
   connectedCallback() {
@@ -312,9 +297,9 @@ export class GBBONextWeekCard extends LitElement {
       <div class="next-week-card">
         <div class="error">
           <p>Error: ${this.error}</p>
-          <button class="retry-button" @click="${this.handleRefresh}">
+          <primary-button @click="${this.handleRefresh}">
             Retry
-          </button>
+          </primary-button>
         </div>
       </div>
     `;
