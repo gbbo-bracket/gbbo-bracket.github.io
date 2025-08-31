@@ -44,12 +44,12 @@ export class GBBOContestantsData extends LitElement {
         .header h3 {
       font-family: 'Playfair Display', serif;
       font-size: 1.875rem;
-      color: #214177;
+      color: var(--heading-text);
       margin: 0 0 0.5rem 0;
     }
     
     .header p {
-      color: #7C7467;
+      color: var(--body-text);
       margin: 0;
     }
     
@@ -58,7 +58,7 @@ export class GBBOContestantsData extends LitElement {
     .error {
       background-color: rgba(247, 198, 217, 0.1);
       border: 1px solid rgba(217, 76, 87, 0.3);
-      color: #D94C57;
+      color: var(--berry-red);
       padding: 1rem;
       border-radius: 0.5rem;
       margin-bottom: 1rem;
@@ -107,17 +107,10 @@ export class GBBOContestantsData extends LitElement {
       border-radius: 0.75rem;
     }
     
-    .record-content {
-      color: #7C7467;
-      font-size: 1rem;
-      line-height: 1.5;
-      word-break: break-word;
-    }
-    
     .empty-state {
       text-align: center;
       padding: 3rem;
-      color: #7C7467;
+      color: var(--body-text);
     }
     
     .empty-state .emoji {
@@ -127,7 +120,7 @@ export class GBBOContestantsData extends LitElement {
     }
     
     .refresh-button {
-      background-color: #BEE4D2;
+      background-color: var(--mint-green);
       color: #214177;
       border: none;
       padding: 0.75rem 1.5rem;

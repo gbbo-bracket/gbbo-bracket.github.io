@@ -45,7 +45,7 @@ export class GBBOWelcomeCard extends LitElement {
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 2.5rem;
-      color: #214177;
+      color: var(--heading-text);
       margin-top: 0;
       margin-bottom: 1.5rem;
     }
@@ -64,7 +64,7 @@ export class GBBOWelcomeCard extends LitElement {
     
     p {
       font-size: 1.25rem;
-      color: #7C7467;
+      color: var(--body-text);
       margin-bottom: 2rem;
       line-height: 1.625;
     }
@@ -91,7 +91,7 @@ export class GBBOWelcomeCard extends LitElement {
     
     .season-info h3 {
       font-size: 1.25rem;
-      color: #214177;
+      color: var(--heading-text);
       margin-top: 0;
       margin-bottom: 0.5rem;
       font-weight: 600;
@@ -99,7 +99,7 @@ export class GBBOWelcomeCard extends LitElement {
     
     .season-info p {
       font-size: 1rem;
-      color: #7C7467;
+      color: var(--body-text);
       margin-bottom: 0;
     }
   `;

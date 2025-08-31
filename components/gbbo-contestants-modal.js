@@ -39,7 +39,7 @@ export class GBBOContestantsModal extends LitElement {
     }
 
     .modal-content {
-      background-color: #FFFDF5;
+      background-color: var(--canvas);
       border-radius: 1rem;
       max-width: 600px;
       width: 90%;
@@ -80,7 +80,7 @@ export class GBBOContestantsModal extends LitElement {
       font-family: 'Playfair Display', serif;
       font-size: 1.5rem;
       font-weight: 700;
-      color: #214177;
+      color: var(--heading-text);
       margin: 0;
     }
 
@@ -88,7 +88,7 @@ export class GBBOContestantsModal extends LitElement {
       background: none;
       border: none;
       font-size: 1.5rem;
-      color: #7C7467;
+      color: var(--body-text);
       cursor: pointer;
       padding: 0.5rem;
       border-radius: 0.25rem;
@@ -97,7 +97,7 @@ export class GBBOContestantsModal extends LitElement {
 
     .modal-close-button:hover {
       background-color: rgba(247, 198, 217, 0.2);
-      color: #D94C57;
+      color: var(--berry-red);
     }
 
     .modal-body {
@@ -111,7 +111,7 @@ export class GBBOContestantsModal extends LitElement {
     }
 
     .modal-bio {
-      color: #7C7467;
+      color: var(--body-text);
       font-size: 1rem;
       line-height: 1.6;
       margin: 0;
@@ -119,7 +119,7 @@ export class GBBOContestantsModal extends LitElement {
 
     .modal-bio-label {
       font-weight: 600;
-      color: #214177;
+      color: var(--heading-text);
       margin-bottom: 0.5rem;
       display: block;
     }

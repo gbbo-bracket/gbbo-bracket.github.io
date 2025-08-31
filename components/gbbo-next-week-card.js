@@ -44,7 +44,7 @@ export class GBBONextWeekCard extends LitElement {
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #D94C57, #F7C6D9, #A9D0F5);
+      background: linear-gradient(90deg, var(--berry-red), var(--icing-pink), var(--powder-blue));
     }
     
     @media (max-width: 768px) {
@@ -62,7 +62,7 @@ export class GBBONextWeekCard extends LitElement {
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 2.5rem;
-      color: #214177;
+      color: var(--heading-text);
       margin-top: 0;
       margin-bottom: 1rem;
       font-weight: 700;
@@ -83,7 +83,7 @@ export class GBBONextWeekCard extends LitElement {
     .week-title {
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
-      color: #214177;
+      color: var(--heading-text);
       margin-bottom: 1rem;
       font-weight: 600;
     }
@@ -102,7 +102,7 @@ export class GBBONextWeekCard extends LitElement {
     
     .week-description {
       font-size: 1.125rem;
-      color: #7C7467;
+      color: var(--body-text);
       margin-bottom: 2rem;
       line-height: 1.625;
     }
@@ -135,8 +135,8 @@ export class GBBONextWeekCard extends LitElement {
     
     .coming-soon-badge {
       display: inline-block;
-      background: linear-gradient(135deg, #D94C57, #F7C6D9);
-      color: #FFFDF5;
+      background: linear-gradient(135deg, var(--berry-red), var(--icing-pink));
+      color: var(--body-text-on-dark);
       padding: 0.5rem 1rem;
       border-radius: 2rem;
       font-size: 0.875rem;
@@ -146,45 +146,23 @@ export class GBBONextWeekCard extends LitElement {
       margin-bottom: 1rem;
     }
     
-    .countdown-timer {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: #214177;
-      margin-bottom: 0.5rem;
-    }
-    
     .countdown-label {
       font-size: 0.875rem;
-      color: #7C7467;
+      color: var(--body-text);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       font-weight: 600;
     }
     
-    @media (max-width: 768px) {
-      .countdown-timer {
-        font-size: 1.5rem;
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .countdown-timer {
-        font-size: 1.25rem;
-      }
-    }
-    
     .error {
       padding: 2rem;
       text-align: center;
-      color: #D94C57;
+      color: var(--berry-red);
     }
-    
 
-    
     .retry-button {
-      background-color: #D94C57;
-      color: #FFFDF5;
+      background-color: var(--berry-red);
+      color: var(--body-text-on-dark);
       border: none;
       padding: 0.75rem 1.5rem;
       border-radius: 0.5rem;

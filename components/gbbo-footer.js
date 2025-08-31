@@ -11,7 +11,6 @@ export class GBBOFooter extends LitElement {
       text-align: center;
       margin-top: 3rem;
       padding: 1.5rem;
-      color: #214177;
       font-style: italic;
       font-weight: 300;
     }
