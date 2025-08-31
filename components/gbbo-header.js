@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './foundations/primary-button';
 
 export class GBBOHeader extends LitElement {
   static properties = {
@@ -206,7 +207,7 @@ export class GBBOHeader extends LitElement {
           <li><a href="/">Home</a></li>
           <li><a href="/rules">Rules</a></li>
           <li><a href="/contestants">Contestants</a></li>
-          <li><a href="/vote" class="vote-button">Vote now</a></li>
+          <li><primary-button href="/vote">Vote now</primary-button></li>
         </ul>
         
         <button 
