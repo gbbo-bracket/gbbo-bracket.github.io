@@ -20,7 +20,7 @@ export class GBBOFooter extends LitElement {
       height: 120px;
       margin: 0 auto 1rem auto;
       display: block;
-      background-image: url('./assets/images/bunting.png');
+      background-image: url('./images/bunting.png');
       background-repeat: repeat-x;
       background-position: center;
       background-size: auto 100%;

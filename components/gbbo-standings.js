@@ -182,12 +182,49 @@ export class GBBOStandings extends LitElement {
     try {
       this.loading = true;
       this.error = null;
+
+      this.standings = [
+        {
+          name: 'Chirag',
+          points: 37
+        },
+        {
+          name: 'Ryan',
+          points: 31
+        },
+        {
+          name: 'Tarin',
+          points: 25
+        },
+        {
+          name: 'Ellen',
+          points: 12
+        },
+        {
+          name: 'Josh',
+          points: 10
+        },
+        {
+          name: 'Jerico',
+          points: 6
+        },
+        {
+          name: 'Emerson',
+          points: 3
+        },
+        {
+          name: 'Kyndall',
+          points: 0
+        },
+      ];
       
-      // Fetch standings data from the specific table using configurable fetchRecords
-      const records = await airtableService.fetchRecords('tblX7SVGLgZ59tiWB');
-      
-      // Process and sort the standings
-      this.standings = this.processStandingsData(records);
+      if (!this.standings) {
+        // Fetch standings data from the specific table using configurable fetchRecords
+        const records = await airtableService.fetchRecords('tblX7SVGLgZ59tiWB', 'app2vQWGh4JShLdZO');
+        
+        // Process and sort the standings
+        this.standings = this.processStandingsData(records);
+      }
       
     } catch (error) {
       console.error('Error fetching standings:', error);
@@ -260,8 +297,8 @@ export class GBBOStandings extends LitElement {
     return html`
       <div class="standings-container">
         <div class="standings-header">
-          <h1 class="standings-title">Standings</h1>
-          <p class="standings-subtitle">Current bracket leaderboard</p>
+          <h1 class="standings-title">Last Year's Standings</h1>
+          <p class="standings-subtitle">Who will reign? Who will be redeemed?</p>
         </div>
         
         <div class="glass-card standings-table">
