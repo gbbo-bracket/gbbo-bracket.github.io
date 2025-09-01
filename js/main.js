@@ -3,6 +3,7 @@ import '../src/input.css';
 import '../src/styles.css';
 
 // Import all LitElement web components
+import '../components/foundations/primary-button.js';
 import '../components/gbbo-header.js';
 import '../components/gbbo-welcome-card.js';
 import '../components/gbbo-next-week-card.js';
