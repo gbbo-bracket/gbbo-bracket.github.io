@@ -134,14 +134,17 @@ export class GBBORulesCard extends LitElement {
       <div class="rules-card">
         <h2>🏆 GBBO Bracket Rules 🏆</h2>
         <p class="subtitle">
-          Everything you need to know to play the Great British Bake Off Bracket game!
+          Brackets open following the premiere of the first episode of the new series.
         </p>
         
         <!-- Voting Deadline -->
         <div class="rules-section">
           <h3>⏰ Voting Deadline</h3>
           <p>
-            Votes must be in by <strong>Tuesday at 8PM GMT / 3PM EST / 12PM PST</strong>
+            Votes must be in before new episodes premiere.
+          </p>
+          <p>
+            That is <strong>Tuesday at 8PM GMT</strong> for the UK, or <strong>Friday at 12AM local time</strong> for the US.
           </p>
         </div>
         
@@ -154,7 +157,7 @@ export class GBBORulesCard extends LitElement {
               <span class="points">4 points</span>
             </div>
             <div class="scoring-item">
-              <span class="label">🥇 Wins Technical</span>
+              <span class="label">🔥 Wins Technical</span>
               <span class="points">2 points</span>
             </div>
             <div class="scoring-item">
@@ -169,7 +172,7 @@ export class GBBORulesCard extends LitElement {
           <h3>🎯 End of Series Bonus</h3>
           <div class="scoring-grid">
             <div class="scoring-item">
-              <span class="label">Each correct finalist</span>
+              <span class="label">🎖️ Each correct finalist</span>
               <span class="points">+3 points</span>
             </div>
             <div class="scoring-item">

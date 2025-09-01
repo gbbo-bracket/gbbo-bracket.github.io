@@ -44,12 +44,12 @@ export class GBBOHeader extends LitElement {
     }
     
     .emoji {
-      font-size: 2.5rem;
+      font-size: 2rem;
     }
     
     .logo h1 {
       font-family: 'Playfair Display', serif;
-      font-size: 2rem;
+      font-size: 1.5rem;
       font-weight: 700;
       color: var(--heading-text);
       margin: 0;
@@ -164,11 +164,11 @@ export class GBBOHeader extends LitElement {
       }
       
       .logo .emoji {
-        font-size: 2rem;
+        font-size: 1.5rem;
       }
       
       .logo h1 {
-        font-size: 1.5rem;
+        font-size: 1rem;
       }
       
       .nav-links {
@@ -200,14 +200,14 @@ export class GBBOHeader extends LitElement {
       <nav>
         <a href="/" class="logo">
           <div class="emoji">🧁</div>
-          <h1>GBBO Bracket 2025</h1>
+          <h1>The Great Bake Off Bracket</h1>
         </a>
         
         <ul class="nav-links">
           <li><a href="/">Home</a></li>
           <li><a href="/rules">Rules</a></li>
           <li><a href="/contestants">Contestants</a></li>
-          <li><primary-button href="/vote">Vote now</primary-button></li>
+          <li><primary-button href="#">Join in</primary-button></li>
         </ul>
         
         <button 
