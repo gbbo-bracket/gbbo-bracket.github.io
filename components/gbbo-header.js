@@ -207,7 +207,7 @@ export class GBBOHeader extends LitElement {
           <li><a href="/">Home</a></li>
           <li><a href="/rules">Rules</a></li>
           <li><a href="/contestants">Contestants</a></li>
-          <li><primary-button href="#">Join in</primary-button></li>
+          <li><primary-button href="/vote">Join now</primary-button></li>
         </ul>
         
         <button 
