@@ -11,7 +11,8 @@ export default defineConfig({
         main: 'index.html',
         contestants: 'contestants.html',
         rules: 'rules.html',
-        standings: 'standings.html'
+        standings: 'standings.html',
+        vote: 'vote.html'
       }
     },
     // Ensure CSS is properly extracted and assets are handled correctly
