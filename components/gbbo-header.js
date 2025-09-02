@@ -83,23 +83,6 @@ export class GBBOHeader extends LitElement {
       color: var(--link-text-on-hover);
     }
     
-    .vote-button {
-      background-color: var(--berry-red) !important;
-      color: var(--body-text-on-dark) !important;
-      font-weight: 600 !important;
-      border-radius: 0.75rem !important;
-      padding: 0.75rem 1.5rem !important;
-      box-shadow: 0 2px 4px rgba(217, 76, 87, 0.2);
-      transition: all 0.2s ease !important;
-    }
-    
-    .vote-button:hover {
-      background-color: #214177 !important;
-      color: var(--body-text-on-dark) !important;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(33, 65, 119, 0.3);
-    }
-    
     .mobile-menu-button {
       display: none;
       background: none;
@@ -138,8 +121,12 @@ export class GBBOHeader extends LitElement {
       padding: 1rem 0;
     }
     
-    .mobile-nav-links li {
+    .mobile-nav-links li:not(.primary-button-container) {
       margin: 0;
+    }
+
+    .mobile-nav-links li.primary-button-container {
+      margin: 1rem 2rem;
     }
     
     .mobile-nav-links a {
@@ -224,7 +211,7 @@ export class GBBOHeader extends LitElement {
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
             <li><a href="/standings" @click="${this.toggleMobileMenu}">Standings</a></li>
-            <li><a href="/vote" @click="${this.toggleMobileMenu}" class="vote-button">Vote now</a></li>
+            <li class="primary-button-container"><primary-button href="/vote" @click="${this.toggleMobileMenu}">Join now</primary-button></li>
           </ul>
         </div>
       </nav>
