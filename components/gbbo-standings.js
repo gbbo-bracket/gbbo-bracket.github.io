@@ -5,13 +5,17 @@ import { airtableService } from '../js/airtable-service.js';
 export class GBBOStandings extends LitElement {
   static properties = {
     standings: { type: Array },
+    title: { type: String },
+    description: { type: String },
     loading: { type: Boolean },
     error: { type: String }
   };
 
   constructor() {
     super();
-    this.standings = [];
+    this.standings = null;
+    this.title = 'Standings';
+    this.description = 'Current bracket leaderboard';
     this.loading = true;
     this.error = null;
   }
@@ -175,6 +179,21 @@ export class GBBOStandings extends LitElement {
 
   async connectedCallback() {
     super.connectedCallback();
+    
+    // Parse standings from attribute if it's a string
+    if (typeof this.standings === 'string') {
+      try {
+        this.standings = JSON.parse(this.standings);
+        this.loading = false;
+        return; // Don't fetch from Airtable if we have custom data
+      } catch (error) {
+        console.error('Error parsing standings JSON:', error);
+        this.error = 'Invalid standings data format';
+        this.loading = false;
+        return;
+      }
+    }
+    
     await this.fetchStandings();
   }
 
@@ -182,41 +201,6 @@ export class GBBOStandings extends LitElement {
     try {
       this.loading = true;
       this.error = null;
-
-      this.standings = [
-        {
-          name: 'Chirag',
-          points: 37
-        },
-        {
-          name: 'Ryan',
-          points: 31
-        },
-        {
-          name: 'Tarin',
-          points: 25
-        },
-        {
-          name: 'Ellen',
-          points: 12
-        },
-        {
-          name: 'Josh',
-          points: 10
-        },
-        {
-          name: 'Jerico',
-          points: 6
-        },
-        {
-          name: 'Emerson',
-          points: 3
-        },
-        {
-          name: 'Kyndall',
-          points: 0
-        },
-      ];
       
       if (!this.standings) {
         // Fetch standings data from the specific table using configurable fetchRecords
@@ -270,8 +254,8 @@ export class GBBOStandings extends LitElement {
       return html`
         <div class="standings-container">
           <div class="standings-header">
-            <h1 class="standings-title">Standings</h1>
-            <p class="standings-subtitle">Current bracket leaderboard</p>
+            <h1 class="standings-title">${this.title}</h1>
+            <p class="standings-subtitle">${this.description}</p>
           </div>
           <div class="glass-card">
             <gbbo-loading-container></gbbo-loading-container>
@@ -284,8 +268,8 @@ export class GBBOStandings extends LitElement {
       return html`
         <div class="standings-container">
           <div class="standings-header">
-            <h1 class="standings-title">Standings</h1>
-            <p class="standings-subtitle">Current bracket leaderboard</p>
+            <h1 class="standings-title">${this.title}</h1>
+            <p class="standings-subtitle">${this.description}</p>
           </div>
           <div class="glass-card">
             <div class="error">${this.error}</div>
@@ -297,8 +281,8 @@ export class GBBOStandings extends LitElement {
     return html`
       <div class="standings-container">
         <div class="standings-header">
-          <h1 class="standings-title">Last Year's Standings</h1>
-          <p class="standings-subtitle">Who will reign? Who will be redeemed?</p>
+          <h1 class="standings-title">${this.title}</h1>
+          <p class="standings-subtitle">${this.description}</p>
         </div>
         
         <div class="glass-card standings-table">
