@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import './gbbo-loading-container.js';
-import airtableService from '../js/airtable-service.js';
+import { fetchContestants } from '../js/utils/bakers.js';
 import './gbbo-contestants-modal.js';
 
 export class GBBOContestantsData extends LitElement {
@@ -187,9 +187,7 @@ export class GBBOContestantsData extends LitElement {
     this.error = '';
     
     try {
-      console.log('Fetching data from Airtable...');
-      this.records = await airtableService.fetchRecords();
-      console.log('Data fetched from Airtable:', this.records);
+      this.records = await fetchContestants();
     } catch (error) {
       this.error = error.message;
       console.error('Failed to fetch Airtable data:', error);

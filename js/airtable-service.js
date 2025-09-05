@@ -89,6 +89,28 @@ class AirtableService {
       throw new Error(`Failed to fetch filtered data: ${error.message}`);
     }
   }
+
+  /**
+   * Create a new record in the specified table
+   * @param {string} tableId - The table ID to create the record in
+   * @param {Object} fields - The field data for the new record
+   * @returns {Promise<Object>} The created record data
+   */
+  async createRecord(tableId, fields) {
+    try {
+      const record = await this.base(tableId).create(fields);
+      
+      console.log(`Created new record in table ${tableId}:`, record.id);
+      return {
+        id: record.id,
+        data: record.fields
+      };
+      
+    } catch (error) {
+      console.error(`Error creating record in table ${tableId}:`, error);
+      throw new Error(`Failed to create record: ${error.message}`);
+    }
+  }
 }
 
 // Export singleton instance

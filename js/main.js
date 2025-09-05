@@ -14,6 +14,7 @@ import '../components/gbbo-contestants-data.js';
 import '../components/gbbo-rules-card.js';
 import '../components/gbbo-standings.js';
 import '../components/gbbo-footer.js';
+import '../components/gbbo-vote.js';
 
 // Main application class
 class GBBOApp {
