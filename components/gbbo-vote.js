@@ -6,6 +6,7 @@ import './gbbo-loading-container.js';
 import { fetchContestants } from '../js/utils/bakers.js';
 import { fetchNames } from '../js/utils/participants.js';
 import { fetchWeeks } from '../js/utils/baker-results.js';
+import { createNomination } from '../js/utils/nominations.js';
 
 export class GBBOVote extends LitElement {
   static styles = css`
@@ -76,6 +77,35 @@ export class GBBOVote extends LitElement {
       font-weight: 600;
       margin-bottom: 0.25rem;
     }
+
+    .success {
+      background-color: rgba(187, 247, 208, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #16a34a;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .success-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .submit-error {
+      background-color: rgba(247, 198, 217, 0.1);
+      border: 1px solid rgba(217, 76, 87, 0.3);
+      color: #d94c57;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .submit-error-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
   `;
 
   static properties = {
@@ -83,7 +113,10 @@ export class GBBOVote extends LitElement {
     names: { type: Array },
     weeks: { type: Array },
     loading: { type: Boolean },
-    error: { type: String }
+    error: { type: String },
+    submitting: { type: Boolean },
+    submitSuccess: { type: Boolean },
+    submitError: { type: String }
   };
 
   constructor() {
@@ -93,6 +126,9 @@ export class GBBOVote extends LitElement {
     this.weeks = [];
     this.loading = false;
     this.error = '';
+    this.submitting = false;
+    this.submitSuccess = false;
+    this.submitError = '';
   }
 
   connectedCallback() {
@@ -158,7 +194,21 @@ export class GBBOVote extends LitElement {
           </div>
         ` : ''}
 
-        ${!this.loading && !this.error ? html`
+        ${this.submitSuccess ? html`
+          <div class="success">
+            <div class="success-title">Votes Submitted Successfully!</div>
+            <div>Your nominations have been recorded. Thank you for voting!</div>
+          </div>
+        ` : ''}
+
+        ${this.submitError ? html`
+          <div class="submit-error">
+            <div class="submit-error-title">Error Submitting Votes</div>
+            <div>${this.submitError}</div>
+          </div>
+        ` : ''}
+
+        ${!this.loading && !this.error && !this.submitSuccess ? html`
           <form class="vote-form" @submit=${this._handleSubmit}>
             <div class="form-group-row">
               <label class="form-label" for="week">What week?</label>
@@ -212,8 +262,12 @@ export class GBBOVote extends LitElement {
               </div>
             </div>
 
-            <primary-button type="submit" ?disabled="${this.contestants.length === 0 || this.weeks.length === 0}">
-              Submit Votes
+            <primary-button 
+              type="submit" 
+              @click="${this._handleButtonClick}"
+              ?disabled="${this.contestants.length === 0 || this.weeks.length === 0 || this.submitting}"
+            >
+              ${this.submitting ? 'Submitting...' : 'Submit Votes'}
             </primary-button>
           </form>
         ` : ''}
@@ -221,57 +275,81 @@ export class GBBOVote extends LitElement {
     `;
   }
 
+  _handleButtonClick(e) {
+    e.preventDefault();
+    console.log('Submit button clicked');
+    
+    // Find the form and trigger submit
+    const form = this.shadowRoot.querySelector('form');
+    if (form) {
+      console.log('Form found, triggering submit');
+      // Create a submit event and dispatch it
+      const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+      form.dispatchEvent(submitEvent);
+    } else {
+      console.error('Form not found');
+    }
+  }
+
   _handleSubmit(e) {
     e.preventDefault();
+
+    console.log('Form submitted');
     
     const formData = new FormData(e.target);
     const votes = {
-      week: formData.get('week'),
-      name: formData.get('name'),
-      starBaker: formData.get('starBaker'),
-      technical: formData.get('technical'),
-      eliminated: formData.get('eliminated')
+      weekId: formData.get('week'),
+      participantId: formData.get('name'),
+      starBakerId: formData.get('starBaker'),
+      technicalId: formData.get('technical'),
+      eliminatedId: formData.get('eliminated')
     };
 
+    console.log('Votes:', votes);
+
     // Find contestant names for logging
-    const voterName = this.names.find(n => n.id === votes.name)?.name;
-    const starBakerName = this.contestants.find(c => c.id === votes.starBaker)?.name;
-    const technicalName = this.contestants.find(c => c.id === votes.technical)?.name;
-    const eliminatedName = this.contestants.find(c => c.id === votes.eliminated)?.name;
+    const voterName = this.names.find(n => n.id === votes.participantId)?.name;
+    const starBakerName = this.contestants.find(c => c.id === votes.starBakerId)?.name;
+    const technicalName = this.contestants.find(c => c.id === votes.technicalId)?.name;
+    const eliminatedName = this.contestants.find(c => c.id === votes.eliminatedId)?.name;
+    const weekName = this.weeks.find(w => w.id === votes.weekId)?.week;
 
     console.log('Votes submitted:', {
       ...votes,
       voterName,
       starBakerName,
       technicalName,
-      eliminatedName
+      eliminatedName,
+      weekName
     });
     
-    // Placeholder API call
     this._submitVotes(votes);
   }
 
   async _submitVotes(votes) {
+    this.submitting = true;
+    this.submitError = '';
+    
     try {
-      // Placeholder API endpoint
-      const response = await fetch('/api/votes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(votes)
-      });
-
-      if (response.ok) {
-        console.log('Votes submitted successfully');
-        // You could add success feedback here
-      } else {
-        console.error('Failed to submit votes');
-        // You could add error feedback here
-      }
+      const nomination = await createNomination(votes);
+      console.log('Nomination created successfully:', nomination);
+      this.submitSuccess = true;
     } catch (error) {
       console.error('Error submitting votes:', error);
-      // You could add error feedback here
+      this.submitError = error.message || 'Failed to submit your votes. Please try again.';
+    } finally {
+      this.submitting = false;
+    }
+  }
+
+  _resetForm() {
+    this.submitSuccess = false;
+    this.submitError = '';
+    
+    // Reset form fields
+    const form = this.shadowRoot.querySelector('form');
+    if (form) {
+      form.reset();
     }
   }
 }
