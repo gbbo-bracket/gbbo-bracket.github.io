@@ -9,7 +9,6 @@ export class GBBORulesCard extends LitElement {
     }
     
     .rules-card {
-      margin-top: 2rem;
       background-color: var(--canvas);
       padding: 3rem;
       border-radius: 1.5rem;
