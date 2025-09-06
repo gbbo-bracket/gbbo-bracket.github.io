@@ -66,20 +66,22 @@ class AirtableService {
   /**
    * Get field data with filtering options
    * @param {Object} options - Filter and sort options
+   * @param {string} tableId - Optional table ID, defaults to the main table
    * @returns {Promise<Array>} Filtered array of field data
    */
-  async fetchFilteredRecords(options = {}) {
+  async fetchFilteredRecords(options = {}, tableId = null) {
     try {
+      const targetTableId = tableId || this.tableId;
       const selectOptions = {
         view: options.view || 'Grid view',
         ...options
       };
       
-      const airtableRecords = await this.base(this.tableId).select(selectOptions).all();
+      const airtableRecords = await this.base(targetTableId).select(selectOptions).all();
       
       const records = airtableRecords.map(record => ({
         id: record.id,
-        allFields: record.fields
+        data: record.fields
       }));
 
       return records;

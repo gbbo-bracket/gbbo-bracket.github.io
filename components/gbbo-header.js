@@ -210,8 +210,7 @@ export class GBBOHeader extends LitElement {
             <li><a href="/" @click="${this.toggleMobileMenu}">Home</a></li>
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
-            <li><a href="/standings" @click="${this.toggleMobileMenu}">Standings</a></li>
-            <li class="primary-button-container"><primary-button href="/vote" @click="${this.toggleMobileMenu}">Join now</primary-button></li>
+            <li class="primary-button-container"><primary-button href="/vote" @click="${this.toggleMobileMenu}">Vote now</primary-button></li>
           </ul>
         </div>
       </nav>
