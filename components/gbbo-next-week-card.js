@@ -316,11 +316,11 @@ export class GBBONextWeekCard extends LitElement {
     }
 
     const { data } = this.nextWeek;
-    const title = data.Title || 'Upcoming Week';
-    const description = data.Description || data.Summary || '';
-    const trailerUrl = data['Trailer URL'] || data.Trailer || data['YouTube URL'] || '';
+    const title = data.Title || '';
+    const description = data.Description || '';
+    const trailerUrl = data.Trailer || '';
     
-    const youtubeId = this.extractYouTubeId(trailerUrl);
+    const youtubeId = trailerUrl ? this.extractYouTubeId(trailerUrl) : 't7HMezGCWVw';
 
     // Start countdown when we have the next week data
     if (!this.countdownInterval) {
@@ -333,19 +333,17 @@ export class GBBONextWeekCard extends LitElement {
         <div class="coming-soon-badge">Coming Up in ${this.countdownText}</div>
       ` : ''}
         
-        <h2>${title}</h2>
+        <h2>${title ? title : 'Next Week: Coming Soon'}</h2>
         
-        ${youtubeId ? html`
-          <div class="video-container">
-            <iframe 
-              src="https://www.youtube.com/embed/${youtubeId}"
-              title="GBBO Week Trailer"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen>
-            </iframe>
-          </div>
-        ` : ''}
+        <div class="video-container">
+          <iframe 
+            src="https://www.youtube.com/embed/${youtubeId}"
+            title="GBBO Week Trailer"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
         
         ${description ? html`
           <p class="week-description">${description}</p>
