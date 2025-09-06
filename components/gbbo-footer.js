@@ -1,6 +1,15 @@
 import { LitElement, html, css } from 'lit';
+import './gbbo-mobile-banner';
 
 export class GBBOFooter extends LitElement {
+  static properties = {
+    noBottomBanner: { type: Boolean }
+  };
+
+  constructor() {
+    super();
+    this.noBottomBanner = false;
+  }
   static styles = css`
     :host {
       display: block;
@@ -29,7 +38,18 @@ export class GBBOFooter extends LitElement {
     p {
       font-size: 1.125rem;
     }
-    
+
+    /* Add bottom padding when mobile banner is shown */
+    :host(:not([noBottomBanner])) {
+      padding-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      :host(:not([noBottomBanner])) {
+        padding-bottom: 5rem; /* Space for mobile banner */
+      }
+    }
+
     @media (max-width: 640px) {
       .bunting {
         height: 40px;
@@ -46,6 +66,7 @@ export class GBBOFooter extends LitElement {
       <footer>
         <div class="bunting"></div>
       </footer>
+      ${!this.noBottomBanner ? html`<gbbo-mobile-banner></gbbo-mobile-banner>` : ''}
     `;
   }
 }
