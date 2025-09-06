@@ -10,8 +10,8 @@ export class GBBOContestantsCard extends LitElement {
 
   static styles = css`
     .contestants-card {
-      width: 226px;
-      height: 287px;
+      width: 205px;
+      height: 266px;
       display: flex;
       flex-direction: column;
       align-items: center;
