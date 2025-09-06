@@ -113,7 +113,8 @@ export class GBBONextWeekCard extends LitElement {
       }
     }
     
-    .video-container {
+    .video-container,
+    .placeholder-image {
       position: relative;
       width: 100%;
       max-width: 600px;
@@ -122,6 +123,7 @@ export class GBBONextWeekCard extends LitElement {
       border-radius: 1rem;
       overflow: hidden;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      object-fit: cover;
     }
     
     .video-container iframe {
@@ -319,7 +321,8 @@ export class GBBONextWeekCard extends LitElement {
     const description = data.Description || '';
     const trailerUrl = data.Trailer || '';
     
-    const youtubeId = trailerUrl ? this.extractYouTubeId(trailerUrl) : 't7HMezGCWVw';
+    // Default: t7HMezGCWVw
+    const youtubeId = trailerUrl ? this.extractYouTubeId(trailerUrl) : '';
 
     // Start countdown when we have the next week data
     if (!this.countdownInterval) {
@@ -329,24 +332,28 @@ export class GBBONextWeekCard extends LitElement {
     return html`
       <div class="next-week-card">
       ${this.countdownText ? html`
-        <div class="coming-soon-badge">Coming Up in ${this.countdownText}</div>
+        <div class="coming-soon-badge">Next episode in ${this.countdownText}</div>
       ` : ''}
         
         <h2>${title ? title : 'Next Week: Coming Soon'}</h2>
         
-        <div class="video-container">
-          <iframe 
-            src="https://www.youtube.com/embed/${youtubeId}"
-            title="GBBO Week Trailer"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-        
         ${description ? html`
           <p class="week-description">${description}</p>
         ` : ''}
+
+        ${youtubeId ? html`
+          <div class="video-container">
+            <iframe 
+              src="https://www.youtube.com/embed/${youtubeId}"
+              title="GBBO Week Trailer"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+        ` : html`
+          <img class="placeholder-image" src="https://pbs.twimg.com/media/Gz1o-8aaoAA_xXZ?format=jpg&name=large" alt="GBBO Week Trailer">
+        `}
       </div>
     `;
   }
