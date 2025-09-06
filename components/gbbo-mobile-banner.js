@@ -17,7 +17,7 @@ export class GBBOMobileBanner extends LitElement {
       backdrop-filter: blur(8px);
       border-top: 1px solid rgba(247, 198, 217, 0.3);
       box-shadow: 0 -4px 6px -1px rgba(33, 65, 119, 0.1);
-      height: 3.5rem;
+      height: 4rem;
       display: flex;
       align-items: center;
       justify-content: center;

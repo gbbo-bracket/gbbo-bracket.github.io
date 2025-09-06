@@ -147,6 +147,7 @@ export class GBBOHeader extends LitElement {
     /* Mobile styles */
     @media (max-width: 768px) {
       nav {
+        height: 3.5rem;
         padding: 1rem;
       }
       

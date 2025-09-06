@@ -21,7 +21,6 @@ export class GBBOWelcomeCard extends LitElement {
     }
     
     .welcome-card {
-      margin-top: 2rem;
       background-color: rgba(255, 253, 245, 0.9);
       padding: 3rem;
       border-radius: 1.5rem;
