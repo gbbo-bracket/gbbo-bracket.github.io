@@ -16,6 +16,7 @@ import '../components/gbbo-standings.js';
 import '../components/gbbo-footer.js';
 import '../components/gbbo-vote.js';
 import '../components/gbbo-join.js';
+import '../components/gbbo-banner.js';
 
 // Main application class
 class GBBOApp {
