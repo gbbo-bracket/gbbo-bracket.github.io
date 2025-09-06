@@ -8,27 +8,6 @@ export class GBBORulesCard extends LitElement {
       width: 100%;
     }
     
-    .rules-card {
-      background-color: var(--canvas);
-      padding: 3rem;
-      border-radius: 1.5rem;
-      text-align: center;
-      box-shadow: 0 25px 50px -12px rgba(33, 65, 119, 0.1);
-      border: 1px solid rgba(247, 198, 217, 0.3);
-    }
-    
-    @media (max-width: 768px) {
-      .rules-card {
-        padding: 2rem;
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .rules-card {
-        padding: 1.5rem;
-      }
-    }
-    
     h2 {
       font-family: 'Playfair Display', serif;
       font-size: 3rem;
@@ -130,12 +109,7 @@ export class GBBORulesCard extends LitElement {
 
   render() {
     return html`
-      <div class="rules-card">
-        <h2>🏆 GBBO Bracket Rules 🏆</h2>
-        <p class="subtitle">
-          Brackets open following the premiere of the first episode of the new series.
-        </p>
-        
+      <gbbo-card class="rules-card" title="🏆 GBBO Bracket Rules 🏆" body="Brackets open following the premiere of the first episode of the new series.">
         <!-- Voting Deadline -->
         <div class="rules-section">
           <h3>⏰ Voting Deadline</h3>
@@ -180,7 +154,7 @@ export class GBBORulesCard extends LitElement {
             </div>
           </div>
         </div>
-      </div>
+      </gbbo-card>
     `;
   }
 }
