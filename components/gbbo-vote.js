@@ -5,7 +5,7 @@ import './gbbo-contestants-data.js';
 import './gbbo-loading-container.js';
 import { fetchContestants } from '../js/utils/bakers.js';
 import { fetchNames } from '../js/utils/participants.js';
-import { fetchWeeks } from '../js/utils/baker-results.js';
+import { fetchActiveWeeks } from '../js/utils/baker-results.js';
 import { createNomination } from '../js/utils/nominations.js';
 
 export class GBBOVote extends LitElement {
@@ -147,7 +147,7 @@ export class GBBOVote extends LitElement {
     super.connectedCallback();
     this.fetchContestants();
     this.fetchNames();
-    this.fetchWeeks();
+    this.fetchActiveWeeks();
   }
 
   async fetchContestants() {
@@ -172,9 +172,9 @@ export class GBBOVote extends LitElement {
     }
   }
 
-  async fetchWeeks() {
+  async fetchActiveWeeks() {
     try {
-      this.weeks = await fetchWeeks();
+      this.activeWeeks = await fetchActiveWeeks();
     } catch (error) {
       console.error('Failed to fetch weeks:', error);
     }
@@ -183,7 +183,7 @@ export class GBBOVote extends LitElement {
   async handleRetry() {
     await this.fetchContestants();
     await this.fetchNames();
-    await this.fetchWeeks();
+    await this.fetchActiveWeeks();
   }
 
   // Method to find contestant by ID
@@ -245,11 +245,13 @@ export class GBBOVote extends LitElement {
           <form class="vote-form" @submit=${this._handleSubmit}>
             <div class="form-group-row">
               <label class="form-label" for="week">What week?</label>
-              <select class="form-select" id="week" name="week" required ?disabled="${this.weeks.length === 0}">
+              <select class="form-select" id="week" name="week" required ?disabled="${this.activeWeeks?.length === 0}">
                 <option value="" disabled selected>Select Week...</option>
-                ${this.weeks.map(week => html`
-                  <option value="${week.id}">${week.week}</option>
-                `)}
+                ${this.activeWeeks?.length === 1 ? html`
+                  <option value="${this.activeWeeks[0].id}" selected>${this.activeWeeks[0].week}</option>
+                ` : this.activeWeeks?.map(week => html`
+                    <option value="${week.id}">${week.week}</option>
+                  `)}
               </select>
             </div>
 
