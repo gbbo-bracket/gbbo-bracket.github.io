@@ -11,7 +11,7 @@ export class GBBOCard extends LitElement {
     super();
     this.title = '';
     this.body = '';
-    this.withBorder = false;
+    this.withBorder = true;
   }
 
   static styles = css`

@@ -19,19 +19,25 @@ export class GBBOVote extends LitElement {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-      padding: 1rem;
     }
 
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
+      width: 100%;
     }
 
     .form-group-row {
       display: flex;
       flex-direction: row;
       gap: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .form-group-row {
+        flex-direction: column;
+      }
     }
 
     .form-label {
@@ -116,7 +122,10 @@ export class GBBOVote extends LitElement {
     error: { type: String },
     submitting: { type: Boolean },
     submitSuccess: { type: Boolean },
-    submitError: { type: String }
+    submitError: { type: String },
+    selectedStarBaker: { type: Object },
+    selectedTechnical: { type: Object },
+    selectedEliminated: { type: Object }
   };
 
   constructor() {
@@ -129,6 +138,9 @@ export class GBBOVote extends LitElement {
     this.submitting = false;
     this.submitSuccess = false;
     this.submitError = '';
+    this.selectedStarBaker = null;
+    this.selectedTechnical = null;
+    this.selectedEliminated = null;
   }
 
   connectedCallback() {
@@ -172,6 +184,27 @@ export class GBBOVote extends LitElement {
     await this.fetchContestants();
     await this.fetchNames();
     await this.fetchWeeks();
+  }
+
+  // Method to find contestant by ID
+  getContestantById(id) {
+    return this.contestants.find(contestant => contestant.id === id);
+  }
+
+  // Handle star baker selection change
+  handleStarBakerChange(e) {
+    const selectedId = e.target.value;
+    this.selectedStarBaker = selectedId ? this.getContestantById(selectedId) : null;
+  }
+
+  handleTechnicalChange(e) {
+    const selectedId = e.target.value;
+    this.selectedTechnical = selectedId ? this.getContestantById(selectedId) : null;
+  }
+
+  handleEliminatedChange(e) {
+    const selectedId = e.target.value;
+    this.selectedEliminated = selectedId ? this.getContestantById(selectedId) : null;
   }
 
   render() {
@@ -233,32 +266,62 @@ export class GBBOVote extends LitElement {
             <div class="form-group-row">
               <div class="form-group">
                 <label class="form-label" for="star-baker">Star Baker</label>
-                <select class="form-select" id="star-baker" name="starBaker" required ?disabled="${this.contestants.length === 0}">
+                <select 
+                  class="form-select" 
+                  id="star-baker" 
+                  name="starBaker" 
+                  required 
+                  ?disabled="${this.contestants.length === 0}"
+                  @change="${this.handleStarBakerChange}"
+                >
                   <option value="" disabled selected>Select Baker...</option>
                   ${this.contestants.map(contestant => html`
                     <option value="${contestant.id}">${contestant.name}</option>
                   `)}
                 </select>
+                <gbbo-contestants-card
+                  .contestant="${this.selectedStarBaker}">
+                </gbbo-contestants-card>
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="technical">Technical Winner</label>
-                <select class="form-select" id="technical" name="technical" required ?disabled="${this.contestants.length === 0}">
+                <select
+                  class="form-select"
+                  id="technical"
+                  name="technical"
+                  required
+                  ?disabled="${this.contestants.length === 0}"
+                  @change="${this.handleTechnicalChange}"
+                >
                   <option value="" disabled selected>Select Baker...</option>
                   ${this.contestants.map(contestant => html`
                     <option value="${contestant.id}">${contestant.name}</option>
                   `)}
                 </select>
+                <gbbo-contestants-card
+                  .contestant="${this.selectedTechnical}">
+                </gbbo-contestants-card>
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="eliminated">Eliminated</label>
-                <select class="form-select" id="eliminated" name="eliminated" required ?disabled="${this.contestants.length === 0}">
+                <select
+                  class="form-select"
+                  id="eliminated"
+                  name="eliminated"
+                  required
+                  ?disabled="${this.contestants.length === 0}"
+                  @change="${this.handleEliminatedChange}"
+                >
                   <option value="" disabled selected>Select Baker...</option>
                   ${this.contestants.map(contestant => html`
                     <option value="${contestant.id}">${contestant.name}</option>
                   `)}
                 </select>
+                <gbbo-contestants-card
+                  .contestant="${this.selectedEliminated}">
+                </gbbo-contestants-card>
               </div>
             </div>
 
@@ -267,7 +330,7 @@ export class GBBOVote extends LitElement {
               @click="${this._handleButtonClick}"
               ?disabled="${this.contestants.length === 0 || this.weeks.length === 0 || this.submitting}"
             >
-              ${this.submitting ? 'Submitting...' : 'Submit Votes'}
+              ${this.submitting ? 'Submitting...' : 'Submit'}
             </primary-button>
           </form>
         ` : ''}

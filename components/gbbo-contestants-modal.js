@@ -115,13 +115,13 @@ export class GBBOContestantsModal extends LitElement {
       font-size: 1rem;
       line-height: 1.6;
       margin: 0;
+      text-align: left;
     }
 
     .modal-bio-label {
       font-weight: 600;
       color: var(--heading-text);
       margin-bottom: 0.5rem;
-      display: block;
     }
 
     @media (max-width: 768px) {
@@ -201,10 +201,10 @@ export class GBBOContestantsModal extends LitElement {
             <div class="modal-title">
               <img 
                 class="modal-contestant-image" 
-                src="${this.contestant.data?.Image?.[0]?.url || ''}" 
-                alt="${this.contestant.data?.Name || 'Contestant'}"
+                src="${this.contestant.Image?.[0]?.url || ''}" 
+                alt="${this.contestant.name || 'Contestant'}"
               />
-              <h2 class="modal-contestant-name">${this.contestant.data?.Name || 'Unknown Contestant'}</h2>
+              <h2 class="modal-contestant-name">${this.contestant.name || 'Unknown Contestant'}</h2>
             </div>
             <button 
               class="modal-close-button" 
@@ -218,25 +218,24 @@ export class GBBOContestantsModal extends LitElement {
             <div class="modal-bio-label-container">
               <span class="modal-bio-label">Age:</span>
               <p class="modal-bio">
-                ${this.contestant.data?.Age || 'Unknown Age'}
+                ${this.contestant.Age || 'Unknown Age'}
               </p>
             </div>
             <div class="modal-bio-label-container">
             <span class="modal-bio-label">Location:</span>
             <p class="modal-bio">
-              ${this.contestant.data?.Location || 'Unknown Location'}
+              ${this.contestant.Location || 'Unknown Location'}
             </p>
             </div>
             <div class="modal-bio-label-container">
             <span class="modal-bio-label">Occupation:</span>
             <p class="modal-bio">
-              ${this.contestant.data?.Occupation || 'Unknown Occupation'}
+              ${this.contestant.Occupation || 'Unknown Occupation'}
             </p>
             </div>
 
-            <span class="modal-bio-label">Bio:</span>
             <p class="modal-bio">
-              ${this.contestant.data?.Bio || 'No bio available for this contestant.'}
+              <span class="modal-bio-label">Bio:</span> ${this.contestant.Bio || 'No bio available for this contestant.'}
             </p>
           </div>
         </div>
