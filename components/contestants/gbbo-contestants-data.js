@@ -1,8 +1,8 @@
 import { LitElement, html, css } from 'lit';
-import './gbbo-loading-container.js';
-import { fetchContestants } from '../js/utils/bakers.js';
+import { fetchContestants } from '../../js/utils/bakers.js';
+import '../foundations/card.js';
+import '../shared/gbbo-loading-container.js';
 import './gbbo-contestants-card.js';
-import './foundations/card.js';
 
 export class GBBOContestantsData extends LitElement {
   static properties = {

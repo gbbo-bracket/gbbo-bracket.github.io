@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
-import './gbbo-loading-container.js';
-import { airtableService } from '../js/airtable-service.js';
+import '../shared/gbbo-loading-container.js';
+import { airtableService } from '../../js/airtable-service.js';
 
 export class GBBOStandings extends LitElement {
   static properties = {

@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import './foundations/primary-button';
+import '../foundations/primary-button';
 
 export class GBBOHeader extends LitElement {
   static properties = {

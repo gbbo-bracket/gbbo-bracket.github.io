@@ -7,17 +7,17 @@ import '../src/styles.css';
 import '../components/foundations/card.js';
 import '../components/foundations/primary-button.js';
 // GBBO Components
-import '../components/gbbo-header.js';
-import '../components/gbbo-welcome-card.js';
-import '../components/gbbo-next-week-card.js';
-import '../components/gbbo-contestants-data.js';
-import '../components/gbbo-rules-card.js';
-import '../components/gbbo-standings.js';
-import '../components/gbbo-footer.js';
-import '../components/gbbo-vote.js';
-import '../components/gbbo-finals.js';
-import '../components/gbbo-join.js';
-import '../components/gbbo-banner.js';
+import '../components/shared/gbbo-header.js';
+import '../components/home/gbbo-welcome-card.js';
+import '../components/home/gbbo-next-week-card.js';
+import '../components/contestants/gbbo-contestants-data.js';
+import '../components/rules/gbbo-rules-card.js';
+import '../components/home/gbbo-standings.js';
+import '../components/shared/gbbo-footer.js';
+import '../components/vote/gbbo-vote.js';
+import '../components/finals/gbbo-finals.js';
+import '../components/join/gbbo-join.js';
+import '../components/shared/gbbo-banner.js';
 
 // Main application class
 class GBBOApp {

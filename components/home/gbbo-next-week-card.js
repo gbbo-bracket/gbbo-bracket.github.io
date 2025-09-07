@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
-import { airtableService } from '../js/airtable-service.js';
-import './foundations/primary-button';
-import './gbbo-loading-container.js';
+import { airtableService } from '../../js/airtable-service.js';
+import '../foundations/primary-button.js';
+import '../shared/gbbo-loading-container.js';
 
 export class GBBONextWeekCard extends LitElement {
   static properties = {
