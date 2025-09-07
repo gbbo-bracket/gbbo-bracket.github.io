@@ -127,6 +127,7 @@ export class GBBOContestantsData extends LitElement {
   render() {
     return html`
       <gbbo-card title="Contestants">
+      <p>Star baker wins are denoted with a ⭐, technical wins are denoted with a 🧁, and eliminated bakers are denoted with a ❌.</p>
         ${this.loading ? html`
           <gbbo-loading-container></gbbo-loading-container>
         `  : ''}
@@ -164,6 +165,7 @@ export class GBBOContestantsData extends LitElement {
             ${this.records.map(record => html`
               <gbbo-contestants-card
                 .contestant="${record}"
+                .withResults="${true}"
               ></gbbo-contestants-card>
             `)}
           </div>
