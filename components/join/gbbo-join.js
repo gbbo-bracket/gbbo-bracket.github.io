@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { addParticipant, checkParticipantExists } from '../js/utils/join.js';
+import { addParticipant, checkParticipantExists } from '../../js/utils/join.js';
 
 export class GBBOJoin extends LitElement {
   static properties = {

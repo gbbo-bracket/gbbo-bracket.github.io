@@ -1,20 +1,21 @@
 import { LitElement, html, css } from 'lit';
-import './foundations/card.js';
-import './foundations/primary-button.js';
-import './gbbo-contestants-data.js';
-import './gbbo-loading-container.js';
-import { fetchContestants } from '../js/utils/bakers.js';
-import { fetchNames } from '../js/utils/participants.js';
-import { createFinalistNomination } from '../js/utils/nominations.js';
+import '../foundations/card.js';
+import '../foundations/primary-button.js';
+import '../contestants/gbbo-contestants-data.js';
+import '../shared/gbbo-loading-container.js';
+import { fetchContestants } from '../../js/utils/bakers.js';
+import { fetchNames } from '../../js/utils/participants.js';
+import { fetchActiveWeeks } from '../../js/utils/baker-results.js';
+import { createNomination } from '../../js/utils/nominations.js';
 
-export class GBBOFinals extends LitElement {
+export class GBBOVote extends LitElement {
   static styles = css`
     :host {
       display: block;
       width: 100%;
     }
 
-    .finals-form {
+    .vote-form {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
@@ -116,34 +117,37 @@ export class GBBOFinals extends LitElement {
   static properties = {
     contestants: { type: Array },
     names: { type: Array },
+    activeWeeks: { type: Array },
     loading: { type: Boolean },
     error: { type: String },
     submitting: { type: Boolean },
     submitSuccess: { type: Boolean },
     submitError: { type: String },
-    selectedWinner: { type: Object },
-    selectedFinalist1: { type: Object },
-    selectedFinalist2: { type: Object },
+    selectedStarBaker: { type: Object },
+    selectedTechnical: { type: Object },
+    selectedEliminated: { type: Object }
   };
 
   constructor() {
     super();
     this.contestants = [];
     this.names = [];
+    this.activeWeeks = [];
     this.loading = false;
     this.error = '';
     this.submitting = false;
     this.submitSuccess = false;
     this.submitError = '';
-    this.selectedWinner = null;
-    this.selectedFinalist1 = null;
-    this.selectedFinalist2 = null;
+    this.selectedStarBaker = null;
+    this.selectedTechnical = null;
+    this.selectedEliminated = null;
   }
 
   connectedCallback() {
     super.connectedCallback();
     this.fetchContestants();
     this.fetchNames();
+    this.fetchActiveWeeks();
   }
 
   async fetchContestants() {
@@ -168,9 +172,18 @@ export class GBBOFinals extends LitElement {
     }
   }
 
+  async fetchActiveWeeks() {
+    try {
+      this.activeWeeks = await fetchActiveWeeks();
+    } catch (error) {
+      console.error('Failed to fetch weeks:', error);
+    }
+  }
+
   async handleRetry() {
     await this.fetchContestants();
     await this.fetchNames();
+    await this.fetchActiveWeeks();
   }
 
   // Method to find contestant by ID
@@ -178,25 +191,25 @@ export class GBBOFinals extends LitElement {
     return this.contestants.find(contestant => contestant.id === id);
   }
 
-  // Handle winner selection change
-  handleWinnerChange(e) {
+  // Handle star baker selection change
+  handleStarBakerChange(e) {
     const selectedId = e.target.value;
-    this.selectedWinner = selectedId ? this.getContestantById(selectedId) : null;
+    this.selectedStarBaker = selectedId ? this.getContestantById(selectedId) : null;
   }
 
-  handleFinalist1Change(e) {
+  handleTechnicalChange(e) {
     const selectedId = e.target.value;
-    this.selectedFinalist1 = selectedId ? this.getContestantById(selectedId) : null;
+    this.selectedTechnical = selectedId ? this.getContestantById(selectedId) : null;
   }
 
-  handleFinalist2Change(e) {
+  handleEliminatedChange(e) {
     const selectedId = e.target.value;
-    this.selectedFinalist2 = selectedId ? this.getContestantById(selectedId) : null;
+    this.selectedEliminated = selectedId ? this.getContestantById(selectedId) : null;
   }
 
   render() {
     return html`
-      <gbbo-card title="On your marks... get set... finals!">
+      <gbbo-card title="On your marks... get set... vote!">
         ${this.loading ? html`
           <gbbo-loading-container></gbbo-loading-container>
         ` : ''}
@@ -216,20 +229,32 @@ export class GBBOFinals extends LitElement {
 
         ${this.submitSuccess ? html`
           <div class="success">
-            <div class="success-title">Finals Submitted Successfully!</div>
-            <div>Your finals have been recorded. Thank you for voting!</div>
+            <div class="success-title">Votes Submitted Successfully!</div>
+            <div>Your nominations have been recorded. Thank you for voting!</div>
           </div>
         ` : ''}
 
         ${this.submitError ? html`
           <div class="submit-error">
-            <div class="submit-error-title">Error Submitting Finals</div>
+            <div class="submit-error-title">Error Submitting Votes</div>
             <div>${this.submitError}</div>
           </div>
         ` : ''}
 
         ${!this.loading && !this.error && !this.submitSuccess ? html`
-          <form class="finals-form" @submit=${this._handleSubmit}>
+          <form class="vote-form" @submit=${this._handleSubmit}>
+            <div class="form-group-row">
+              <label class="form-label" for="week">What week?</label>
+              <select class="form-select" id="week" name="week" required ?disabled="${this.activeWeeks?.length === 0}">
+                <option value="" disabled selected>Select Week...</option>
+                ${this.activeWeeks?.length === 1 ? html`
+                  <option value="${this.activeWeeks[0].id}" selected>${this.activeWeeks[0].week}</option>
+                ` : this.activeWeeks?.map(week => html`
+                    <option value="${week.id}">${week.week}</option>
+                  `)}
+              </select>
+            </div>
+
             <div class="form-group-row">
               <label class="form-label" for="name">Your Name</label>
               <select class="form-select" id="name" name="name" required ?disabled="${this.names.length === 0}">
@@ -242,14 +267,14 @@ export class GBBOFinals extends LitElement {
 
             <div class="form-group-row">
               <div class="form-group">
-                <label class="form-label" for="winner">All-around winner</label>
+                <label class="form-label" for="star-baker">Star Baker</label>
                 <select 
                   class="form-select" 
-                  id="winner" 
-                  name="winner" 
+                  id="star-baker" 
+                  name="starBaker" 
                   required 
                   ?disabled="${this.contestants.length === 0}"
-                  @change="${this.handleWinnerChange}"
+                  @change="${this.handleStarBakerChange}"
                 >
                   <option value="" disabled selected>Select Baker...</option>
                   ${this.contestants.map(contestant => html`
@@ -257,19 +282,19 @@ export class GBBOFinals extends LitElement {
                   `)}
                 </select>
                 <gbbo-contestants-card
-                  .contestant="${this.selectedWinner}">
+                  .contestant="${this.selectedStarBaker}">
                 </gbbo-contestants-card>
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="finalist-1">Finalist</label>
+                <label class="form-label" for="technical">Technical Winner</label>
                 <select
                   class="form-select"
-                  id="finalist-1"
-                  name="finalist-1"
+                  id="technical"
+                  name="technical"
                   required
                   ?disabled="${this.contestants.length === 0}"
-                  @change="${this.handleFinalist1Change}"
+                  @change="${this.handleTechnicalChange}"
                 >
                   <option value="" disabled selected>Select Baker...</option>
                   ${this.contestants.map(contestant => html`
@@ -277,19 +302,19 @@ export class GBBOFinals extends LitElement {
                   `)}
                 </select>
                 <gbbo-contestants-card
-                  .contestant="${this.selectedFinalist1}">
+                  .contestant="${this.selectedTechnical}">
                 </gbbo-contestants-card>
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="finalist-2">Finalist</label>
+                <label class="form-label" for="eliminated">Eliminated</label>
                 <select
                   class="form-select"
-                  id="finalist-2"
-                  name="finalist-2"
+                  id="eliminated"
+                  name="eliminated"
                   required
                   ?disabled="${this.contestants.length === 0}"
-                  @change="${this.handleFinalist2Change}"
+                  @change="${this.handleEliminatedChange}"
                 >
                   <option value="" disabled selected>Select Baker...</option>
                   ${this.contestants.map(contestant => html`
@@ -297,7 +322,7 @@ export class GBBOFinals extends LitElement {
                   `)}
                 </select>
                 <gbbo-contestants-card
-                  .contestant="${this.selectedFinalist2}">
+                  .contestant="${this.selectedEliminated}">
                 </gbbo-contestants-card>
               </div>
             </div>
@@ -305,7 +330,7 @@ export class GBBOFinals extends LitElement {
             <primary-button 
               type="submit" 
               @click="${this._handleButtonClick}"
-              ?disabled="${this.contestants.length === 0 || this.submitting}"
+              ?disabled="${this.contestants.length === 0 || this.activeWeeks.length === 0 || this.submitting}"
             >
               ${this.submitting ? 'Submitting...' : 'Submit'}
             </primary-button>
@@ -338,26 +363,29 @@ export class GBBOFinals extends LitElement {
     
     const formData = new FormData(e.target);
     const votes = {
+      weekId: formData.get('week'),
       participantId: formData.get('name'),
-      winnerId: formData.get('winner'),
-      finalist1Id: formData.get('finalist-1'),
-      finalist2Id: formData.get('finalist-2')
+      starBakerId: formData.get('starBaker'),
+      technicalId: formData.get('technical'),
+      eliminatedId: formData.get('eliminated')
     };
 
     console.log('Votes:', votes);
 
     // Find contestant names for logging
     const voterName = this.names.find(n => n.id === votes.participantId)?.name;
-    const winnerName = this.contestants.find(c => c.id === votes.winnerId)?.name;
-    const finalist1Name = this.contestants.find(c => c.id === votes.finalist1Id)?.name;
-    const finalist2Name = this.contestants.find(c => c.id === votes.finalist2Id)?.name;
+    const starBakerName = this.contestants.find(c => c.id === votes.starBakerId)?.name;
+    const technicalName = this.contestants.find(c => c.id === votes.technicalId)?.name;
+    const eliminatedName = this.contestants.find(c => c.id === votes.eliminatedId)?.name;
+    const weekName = this.activeWeeks.find(w => w.id === votes.weekId)?.week;
 
     console.log('Votes submitted:', {
       ...votes,
       voterName,
-      winnerName,
-      finalist1Name,
-      finalist2Name,
+      starBakerName,
+      technicalName,
+      eliminatedName,
+      weekName
     });
     
     this._submitVotes(votes);
@@ -368,7 +396,7 @@ export class GBBOFinals extends LitElement {
     this.submitError = '';
     
     try {
-      const nomination = await createFinalistNomination(votes);
+      const nomination = await createNomination(votes);
       console.log('Nomination created successfully:', nomination);
       this.submitSuccess = true;
     } catch (error) {
@@ -391,4 +419,4 @@ export class GBBOFinals extends LitElement {
   }
 }
 
-customElements.define('gbbo-finals', GBBOFinals); 
+customElements.define('gbbo-vote', GBBOVote); 

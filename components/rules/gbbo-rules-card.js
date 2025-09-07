@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import './gbbo-loading-container.js';
+import '../shared/gbbo-loading-container.js';
 
 export class GBBORulesCard extends LitElement {
   static styles = css`
@@ -118,6 +118,13 @@ export class GBBORulesCard extends LitElement {
           </p>
           <p>
             That is <strong>Tuesday at 8PM GMT</strong> for the UK, or <strong>Friday at 12AM local time</strong> for the US.
+          </p>
+        </div>
+
+        <div class="rules-section">
+          <h3>📋 Scoring Release</h3>
+          <p>
+            To avoid spoilers, points will be updated after the US premiere, on <strong>Friday evenings</strong>.
           </p>
         </div>
         
