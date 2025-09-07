@@ -15,6 +15,7 @@ import '../components/gbbo-rules-card.js';
 import '../components/gbbo-standings.js';
 import '../components/gbbo-footer.js';
 import '../components/gbbo-vote.js';
+import '../components/gbbo-finals.js';
 import '../components/gbbo-join.js';
 import '../components/gbbo-banner.js';
 

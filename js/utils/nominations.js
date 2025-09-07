@@ -31,6 +31,18 @@ export async function createNomination({
 }) {
   try {
     console.log('Creating nomination record...');
+    console.log('Input data:', {
+      weekId,
+      participantId,
+      starBakerId,
+      technicalId,
+      eliminatedId
+    });
+    
+    // Validate required fields
+    if (!weekId || !participantId || !starBakerId || !technicalId || !eliminatedId) {
+      throw new Error('Missing required fields for nomination');
+    }
     
     // Prepare the fields object with the correct field IDs
     const fields = {
@@ -42,6 +54,52 @@ export async function createNomination({
     };
 
     console.log('Fields:', fields);
+    console.log('Field IDs:', FIELD_IDS);
+    console.log('Table ID:', NOMINATIONS_TABLE_ID);
+    
+    const createdRecord = await airtableService.createRecord(NOMINATIONS_TABLE_ID, fields);
+    
+    console.log('Nomination created successfully:', createdRecord);
+    return createdRecord;
+    
+  } catch (error) {
+    console.error('Failed to create nomination:', error);
+    throw error;
+  }
+}
+
+export async function createFinalistNomination({
+  participantId,
+  winnerId,
+  finalist1Id,
+  finalist2Id,
+}) {
+  try {
+    console.log('Creating nomination record...');
+    console.log('Input data:', {
+      participantId,
+      winnerId, 
+      finalist1Id,
+      finalist2Id,
+    });
+    
+    // Validate required fields
+    if (!participantId || !winnerId || !finalist1Id || !finalist2Id) {
+      throw new Error('Missing required fields for nomination');
+    }
+    
+    // Prepare the fields object with the correct field IDs
+    const fields = {
+      [FIELD_IDS.week]: ['recqnEKzRQ1v1lTke'],  // Link to week record
+      [FIELD_IDS.participant]: [participantId], // Link to participant record
+      'fldsc0oULKrEs8wDZ': [winnerId],        // Link to winner record
+      'fldOugexvoVFbEAHx': [finalist1Id],     // Link to finalist1 record
+      'fld6vuk7h63FT9PV0': [finalist2Id]      // Link to finalist2 record
+    };
+
+    console.log('Fields:', fields);
+    console.log('Field IDs:', FIELD_IDS);
+    console.log('Table ID:', NOMINATIONS_TABLE_ID);
     
     const createdRecord = await airtableService.createRecord(NOMINATIONS_TABLE_ID, fields);
     

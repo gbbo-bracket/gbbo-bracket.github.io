@@ -100,6 +100,10 @@ class AirtableService {
    */
   async createRecord(tableId, fields) {
     try {
+      console.log(`Creating record in table ${tableId} with fields:`, fields);
+      console.log(`Using API key: ${this.apiKey.substring(0, 10)}...`);
+      console.log(`Using base ID: ${this.baseId}`);
+      
       const record = await this.base(tableId).create(fields);
       
       console.log(`Created new record in table ${tableId}:`, record.id);
@@ -110,6 +114,12 @@ class AirtableService {
       
     } catch (error) {
       console.error(`Error creating record in table ${tableId}:`, error);
+      console.error(`Error details:`, {
+        message: error.message,
+        status: error.status,
+        statusText: error.statusText,
+        response: error.response
+      });
       throw new Error(`Failed to create record: ${error.message}`);
     }
   }
