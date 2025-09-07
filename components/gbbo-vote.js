@@ -209,7 +209,7 @@ export class GBBOVote extends LitElement {
 
   render() {
     return html`
-      <gbbo-card title="Ready... set... vote!">
+      <gbbo-card title="On your marks... get set... vote!">
         ${this.loading ? html`
           <gbbo-loading-container></gbbo-loading-container>
         ` : ''}
