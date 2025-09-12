@@ -9,9 +9,9 @@ export class GBBOBanner extends LitElement {
 
   constructor() {
     super();
-    this.message = 'New to the league? Join before you start voting!';
-    this.ctaText = 'Join Now';
-    this.ctaHref = '/join';
+    this.message = 'Cast your vote for finalists before Week 2!';
+    this.ctaText = 'Pick your finalists';
+    this.ctaHref = '/finals';
   }
 
   static styles = css`
