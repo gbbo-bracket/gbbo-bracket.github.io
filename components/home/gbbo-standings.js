@@ -226,7 +226,14 @@ export class GBBOStandings extends LitElement {
         points: parseInt(record.data['Total Points'] || 0)
       }))
       .filter(participant => participant.name !== 'Unknown')
-      .sort((a, b) => b.points - a.points);
+      .sort((a, b) => {
+        // First sort by points in descending order
+        if (b.points !== a.points) {
+          return b.points - a.points;
+        }
+        // If points are equal, sort alphabetically by name
+        return a.name.localeCompare(b.name);
+      });
 
     return standings;
   }
