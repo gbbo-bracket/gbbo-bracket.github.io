@@ -14,7 +14,7 @@ export async function fetchContestants() {
       ...record.data
     }));
     console.log('Contestants loaded:', contestants);
-    return contestants;
+    return contestants.sort((a, b) => a.name.localeCompare(b.name));
   } catch (error) {
     console.error('Failed to fetch contestants:', error);
     throw error;
