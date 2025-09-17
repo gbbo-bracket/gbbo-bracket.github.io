@@ -68,6 +68,52 @@ export async function createNomination({
   }
 }
 
+/**
+ * Create a new nomination record in Airtable
+ * @param {Object} nominationData - The nomination data
+ * @param {string} nominationData.weekId - Record ID of the week in the baker results table
+ * @param {string} nominationData.participantId - Record ID of the participant who is nominating
+ * @returns {Promise<Object>} The created nomination record
+ */
+export async function fetchNomination({
+  weekId,
+  participantId,
+}) {
+  try {
+    console.log('Getting nomination record...');
+    console.log('Input data:', {
+      weekId,
+      participantId,
+    });
+    
+    // Validate required fields
+    if (!weekId || !participantId) {
+      throw new Error('Missing required fields for nomination');
+    }
+
+    console.log('Table ID:', NOMINATIONS_TABLE_ID);
+    console.log('Filter by formula:', `AND({Week Record ID} = "${weekId}", {Participant Record ID} = "${participantId}")`);
+    
+    const nominationRecords = await airtableService.fetchFilteredRecords({
+      filterByFormula: `AND({Week Record ID} = "${weekId}", {Participant Record ID} = "${participantId}")`
+    }, NOMINATIONS_TABLE_ID);
+
+    if (nominationRecords.length === 0) {
+      throw new Error('No existing nomination found');
+    } else if (nominationRecords.length > 1) {
+      console.log('Multiple nominations found, returning the most recent one');
+      return nominationRecords[nominationRecords.length - 1];
+    } else {
+      console.log('Single nomination found, returning it');
+      return nominationRecords[0];
+    }
+
+  } catch (error) {
+    console.error('Failed to fetch nomination:', error);
+    throw error;
+  }
+}
+
 export async function createFinalistNomination({
   participantId,
   winnerId,

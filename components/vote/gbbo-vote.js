@@ -6,7 +6,7 @@ import '../shared/gbbo-loading-container.js';
 import { fetchContestants } from '../../js/utils/bakers.js';
 import { fetchNames } from '../../js/utils/participants.js';
 import { fetchActiveWeeks } from '../../js/utils/baker-results.js';
-import { createNomination } from '../../js/utils/nominations.js';
+import { createNomination, fetchNomination } from '../../js/utils/nominations.js';
 
 export class GBBOVote extends LitElement {
   static styles = css`
@@ -180,6 +180,21 @@ export class GBBOVote extends LitElement {
     }
   }
 
+  async fetchNomination(votes) {
+    try {
+      const nomination = await fetchNomination(votes);
+      console.log('Nomination fetched successfully:', nomination);
+      this.selectedStarBaker = this.getContestantById(nomination.data['Star Baker'][0]);
+      this.selectedTechnical = this.getContestantById(nomination.data['Wins Technical'][0]);
+      this.selectedEliminated = this.getContestantById(nomination.data['Eliminated'][0]);
+      console.log('Selected star baker:', this.selectedStarBaker);
+      console.log('Selected technical:', this.selectedTechnical);
+      console.log('Selected eliminated:', this.selectedEliminated);
+    } catch (error) {
+      console.error('Error fetching votes:', error);
+    }
+  }
+
   async handleRetry() {
     await this.fetchContestants();
     await this.fetchNames();
@@ -191,7 +206,6 @@ export class GBBOVote extends LitElement {
     return this.contestants.find(contestant => contestant.id === id);
   }
 
-  // Handle star baker selection change
   handleStarBakerChange(e) {
     const selectedId = e.target.value;
     this.selectedStarBaker = selectedId ? this.getContestantById(selectedId) : null;
@@ -245,7 +259,7 @@ export class GBBOVote extends LitElement {
           <form class="vote-form" @submit=${this._handleSubmit}>
             <div class="form-group-row">
               <label class="form-label" for="week">What week?</label>
-              <select class="form-select" id="week" name="week" required ?disabled="${this.activeWeeks?.length === 0}">
+              <select class="form-select" id="week" name="week" required ?disabled="${this.activeWeeks?.length === 0}" @change="${this._handleNameAndWeekChange}">
                 <option value="" disabled selected>Select Week...</option>
                 ${this.activeWeeks?.length === 1 ? html`
                   <option value="${this.activeWeeks[0].id}" selected>${this.activeWeeks[0].week}</option>
@@ -257,7 +271,7 @@ export class GBBOVote extends LitElement {
 
             <div class="form-group-row">
               <label class="form-label" for="name">Your Name</label>
-              <select class="form-select" id="name" name="name" required ?disabled="${this.names.length === 0}">
+              <select class="form-select" id="name" name="name" required ?disabled="${this.names.length === 0}" @change="${this._handleNameAndWeekChange}">
                 <option value="" disabled selected>Select Your Name...</option>
                 ${this.names.map(name => html`
                   <option value="${name.id}">${name.name}</option>
@@ -353,6 +367,19 @@ export class GBBOVote extends LitElement {
       form.dispatchEvent(submitEvent);
     } else {
       console.error('Form not found');
+    }
+  }
+
+  _handleNameAndWeekChange(e) {
+    const formData = new FormData(e.target.form);
+    const votes = {
+      weekId: formData.get('week'),
+      participantId: formData.get('name')
+    };
+    console.log('Votes:', votes);
+    if (votes.weekId && votes.participantId) {
+      console.log('Fetching votes...');
+      this.fetchNomination(votes);
     }
   }
 
