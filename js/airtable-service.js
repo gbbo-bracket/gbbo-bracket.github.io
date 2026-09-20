@@ -6,7 +6,7 @@ class AirtableService {
     // You'll need to set your PAT (Personal Access Token) as an environment variable or directly here
     // For development, you can set it directly. For production, use environment variables.
     this.apiKey = import.meta.env.VITE_AIRTABLE_API_KEY || 'YOUR_PAT_HERE';
-    this.baseId = 'appSJQe0OFR0pEtOj';
+    this.baseId = 'appt74I8hmWadsxFz';
     this.tableId = 'tblr3HgyuPk2rOLQJ';
     this.standingsTableId = 'tblX7SVGLgZ59tiWB';
     this.fieldId = 'fld0jifHbIykXaoqm';

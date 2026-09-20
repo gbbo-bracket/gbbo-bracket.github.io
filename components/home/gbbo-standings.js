@@ -204,7 +204,7 @@ export class GBBOStandings extends LitElement {
       
       if (!this.standings) {
         // Fetch standings data from the specific table using configurable fetchRecords
-        const records = await airtableService.fetchRecords('tblX7SVGLgZ59tiWB', 'app2vQWGh4JShLdZO');
+        const records = await airtableService.fetchRecords('tblX7SVGLgZ59tiWB');
         
         // Process and sort the standings
         this.standings = this.processStandingsData(records);

@@ -352,7 +352,7 @@ export class GBBONextWeekCard extends LitElement {
             </iframe>
           </div>
         ` : html`
-          <img class="placeholder-image" src="https://pbs.twimg.com/media/Gz1o-8aaoAA_xXZ?format=jpg&name=large" alt="GBBO Week Trailer">
+          <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
         `}
       </div>
     `;
