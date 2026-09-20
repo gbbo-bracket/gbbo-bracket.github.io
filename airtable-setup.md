@@ -3,7 +3,7 @@
 ## Configuration
 
 Your Airtable integration is configured to read from:
-- **Base ID**: `appSJQe0OFR0pEtOj`
+- **Base ID**: `appt74I8hmWadsxFz`
 - **Table ID**: `tblr3HgyuPk2rOLQJ`
 - **Field ID**: `fld0jifHbIykXaoqm`
 
@@ -14,7 +14,7 @@ Your Airtable integration is configured to read from:
    - Click "Create new token"
    - Give it a name like "GBBO Bracket App"
    - Add scopes: `data.records:read` for your base
-   - Select your base: `appSJQe0OFR0pEtOj`
+   - Select your base: `appt74I8hmWadsxFz`
    - Copy the token (it starts with `pat...`)
 
 2. **Set up environment variables**:
