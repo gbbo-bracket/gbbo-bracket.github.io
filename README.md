@@ -58,18 +58,23 @@ npm run preview
 
 ```
 gbbo-bracket.github.io/
-├── components/           # LitElement web components
-│   ├── gbbo-header.js
-│   ├── gbbo-welcome-card.js
-│   └── gbbo-footer.js
+├── components/         # LitElement web components
+│   ├── foundations/    # Shared building blocks (card, primary-button)
+│   ├── shared/         # Header, footer, banners, loading states
+│   └── home/ contestants/ finals/ join/ rules/ vote/   # Per-page components
 ├── js/
-│   └── main.js         # Main application logic
+│   ├── main.js              # Main application logic
+│   ├── airtable-service.js  # Reads and writes to Airtable
+│   └── utils/               # Bakers, results, nominations, participants
 ├── src/
-│   └── input.css       # Tailwind CSS input
+│   ├── input.css       # Tailwind CSS input
+│   └── styles.css      # Colour palette and global styles
+├── assets/images/      # Images served with the site
 ├── dist/               # Built files (auto-generated)
-├── index.html          # Main HTML file
+├── index.html          # Home page (one HTML file per page)
 ├── vite.config.js      # Vite configuration
 ├── postcss.config.js   # PostCSS configuration
+├── tailwind.config.js  # Tailwind theme and file scanning
 └── package.json        # Dependencies and scripts
 ```
 
@@ -114,12 +119,7 @@ customElements.define('my-component', MyComponent);
 
 ## 🤝 Contributing
 
-1. Branch off an up-to-date `main`, named `tarin/<short-kebab-name>` or `claude/<short-kebab-name>`
-2. Make your changes using LitElement patterns
-3. Check them with `npm run dev` at both mobile and desktop widths
-4. Open a **draft** pull request and fill in the template, screenshots included
-
-Full conventions - branch naming, PR expectations, project layout, the colour palette, and the
+Our conventions - branch naming, PR expectations, project layout, the colour palette, and the
 Airtable setup - live in [`.claude/skills/contributing/SKILL.md`](.claude/skills/contributing/SKILL.md),
 which Claude Code also reads.
 

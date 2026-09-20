@@ -25,19 +25,25 @@ git checkout main && git pull --ff-only origin main && git checkout -b <prefix>/
 
 ### Branch names are `<prefix>/<short-kebab-name>`
 
-- **Prefix** - `tarin/` when most of the change came from human intervention, `claude/` when most of
-  it was made by Claude Code. Judge by who wrote the bulk of the diff, not who kicked off the task.
+- **Prefix** - `tarin/` when most of the change came from human intervention, `claude/` when nearly all of
+  it was made via Claude Code, or `tarin-claude/` when it is a combination of the two.
+  Judge by how much of the diff each of you wrote, not by who kicked off the task.
 - **Name** - simple, short, human readable, kebab-case. Two or three words that say what the change
-  is: `claude/contributing-guide`, `tarin/finalist-banner`, `claude/mobile-vote-fix`. Avoid ticket
+  is, e.g.: `claude/contributing-guide`, `tarin/finalist-banner`, `tarin-claude/mobile-vote-fix`. Avoid ticket
   numbers, dates, and single letters.
-- **Renaming is expected.** If the work drifts from the original intent, rename the branch to match
-  what actually changed before the first commit is pushed or the PR is opened:
+- **Renaming is expected.** If after a new commit the work drifts from the original intent, rename the branch to match
+  what actually changed before the PR is opened:
 
   ```bash
   git branch -m <new-name>
   ```
 
   Once a PR exists, leave the branch name alone.
+
+### Before committing
+
+Before making a commit to a branch or opening a PR, review the project README and confirm whether any updates need to be made.
+README content should always be kept simple and human-readable, at a level for a low-technical PM to be able to understand.
 
 ### Pull requests are always opened as drafts
 
@@ -117,7 +123,7 @@ only on that page get purged from the stylesheet.
   mirrored as Tailwind `gbbo-*` colors in `tailwind.config.js`.
 - **Reuse the foundations.** Prefer `<primary-button>` and `<gbbo-card>` over hand-rolled buttons and
   panels so the styling stays consistent.
-- **Mobile matters.** Most people open this on a phone during the episode. Check narrow widths before
+- **Mobile matters.** Most people open this on a phone during the episode. Design for mobile-first, and check narrow widths before
   calling a visual change done.
 
 ## Airtable and secrets
