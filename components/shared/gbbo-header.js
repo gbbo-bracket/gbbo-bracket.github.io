@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import '../foundations/primary-button';
+import './gbbo-region-toggle.js';
 
 export class GBBOHeader extends LitElement {
   static properties = {
@@ -54,6 +55,12 @@ export class GBBOHeader extends LitElement {
       color: var(--heading-text);
       margin: 0;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
     
     .nav-links {
@@ -159,6 +166,10 @@ export class GBBOHeader extends LitElement {
         font-size: 1rem;
       }
       
+      .nav-right {
+        gap: 0.5rem;
+      }
+      
       .nav-links {
         display: none;
       }
@@ -191,20 +202,24 @@ export class GBBOHeader extends LitElement {
           <h1>The Great Bake Off Bracket</h1>
         </a>
         
-        <ul class="nav-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="/rules">Rules</a></li>
-          <li><a href="/contestants">Contestants</a></li>
-          <li><primary-button href="/vote">Vote now</primary-button></li>
-        </ul>
-        
-        <button 
-          class="mobile-menu-button" 
-          @click="${this.toggleMobileMenu}"
-          aria-label="Toggle mobile menu"
-        >
-          ${this.mobileMenuOpen ? '✕' : '☰'}
-        </button>
+        <div class="nav-right">
+          <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/rules">Rules</a></li>
+            <li><a href="/contestants">Contestants</a></li>
+            <li><primary-button href="/vote">Vote now</primary-button></li>
+          </ul>
+          
+          <gbbo-region-toggle></gbbo-region-toggle>
+          
+          <button 
+            class="mobile-menu-button" 
+            @click="${this.toggleMobileMenu}"
+            aria-label="Toggle mobile menu"
+          >
+            ${this.mobileMenuOpen ? '✕' : '☰'}
+          </button>
+        </div>
         
         <div class="mobile-menu ${this.mobileMenuOpen ? 'open' : ''}">
           <ul class="mobile-nav-links">
