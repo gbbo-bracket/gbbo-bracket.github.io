@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import { airtableService } from '../../js/airtable-service.js';
+import { US, REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
 import '../foundations/primary-button.js';
 import '../shared/gbbo-loading-container.js';
 
@@ -8,7 +9,8 @@ export class GBBONextWeekCard extends LitElement {
     nextWeek: { type: Object },
     loading: { type: Boolean },
     error: { type: String },
-    countdownText: { type: String }
+    countdownText: { type: String },
+    region: { type: String }
   };
 
   constructor() {
@@ -18,6 +20,9 @@ export class GBBONextWeekCard extends LitElement {
     this.error = '';
     this.countdownText = '';
     this.countdownInterval = null;
+    this.region = getRegion();
+    this.records = [];
+    this.handleRegionChange = this.handleRegionChange.bind(this);
   }
 
   static styles = css`
@@ -165,14 +170,22 @@ export class GBBONextWeekCard extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
+    window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
     this.fetchNextWeek();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
     }
+  }
+
+  handleRegionChange(event) {
+    this.region = event.detail.region;
+    // The weeks are already loaded, so just pick the next one for the new region
+    this.selectNextWeek();
   }
 
   async fetchNextWeek() {
@@ -181,42 +194,51 @@ export class GBBONextWeekCard extends LitElement {
     
     try {
       console.log('Fetching next week data from Airtable...');
-      const records = await airtableService.fetchRecords('tblCV1RozeH3oz1DW');
-      
-      // Filter records with air dates and sort by air date
-      const today = new Date();
-      today.setHours(0, 0, 0, 0); // Reset time to start of day for comparison
-      
-      const upcomingWeeks = records
-        .filter(record => {
-          const airDate = record.data['Air date'];
-          return airDate && airDate !== '';
-        })
-        .map(record => ({
-          ...record,
-          parsedAirDate: new Date(record.data['Air date'])
-        }))
-        .filter(record => {
-          // Only include dates that are today or in the future
-          return record.parsedAirDate >= today;
-        })
-        .sort((a, b) => a.parsedAirDate - b.parsedAirDate);
-      
-      // Get the next upcoming week (earliest future date)
-      const nextWeek = upcomingWeeks[0];
-      
-      if (nextWeek) {
-        this.nextWeek = nextWeek;
-        console.log('Next week data:', nextWeek);
-      } else {
-        this.error = 'No upcoming weeks found';
-      }
+      this.records = await airtableService.fetchRecords('tblCV1RozeH3oz1DW');
+      this.selectNextWeek();
       
     } catch (error) {
       this.error = error.message;
       console.error('Failed to fetch next week data:', error);
     } finally {
       this.loading = false;
+    }
+  }
+
+  /**
+   * Pick the next episode to show, using the air dates for the selected region
+   */
+  selectNextWeek() {
+    // Filter records with air dates and sort by air date
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day for comparison
+    
+    const upcomingWeeks = this.records
+      .map(record => ({
+        ...record,
+        parsedAirDate: parseAirDate(getAirDate(record.data, this.region))
+      }))
+      .filter(record => {
+        // Only include real dates that are today or in the future
+        return !isNaN(record.parsedAirDate) && record.parsedAirDate >= today;
+      })
+      .sort((a, b) => a.parsedAirDate - b.parsedAirDate);
+    
+    // Get the next upcoming week (earliest future date)
+    const nextWeek = upcomingWeeks[0];
+    
+    if (nextWeek) {
+      this.nextWeek = nextWeek;
+      this.error = '';
+      console.log(`Next week data (${this.region}):`, nextWeek);
+      this.startCountdown();
+    } else {
+      this.nextWeek = null;
+      this.countdownText = '';
+      if (this.countdownInterval) {
+        clearInterval(this.countdownInterval);
+        this.countdownInterval = null;
+      }
     }
   }
 
@@ -236,6 +258,7 @@ export class GBBONextWeekCard extends LitElement {
   startCountdown() {
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
+      this.countdownInterval = null;
     }
     
     this.updateCountdown();
@@ -244,29 +267,43 @@ export class GBBONextWeekCard extends LitElement {
     }, 1000);
   }
 
+  /**
+   * When the next episode actually drops. UK episodes premiere at 8PM GMT+1;
+   * US episodes land at midnight local time.
+   * @returns {Date} The moment the countdown is counting down to
+   */
+  getTargetDate() {
+    const targetDate = new Date(this.nextWeek.parsedAirDate);
+
+    if (this.region === US) {
+      // Already midnight local on the air date
+      return targetDate;
+    }
+
+    targetDate.setHours(20, 0, 0, 0); // Set to 8PM
+    
+    // Convert to GMT+1 (CET/CEST)
+    const gmtPlus1Offset = 1 * 60; // GMT+1 in minutes
+    return new Date(targetDate.getTime() - (gmtPlus1Offset * 60 * 1000));
+  }
+
   updateCountdown() {
     if (!this.nextWeek?.parsedAirDate) {
       this.countdownText = '';
       return;
     }
 
-    // Create target date at 8PM GMT+1
-    const airDate = new Date(this.nextWeek.parsedAirDate);
-    const targetDate = new Date(airDate);
-    targetDate.setHours(20, 0, 0, 0); // Set to 8PM
-    
-    // Convert to GMT+1 (CET/CEST)
-    const gmtPlus1Offset = 1 * 60; // GMT+1 in minutes
-    const targetDateGMTPlus1 = new Date(targetDate.getTime() - (gmtPlus1Offset * 60 * 1000));
+    const targetDate = this.getTargetDate();
 
     const now = new Date();
-    const timeDiff = targetDateGMTPlus1.getTime() - now.getTime();
+    const timeDiff = targetDate.getTime() - now.getTime();
     const oneHourInMs = 60 * 60 * 1000;
     
     if (Math.abs(timeDiff) <= oneHourInMs) {
       this.countdownText = 'Episode is live!';
       if (this.countdownInterval) {
         clearInterval(this.countdownInterval);
+        this.countdownInterval = null;
       }
       return;
     }
@@ -323,11 +360,6 @@ export class GBBONextWeekCard extends LitElement {
     
     // Default: t7HMezGCWVw
     const youtubeId = trailerUrl ? this.extractYouTubeId(trailerUrl) : '';
-
-    // Start countdown when we have the next week data
-    if (!this.countdownInterval) {
-      setTimeout(() => this.startCountdown(), 100);
-    }
 
     return html`
       <div class="next-week-card">
