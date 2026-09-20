@@ -114,11 +114,14 @@ customElements.define('my-component', MyComponent);
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes using LitElement patterns
-4. Test your components with `npm run dev`
-5. Submit a pull request
+1. Branch off an up-to-date `main`, named `tarin/<short-kebab-name>` or `claude/<short-kebab-name>`
+2. Make your changes using LitElement patterns
+3. Check them with `npm run dev` at both mobile and desktop widths
+4. Open a **draft** pull request and fill in the template, screenshots included
+
+Full conventions - branch naming, PR expectations, project layout, the colour palette, and the
+Airtable setup - live in [`.claude/skills/contributing/SKILL.md`](.claude/skills/contributing/SKILL.md),
+which Claude Code also reads.
 
 ---
 
