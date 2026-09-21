@@ -199,7 +199,7 @@ export class GBBOHeader extends LitElement {
       <nav>
         <a href="/" class="logo">
           <div class="emoji">🧁</div>
-          <h1>The Great Bake Off Bracket</h1>
+          <h1>Great Bake Off Bracket</h1>
         </a>
         
         <div class="nav-right">

@@ -66,7 +66,6 @@ export class GBBOFooter extends LitElement {
       <footer>
         <div class="bunting"></div>
       </footer>
-      ${!this.noBottomBanner ? html`<gbbo-mobile-banner></gbbo-mobile-banner>` : ''}
     `;
   }
 }
