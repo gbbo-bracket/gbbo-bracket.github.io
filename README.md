@@ -5,7 +5,8 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
 ## 🚀 Features
 
 - **UK / US Schedules**: A flag in the nav bar switches the site between UK and US air dates
-- **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points
+- **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points,
+  with toggles to look back at how the 2025 and 2024 seasons finished
 - **LitElement Components**: Modern, reactive web components using LitElement
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Web Components**: Native browser support with Shadow DOM
@@ -63,7 +64,7 @@ gbbo-bracket.github.io/
 ├── components/         # LitElement web components
 │   ├── foundations/    # Shared building blocks (card, primary-button)
 │   ├── shared/         # Header, footer, banners, loading states, UK/US flag toggle
-│   └── home/ contestants/ finals/ join/ rules/ vote/   # Per-page components
+│   └── home/ contestants/ finals/ join/ rules/ standings/ vote/   # Per-page components
 ├── js/
 │   ├── main.js              # Main application logic
 │   ├── airtable-service.js  # Reads and writes to Airtable

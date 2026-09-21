@@ -14,6 +14,7 @@ import '../components/home/gbbo-next-week-card.js';
 import '../components/contestants/gbbo-contestants-data.js';
 import '../components/rules/gbbo-rules-card.js';
 import '../components/home/gbbo-standings.js';
+import '../components/standings/gbbo-standings-picker.js';
 import '../components/shared/gbbo-footer.js';
 import '../components/vote/gbbo-vote.js';
 import '../components/finals/gbbo-finals.js';
