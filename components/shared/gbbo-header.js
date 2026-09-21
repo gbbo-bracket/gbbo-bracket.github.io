@@ -128,22 +128,21 @@ export class GBBOHeader extends LitElement {
       padding: 1rem 0;
     }
     
-    .mobile-nav-links li:not(.primary-button-container) {
+    .mobile-nav-links li {
       margin: 0;
     }
 
-    .mobile-nav-links li.primary-button-container {
-      margin: 1rem 2rem;
+    .mobile-nav-links li > * {
+      display: block;
+      padding: 1rem 2rem;
+      transition: all 0.2s ease;
     }
     
     .mobile-nav-links a {
-      display: block;
       text-decoration: none;
       color: var(--link-text);
       font-weight: 500;
       font-size: 1.1rem;
-      padding: 1rem 2rem;
-      transition: all 0.2s ease;
     }
     
     .mobile-nav-links a:hover {
@@ -210,8 +209,6 @@ export class GBBOHeader extends LitElement {
             <li><primary-button href="/vote">Vote now</primary-button></li>
           </ul>
           
-          <gbbo-region-toggle></gbbo-region-toggle>
-          
           <button 
             class="mobile-menu-button" 
             @click="${this.toggleMobileMenu}"
@@ -223,11 +220,12 @@ export class GBBOHeader extends LitElement {
         
         <div class="mobile-menu ${this.mobileMenuOpen ? 'open' : ''}">
           <ul class="mobile-nav-links">
+            <li><gbbo-region-toggle></gbbo-region-toggle></li>
             <li><a href="/" @click="${this.toggleMobileMenu}">Home</a></li>
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
             <li><a href="/finals" @click="${this.toggleMobileMenu}">Pick your finalists</a></li>
-            <li class="primary-button-container"><primary-button href="/vote" @click="${this.toggleMobileMenu}">Vote now</primary-button></li>
+            <li><primary-button href="/vote" @click="${this.toggleMobileMenu}">Vote now</primary-button></li>
           </ul>
         </div>
       </nav>
