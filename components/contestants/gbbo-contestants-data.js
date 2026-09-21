@@ -162,9 +162,11 @@ export class GBBOContestantsData extends LitElement {
         
         ${!this.loading && !this.error && this.records.length > 0 ? html`
           <div class="records-grid">
-            ${this.records.map(record => html`
+            ${this.records.map((record, index) => html`
               <gbbo-contestants-card
                 .contestant="${record}"
+                .contestants="${this.records}"
+                .index="${index}"
                 .withResults="${true}"
               ></gbbo-contestants-card>
             `)}

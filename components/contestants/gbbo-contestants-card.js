@@ -4,6 +4,8 @@ import './gbbo-contestants-modal.js';
 export class GBBOContestantsCard extends LitElement {
   static properties = {
     contestant: { type: Object },
+    contestants: { type: Array },
+    index: { type: Number },
     withDetailsModal: { type: Boolean },
     modalOpen: { type: Boolean },
     withResults: { type: Boolean }
@@ -67,6 +69,8 @@ export class GBBOContestantsCard extends LitElement {
   constructor() {
     super();
     this.contestant = null;
+    this.contestants = [];
+    this.index = 0;
     this.withDetailsModal = false;
     this.modalOpen = false;
     this.withResults = false;
@@ -124,6 +128,8 @@ export class GBBOContestantsCard extends LitElement {
       <gbbo-contestants-modal 
         .open="${this.modalOpen}"
         .contestant="${this.contestant}"
+        .contestants="${this.contestants}"
+        .index="${this.index}"
         @modal-close="${this.handleModalClose}"
       ></gbbo-contestants-modal>
     `;
