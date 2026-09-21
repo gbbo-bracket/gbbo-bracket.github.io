@@ -54,12 +54,11 @@ export class GBBOStandingsPicker extends LitElement {
       font-size: 1.1rem;
       font-weight: 400;
       color: var(--body-text);
-      transition: color 0.2s ease, background-color 0.2s ease;
+      transition: color 0.2s ease;
     }
 
     button:hover {
       color: var(--link-text-on-hover);
-      background-color: rgba(247, 198, 217, 0.2);
     }
 
     button:focus-visible {
