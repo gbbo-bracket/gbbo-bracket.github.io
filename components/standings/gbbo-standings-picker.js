@@ -9,8 +9,8 @@ const CURRENT_LABEL = 'Week 1';
 // live standings from Airtable"; the past seasons pass their static data.
 const STANDINGS_OPTIONS = [
   { id: 'current', label: CURRENT_LABEL, title: 'Current Standings', standings: null },
-  { id: '2025', label: '2025', title: '2025 Standings', standings: pastYears[2025] },
-  { id: '2024', label: '2024', title: '2024 Standings', standings: pastYears[2024] }
+  { id: '2025', label: '2025', title: '2025 Final Results', standings: pastYears[2025] },
+  { id: '2024', label: '2024', title: '2024 Final Results', standings: pastYears[2024] }
 ];
 
 /**
