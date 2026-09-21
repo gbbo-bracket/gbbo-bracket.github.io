@@ -404,16 +404,6 @@ export class GBBONextWeekCard extends LitElement {
     `;
   }
 
-  renderCatchUp() {
-    return html`
-      <gbbo-callout
-        message="Missed a week? Don't get spoiled!"
-        link-text="Vote now"
-        link-href="/vote"
-      ></gbbo-callout>
-    `;
-  }
-
   render() {
     if (this.loading) {
       return this.renderLoading();
@@ -425,7 +415,6 @@ export class GBBONextWeekCard extends LitElement {
     
     return html`
       ${this.renderNextWeek()}
-      ${this.renderCatchUp()}
     `;
   }
 }
