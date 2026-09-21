@@ -14,8 +14,9 @@ export class GBBOStandings extends LitElement {
   constructor() {
     super();
     this.standings = null;
-    this.title = 'Standings';
-    this.description = 'Current bracket leaderboard';
+    this.currentStandings = null;
+    this.title = '';
+    this.description = '';
     this.loading = true;
     this.error = null;
   }
@@ -177,24 +178,46 @@ export class GBBOStandings extends LitElement {
     }
   `;
 
-  async connectedCallback() {
-    super.connectedCallback();
-    
-    // Parse standings from attribute if it's a string
+  willUpdate(changedProperties) {
+    // The standings can be swapped at any time - the picker hands over a past
+    // season's results when one of its toggles is clicked - so react to every
+    // change rather than only reading the value once on connect.
+    if (changedProperties.has('standings')) {
+      this.applyStandings();
+    }
+  }
+
+  applyStandings() {
+    // Standings set as an HTML attribute arrive as a JSON string.
     if (typeof this.standings === 'string') {
       try {
         this.standings = JSON.parse(this.standings);
-        this.loading = false;
-        return; // Don't fetch from Airtable if we have custom data
       } catch (error) {
         console.error('Error parsing standings JSON:', error);
+        this.standings = null;
         this.error = 'Invalid standings data format';
         this.loading = false;
         return;
       }
     }
-    
-    await this.fetchStandings();
+
+    // Custom standings were handed to us, so there is nothing to fetch.
+    if (Array.isArray(this.standings)) {
+      this.error = null;
+      this.loading = false;
+      return;
+    }
+
+    // No standings given, so show the current ones from Airtable. They are
+    // remembered after the first fetch so switching back does not reload them.
+    if (this.currentStandings) {
+      this.standings = this.currentStandings;
+      this.error = null;
+      this.loading = false;
+      return;
+    }
+
+    this.fetchStandings();
   }
 
   async fetchStandings() {
@@ -207,7 +230,8 @@ export class GBBOStandings extends LitElement {
         const records = await airtableService.fetchRecords('tblX7SVGLgZ59tiWB');
         
         // Process and sort the standings
-        this.standings = this.processStandingsData(records);
+        this.currentStandings = this.processStandingsData(records);
+        this.standings = this.currentStandings;
       }
       
     } catch (error) {
