@@ -34,6 +34,7 @@ export class GBBONextWeekCard extends LitElement {
     .next-week-card {
       background-color: rgba(255, 253, 245, 0.9);
       padding: 3rem;
+      padding-left: calc(3rem + 6px);
       border-radius: 1.5rem;
       text-align: center;
       box-shadow: 0 25px 50px -12px rgba(33, 65, 119, 0.1);
@@ -47,20 +48,22 @@ export class GBBONextWeekCard extends LitElement {
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--berry-red), var(--icing-pink), var(--powder-blue));
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--berry-red), var(--icing-pink), var(--powder-blue));
     }
     
     @media (max-width: 768px) {
       .next-week-card {
         padding: 2rem;
+        padding-left: calc(2rem + 6px);
       }
     }
     
     @media (max-width: 640px) {
       .next-week-card {
         padding: 1.5rem;
+        padding-left: calc(1.5rem + 6px);
       }
     }
     
@@ -120,6 +123,7 @@ export class GBBONextWeekCard extends LitElement {
     
     .video-container,
     .placeholder-image {
+      display: block;
       position: relative;
       width: 100%;
       max-width: 600px;
@@ -150,7 +154,7 @@ export class GBBONextWeekCard extends LitElement {
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
     
     .countdown-label {
@@ -159,6 +163,39 @@ export class GBBONextWeekCard extends LitElement {
       text-transform: uppercase;
       letter-spacing: 0.05em;
       font-weight: 600;
+    }
+    
+    .card-actions {
+      display: flex;
+      justify-content: center;
+    }
+    
+    .catch-up {
+      margin-top: 1.5rem;
+      padding: 1rem 1.5rem;
+      background-color: rgba(255, 253, 245, 0.75);
+      border: 1px solid rgba(247, 198, 217, 0.5);
+      border-radius: 1rem;
+      text-align: center;
+      font-size: 1rem;
+      color: var(--body-text);
+    }
+    
+    .catch-up a {
+      color: var(--link-text);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+    
+    .catch-up a:hover {
+      color: var(--link-text-on-hover);
+    }
+    
+    @media (max-width: 640px) {
+      .catch-up {
+        font-size: 0.9375rem;
+        padding: 1rem;
+      }
     }
     
     .error {
@@ -363,10 +400,6 @@ export class GBBONextWeekCard extends LitElement {
 
     return html`
       <div class="next-week-card">
-      ${this.countdownText ? html`
-        <div class="coming-soon-badge">Next episode in ${this.countdownText}</div>
-      ` : ''}
-        
         <h2>${title ? title : 'Next Week: Coming Soon'}</h2>
         
         ${description ? html`
@@ -386,7 +419,23 @@ export class GBBONextWeekCard extends LitElement {
         ` : html`
           <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
         `}
+
+        ${this.countdownText ? html`
+          <div class="coming-soon-badge">Next episode in ${this.countdownText}</div>
+        ` : ''}
+
+        <div class="card-actions">
+          <primary-button href="/vote">Vote now</primary-button>
+        </div>
       </div>
+    `;
+  }
+
+  renderCatchUp() {
+    return html`
+      <p class="catch-up">
+        Missed a week? Don't get spoiled! <a href="/vote">Vote now</a>
+      </p>
     `;
   }
 
@@ -399,7 +448,10 @@ export class GBBONextWeekCard extends LitElement {
       return this.renderError();
     }
     
-    return this.renderNextWeek();
+    return html`
+      ${this.renderNextWeek()}
+      ${this.renderCatchUp()}
+    `;
   }
 }
 
