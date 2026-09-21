@@ -8,6 +8,8 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
 - **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points,
   with toggles to look back at how the 2025 and 2024 seasons finished. The home page points at it
   from under its own standings table
+- **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
+  right arrow keys - browse straight through the rest of the bakers without closing it
 - **LitElement Components**: Modern, reactive web components using LitElement
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Web Components**: Native browser support with Shadow DOM

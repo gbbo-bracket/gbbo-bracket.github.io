@@ -3,13 +3,19 @@ import { LitElement, html, css } from 'lit';
 export class GBBOContestantsModal extends LitElement {
   static properties = {
     open: { type: Boolean },
-    contestant: { type: Object }
+    contestant: { type: Object },
+    contestants: { type: Array },
+    index: { type: Number },
+    activeIndex: { type: Number }
   };
 
   constructor() {
     super();
     this.open = false;
     this.contestant = null;
+    this.contestants = [];
+    this.index = 0;
+    this.activeIndex = 0;
   }
 
   static styles = css`
@@ -60,12 +66,18 @@ export class GBBOContestantsModal extends LitElement {
       justify-content: space-between;
       padding: 2rem 2rem 1rem 2rem;
       border-bottom: 1px solid rgba(247, 198, 217, 0.3);
+      /* Keep the browsing arrows in reach however long the bio is */
+      position: sticky;
+      top: 0;
+      background-color: var(--canvas);
+      z-index: 1;
     }
 
     .modal-title {
       display: flex;
       align-items: center;
       gap: 1rem;
+      min-width: 0;
     }
 
     .modal-contestant-image {
@@ -82,6 +94,36 @@ export class GBBOContestantsModal extends LitElement {
       font-weight: 700;
       color: var(--heading-text);
       margin: 0;
+    }
+
+    .modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      flex-shrink: 0;
+    }
+
+    .modal-position {
+      font-size: 0.8125rem;
+      color: var(--body-text);
+      white-space: nowrap;
+    }
+
+    .modal-nav-button {
+      background: none;
+      border: none;
+      font-size: 1.75rem;
+      line-height: 1;
+      color: var(--body-text);
+      cursor: pointer;
+      padding: 0 0.5rem;
+      border-radius: 0.25rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .modal-nav-button:hover {
+      background-color: rgba(190, 228, 210, 0.35);
+      color: var(--heading-text);
     }
 
     .modal-close-button {
@@ -141,8 +183,37 @@ export class GBBOContestantsModal extends LitElement {
       .modal-contestant-name {
         font-size: 1.25rem;
       }
+
+      .modal-contestant-image {
+        width: 48px;
+        height: 48px;
+      }
+
+      .modal-position {
+        display: none;
+      }
     }
   `;
+
+  get contestantList() {
+    if (this.contestants?.length) return this.contestants;
+    return this.contestant ? [this.contestant] : [];
+  }
+
+  get activeContestant() {
+    return this.contestantList[this.activeIndex] || this.contestant;
+  }
+
+  get canBrowse() {
+    return this.contestantList.length > 1;
+  }
+
+  willUpdate(changedProperties) {
+    // Start browsing from the contestant whose card was clicked
+    if (changedProperties.has('open') && this.open) {
+      this.activeIndex = this.index;
+    }
+  }
 
   updated(changedProperties) {
     if (changedProperties.has('open')) {
@@ -168,11 +239,39 @@ export class GBBOContestantsModal extends LitElement {
   }
 
   handleKeyDown = (e) => {
+    if (!this.open) return;
+
     // Close modal on Escape key
-    if (e.key === 'Escape' && this.open) {
+    if (e.key === 'Escape') {
       this.closeModal();
+      return;
+    }
+
+    // Browse between contestants with the left and right arrow keys
+    if (e.key === 'ArrowLeft') {
+      this.browse(-1);
+    } else if (e.key === 'ArrowRight') {
+      this.browse(1);
     }
   };
+
+  browse(step) {
+    const total = this.contestantList.length;
+    if (total < 2) return;
+
+    // Wrap around so browsing never dead-ends
+    this.activeIndex = (this.activeIndex + step + total) % total;
+    // Show the next contestant from the top, however far the last one was scrolled
+    this.renderRoot.querySelector('.modal-content')?.scrollTo({ top: 0 });
+  }
+
+  handlePreviousClick() {
+    this.browse(-1);
+  }
+
+  handleNextClick() {
+    this.browse(1);
+  }
 
   handleOverlayClick(e) {
     // Close modal if clicking on the overlay (not the content)
@@ -189,7 +288,8 @@ export class GBBOContestantsModal extends LitElement {
   }
 
   render() {
-    if (!this.contestant) return '';
+    const contestant = this.activeContestant;
+    if (!contestant) return '';
 
     return html`
       <div 
@@ -201,41 +301,62 @@ export class GBBOContestantsModal extends LitElement {
             <div class="modal-title">
               <img 
                 class="modal-contestant-image" 
-                src="${this.contestant.Image?.[0]?.url || ''}" 
-                alt="${this.contestant.name || 'Contestant'}"
+                src="${contestant.Image?.[0]?.url || ''}" 
+                alt="${contestant.name || 'Contestant'}"
               />
-              <h2 class="modal-contestant-name">${this.contestant.name || 'Unknown Contestant'}</h2>
+              <h2 class="modal-contestant-name">${contestant.name || 'Unknown Contestant'}</h2>
             </div>
-            <button 
-              class="modal-close-button" 
-              @click="${this.closeModal}"
-              aria-label="Close modal"
-            >
-              ✕
-            </button>
+            <div class="modal-actions">
+              ${this.canBrowse ? html`
+                <button 
+                  class="modal-nav-button" 
+                  @click="${this.handlePreviousClick}"
+                  aria-label="Previous contestant"
+                >
+                  &lsaquo;
+                </button>
+                <span class="modal-position">
+                  ${this.activeIndex + 1} of ${this.contestantList.length}
+                </span>
+                <button 
+                  class="modal-nav-button" 
+                  @click="${this.handleNextClick}"
+                  aria-label="Next contestant"
+                >
+                  &rsaquo;
+                </button>
+              ` : ''}
+              <button 
+                class="modal-close-button" 
+                @click="${this.closeModal}"
+                aria-label="Close modal"
+              >
+                ✕
+              </button>
+            </div>
           </div>
           <div class="modal-body">
             <div class="modal-bio-label-container">
               <span class="modal-bio-label">Age:</span>
               <p class="modal-bio">
-                ${this.contestant.Age || 'Unknown Age'}
+                ${contestant.Age || 'Unknown Age'}
               </p>
             </div>
             <div class="modal-bio-label-container">
             <span class="modal-bio-label">Location:</span>
             <p class="modal-bio">
-              ${this.contestant.Location || 'Unknown Location'}
+              ${contestant.Location || 'Unknown Location'}
             </p>
             </div>
             <div class="modal-bio-label-container">
             <span class="modal-bio-label">Occupation:</span>
             <p class="modal-bio">
-              ${this.contestant.Occupation || 'Unknown Occupation'}
+              ${contestant.Occupation || 'Unknown Occupation'}
             </p>
             </div>
 
             <p class="modal-bio">
-              <span class="modal-bio-label">Bio:</span> ${this.contestant.Bio || 'No bio available for this contestant.'}
+              <span class="modal-bio-label">Bio:</span> ${contestant.Bio || 'No bio available for this contestant.'}
             </p>
           </div>
         </div>
