@@ -5,6 +5,7 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
 ## 🚀 Features
 
 - **UK / US Schedules**: A flag in the nav bar switches the site between UK and US air dates
+- **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points
 - **LitElement Components**: Modern, reactive web components using LitElement
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Web Components**: Native browser support with Shadow DOM
