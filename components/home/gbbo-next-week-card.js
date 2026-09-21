@@ -3,6 +3,7 @@ import { airtableService } from '../../js/airtable-service.js';
 import { US, REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
 import '../foundations/primary-button.js';
 import '../shared/gbbo-loading-container.js';
+import '../shared/gbbo-callout.js';
 
 export class GBBONextWeekCard extends LitElement {
   static properties = {
@@ -168,34 +169,6 @@ export class GBBONextWeekCard extends LitElement {
     .card-actions {
       display: flex;
       justify-content: center;
-    }
-    
-    .catch-up {
-      margin-top: 1.5rem;
-      padding: 1rem 1.5rem;
-      background-color: rgba(255, 253, 245, 0.75);
-      border: 1px solid rgba(247, 198, 217, 0.5);
-      border-radius: 1rem;
-      text-align: center;
-      font-size: 1rem;
-      color: var(--body-text);
-    }
-    
-    .catch-up a {
-      color: var(--link-text);
-      font-weight: 600;
-      text-decoration: underline;
-    }
-    
-    .catch-up a:hover {
-      color: var(--link-text-on-hover);
-    }
-    
-    @media (max-width: 640px) {
-      .catch-up {
-        font-size: 0.9375rem;
-        padding: 1rem;
-      }
     }
     
     .error {
@@ -433,9 +406,11 @@ export class GBBONextWeekCard extends LitElement {
 
   renderCatchUp() {
     return html`
-      <p class="catch-up">
-        Missed a week? Don't get spoiled! <a href="/vote">Vote now</a>
-      </p>
+      <gbbo-callout
+        message="Missed a week? Don't get spoiled!"
+        link-text="Vote now"
+        link-href="/vote"
+      ></gbbo-callout>
     `;
   }
 
