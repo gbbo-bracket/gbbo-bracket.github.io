@@ -170,6 +170,8 @@ export class GBBOVote extends LitElement {
     submitting: { type: Boolean },
     submitSuccess: { type: Boolean },
     submitError: { type: String },
+    selectedName: { type: String },
+    selectedWeek: { type: String },
     selectedStarBaker: { type: Object },
     selectedTechnical: { type: Object },
     selectedEliminated: { type: Object }
@@ -185,6 +187,8 @@ export class GBBOVote extends LitElement {
     this.submitting = false;
     this.submitSuccess = false;
     this.submitError = '';
+    this.selectedName = '';
+    this.selectedWeek = '';
     this.selectedStarBaker = null;
     this.selectedTechnical = null;
     this.selectedEliminated = null;
@@ -222,6 +226,10 @@ export class GBBOVote extends LitElement {
   async fetchActiveWeeks() {
     try {
       this.activeWeeks = await fetchActiveWeeks();
+      // A lone active week is already selected in the markup, so treat it as picked
+      if (this.activeWeeks.length === 1) {
+        this.selectedWeek = this.activeWeeks[0].id;
+      }
     } catch (error) {
       console.error('Failed to fetch weeks:', error);
     }
@@ -255,6 +263,17 @@ export class GBBOVote extends LitElement {
 
   getBakerField(name) {
     return GBBOVote.BAKER_FIELDS.find(field => field.name === name);
+  }
+
+  // The baker picks and the submit button only make sense once we know who is voting and for which week
+  get nameAndWeekSelected() {
+    return Boolean(this.selectedName && this.selectedWeek);
+  }
+
+  // Everyone starts on the first baker rather than an empty card to make selection navigation easier
+  resetSelections() {
+    const firstContestant = this.contestants[0] || null;
+    GBBOVote.BAKER_FIELDS.forEach(field => this.setSelection(field.name, firstContestant));
   }
 
   // Keeps the dropdown and the card below it showing the same baker, whichever one was used to pick
@@ -294,19 +313,6 @@ export class GBBOVote extends LitElement {
     return html`
       <div class="form-group">
         <label class="form-label" for="${field.selectId}">${field.label}</label>
-        <select
-          class="form-select"
-          id="${field.selectId}"
-          name="${field.name}"
-          required
-          ?disabled="${noContestants}"
-          @change="${(e) => this.handleSelectChange(field.name, e)}"
-        >
-          <option value="" disabled selected>Select Baker...</option>
-          ${this.contestants.map(contestant => html`
-            <option value="${contestant.id}">${contestant.name}</option>
-          `)}
-        </select>
         <div class="card-stepper">
           <button
             type="button"
@@ -321,6 +327,7 @@ export class GBBOVote extends LitElement {
             .contestant="${selected}"
             .contestants="${this.contestants}"
             .index="${selectedIndex}"
+            .hideName="${true}"
             @contestant-browse="${(e) => this.setSelection(field.name, e.detail.contestant)}">
           </gbbo-contestants-card>
           <button
@@ -333,6 +340,19 @@ export class GBBOVote extends LitElement {
             &rsaquo;
           </button>
         </div>
+        <select
+          class="form-select"
+          id="${field.selectId}"
+          name="${field.name}"
+          required
+          ?disabled="${noContestants}"
+          @change="${(e) => this.handleSelectChange(field.name, e)}"
+        >
+          <option value="" disabled selected>Select Baker...</option>
+          ${this.contestants.map(contestant => html`
+            <option value="${contestant.id}">${contestant.name}</option>
+          `)}
+        </select>
       </div>
     `;
   }
@@ -395,17 +415,19 @@ export class GBBOVote extends LitElement {
               </select>
             </div>
 
-            <div class="form-group-row bakers-row">
-              ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerField(field))}
-            </div>
+            ${this.nameAndWeekSelected ? html`
+              <div class="form-group-row bakers-row">
+                ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerField(field))}
+              </div>
 
-            <primary-button 
-              type="submit" 
-              @click="${this._handleButtonClick}"
-              ?disabled="${this.contestants.length === 0 || this.activeWeeks.length === 0 || this.submitting}"
-            >
-              ${this.submitting ? 'Submitting...' : 'Submit'}
-            </primary-button>
+              <primary-button
+                type="submit"
+                @click="${this._handleButtonClick}"
+                ?disabled="${this.contestants.length === 0 || this.activeWeeks.length === 0 || this.submitting}"
+              >
+                ${this.submitting ? 'Submitting...' : 'Submit'}
+              </primary-button>
+            ` : ''}
           </form>
         ` : ''}
       </gbbo-card>
@@ -429,16 +451,18 @@ export class GBBOVote extends LitElement {
   }
 
   _handleNameAndWeekChange(e) {
-    const formData = new FormData(e.target.form);
-    const votes = {
-      weekId: formData.get('week'),
-      participantId: formData.get('name')
-    };
-    console.log('Votes:', votes);
-    if (votes.weekId && votes.participantId) {
-      console.log('Fetching votes...');
-      this.fetchNomination(votes);
+    if (e.target.name === 'name') {
+      this.selectedName = e.target.value;
+    } else {
+      this.selectedWeek = e.target.value;
     }
+
+    if (!this.nameAndWeekSelected) return;
+
+    // Start from the first baker, then let any vote already cast for this week take over
+    this.resetSelections();
+    console.log('Fetching votes...');
+    this.fetchNomination({ weekId: this.selectedWeek, participantId: this.selectedName });
   }
 
   _handleSubmit(e) {
