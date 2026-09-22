@@ -31,7 +31,7 @@ const SITE_NAME = 'Great Bake Off Bracket';
 
 /** Said about the site when a page does not describe itself */
 const DEFAULT_DESCRIPTION =
-  'A friendly Great British Bake Off bracket. Pick your bakers each week, score points and see who comes out on top.';
+  'On your marks, get set... vote! Pick your bakers, collect your points, and watch the leaderboard rise and fall each week.';
 
 /**
  * The picture that shows up when anyone shares a link.
