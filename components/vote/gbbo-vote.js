@@ -281,11 +281,11 @@ export class GBBOVote extends LitElement {
   }
 
   // The baker picks and the submit button only make sense once we know who is voting and for which week
-  get showBakerFields() {
+  get nameAndWeekSelected() {
     return Boolean(this.selectedName && this.selectedWeek);
   }
 
-  // Everyone starts on the first baker rather than an empty card
+  // Everyone starts on the first baker rather than an empty card to make selection navigation easier
   resetSelections() {
     const firstContestant = this.contestants[0] || null;
     GBBOVote.BAKER_FIELDS.forEach(field => this.setSelection(field.name, firstContestant));
@@ -429,7 +429,7 @@ export class GBBOVote extends LitElement {
               </select>
             </div>
 
-            ${this.showBakerFields ? html`
+            ${this.nameAndWeekSelected ? html`
               <div class="form-group-row bakers-row">
                 ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerField(field))}
               </div>
@@ -471,7 +471,7 @@ export class GBBOVote extends LitElement {
       this.selectedWeek = e.target.value;
     }
 
-    if (!this.showBakerFields) return;
+    if (!this.nameAndWeekSelected) return;
 
     // Start from the first baker, then let any vote already cast for this week take over
     this.resetSelections();
