@@ -12,8 +12,8 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Pick your name and the week first, and the three baker picks appear below. Each pick is
-  a baker's card with arrows either side, starting on the first baker, so you flick through the
-  bakers rather than hunting for a name in a dropdown
+  a baker's card with arrows either side, starting on the first baker, with a dropdown underneath if
+  you would rather pick by name - the card and the dropdown always agree on who is picked
 - **LitElement Components**: Modern, reactive web components using LitElement
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Web Components**: Native browser support with Shadow DOM

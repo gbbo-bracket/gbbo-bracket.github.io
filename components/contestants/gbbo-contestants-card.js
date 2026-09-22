@@ -8,7 +8,8 @@ export class GBBOContestantsCard extends LitElement {
     index: { type: Number },
     withDetailsModal: { type: Boolean },
     modalOpen: { type: Boolean },
-    withResults: { type: Boolean }
+    withResults: { type: Boolean },
+    hideName: { type: Boolean }
   };
 
   static styles = css`
@@ -74,6 +75,7 @@ export class GBBOContestantsCard extends LitElement {
     this.withDetailsModal = false;
     this.modalOpen = false;
     this.withResults = false;
+    this.hideName = false;
   }
 
   openDetailsModal() {
@@ -97,7 +99,7 @@ export class GBBOContestantsCard extends LitElement {
           html`<img class="contestants-image" src="${this.contestant.Image?.[0]?.url}" alt="${this.contestant.name}" />` :
           html`<div class="contestants-image"></div>`
         }
-        <p class="contestants-name">${this.contestant?.name || 'Baker'}</p>
+        ${this.hideName ? '' : html`<p class="contestants-name">${this.contestant?.name || 'Baker'}</p>`}
         ${this.withResults ? html`
           <div class="contestants-results">
             ${this.contestant['Star Baker'] ? html`

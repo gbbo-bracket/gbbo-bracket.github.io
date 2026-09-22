@@ -70,21 +70,6 @@ export class GBBOVote extends LitElement {
       cursor: not-allowed;
     }
 
-    /* The bakers are picked with the cards and the arrows, so the dropdown is hidden from view.
-       It stays in the form so the pick is still submitted and can still be reached by keyboard */
-    .form-select-hidden {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      white-space: nowrap;
-      border: 0;
-    }
-
     /* The baker picks are wide enough to need wrapping before the mobile breakpoint,
        otherwise the last one is cut off by the edge of the card */
     .bakers-row {
@@ -328,19 +313,6 @@ export class GBBOVote extends LitElement {
     return html`
       <div class="form-group">
         <label class="form-label" for="${field.selectId}">${field.label}</label>
-        <select
-          class="form-select form-select-hidden"
-          id="${field.selectId}"
-          name="${field.name}"
-          required
-          ?disabled="${noContestants}"
-          @change="${(e) => this.handleSelectChange(field.name, e)}"
-        >
-          <option value="" disabled selected>Select Baker...</option>
-          ${this.contestants.map(contestant => html`
-            <option value="${contestant.id}">${contestant.name}</option>
-          `)}
-        </select>
         <div class="card-stepper">
           <button
             type="button"
@@ -355,6 +327,7 @@ export class GBBOVote extends LitElement {
             .contestant="${selected}"
             .contestants="${this.contestants}"
             .index="${selectedIndex}"
+            .hideName="${true}"
             @contestant-browse="${(e) => this.setSelection(field.name, e.detail.contestant)}">
           </gbbo-contestants-card>
           <button
@@ -367,6 +340,19 @@ export class GBBOVote extends LitElement {
             &rsaquo;
           </button>
         </div>
+        <select
+          class="form-select"
+          id="${field.selectId}"
+          name="${field.name}"
+          required
+          ?disabled="${noContestants}"
+          @change="${(e) => this.handleSelectChange(field.name, e)}"
+        >
+          <option value="" disabled selected>Select Baker...</option>
+          ${this.contestants.map(contestant => html`
+            <option value="${contestant.id}">${contestant.name}</option>
+          `)}
+        </select>
       </div>
     `;
   }
