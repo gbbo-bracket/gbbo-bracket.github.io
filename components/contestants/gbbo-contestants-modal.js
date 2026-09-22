@@ -263,6 +263,13 @@ export class GBBOContestantsModal extends LitElement {
     this.activeIndex = (this.activeIndex + step + total) % total;
     // Show the next contestant from the top, however far the last one was scrolled
     this.renderRoot.querySelector('.modal-content')?.scrollTo({ top: 0 });
+
+    // Let a page that treats the contestant as a choice, like the vote form, follow along
+    this.dispatchEvent(new CustomEvent('contestant-browse', {
+      detail: { contestant: this.activeContestant, index: this.activeIndex },
+      bubbles: true,
+      composed: true
+    }));
   }
 
   handlePreviousClick() {
