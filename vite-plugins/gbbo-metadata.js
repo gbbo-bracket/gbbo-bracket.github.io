@@ -39,7 +39,7 @@ const DEFAULTS = {
   siteName: 'Great Bake Off Bracket',
   title: '',
   description:
-    'A friendly Great British Bake Off bracket. Pick your bakers each week, score points and see who comes out on top.',
+    'On your marks, get set... vote! Pick your bakers, collect your points, and watch the leaderboard rise and fall each week.',
   image: '/images/series-17.jpg',
   imageWidth: '1200',
   imageHeight: '672',
