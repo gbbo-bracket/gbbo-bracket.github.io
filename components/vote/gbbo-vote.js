@@ -70,6 +70,46 @@ export class GBBOVote extends LitElement {
       cursor: not-allowed;
     }
 
+    /* The baker picks are wide enough to need wrapping before the mobile breakpoint,
+       otherwise the last one is cut off by the edge of the card */
+    .bakers-row {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .bakers-row .form-group {
+      width: auto;
+    }
+
+    .card-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+    }
+
+    .card-step-button {
+      background: none;
+      border: none;
+      font-size: 1.75rem;
+      line-height: 1;
+      color: var(--body-text);
+      cursor: pointer;
+      padding: 0.75rem 0.25rem;
+      border-radius: 0.25rem;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .card-step-button:hover:not(:disabled) {
+      background-color: rgba(190, 228, 210, 0.35);
+      color: var(--heading-text);
+    }
+
+    .card-step-button:disabled {
+      color: rgba(124, 116, 103, 0.35);
+      cursor: not-allowed;
+    }
+
     .error {
       background-color: rgba(247, 198, 217, 0.1);
       border: 1px solid rgba(217, 76, 87, 0.3);
@@ -113,6 +153,13 @@ export class GBBOVote extends LitElement {
       margin-bottom: 0.25rem;
     }
   `;
+
+  // The three baker picks, so the select, the card and the arrows can be rendered from one place
+  static BAKER_FIELDS = [
+    { name: 'starBaker', selectId: 'star-baker', label: 'Star Baker', property: 'selectedStarBaker' },
+    { name: 'technical', selectId: 'technical', label: 'Technical Winner', property: 'selectedTechnical' },
+    { name: 'eliminated', selectId: 'eliminated', label: 'Eliminated', property: 'selectedEliminated' }
+  ];
 
   static properties = {
     contestants: { type: Array },
@@ -184,9 +231,9 @@ export class GBBOVote extends LitElement {
     try {
       const nomination = await fetchNomination(votes);
       console.log('Nomination fetched successfully:', nomination);
-      this.selectedStarBaker = this.getContestantById(nomination.data['Star Baker'][0]);
-      this.selectedTechnical = this.getContestantById(nomination.data['Wins Technical'][0]);
-      this.selectedEliminated = this.getContestantById(nomination.data['Eliminated'][0]);
+      this.setSelection('starBaker', this.getContestantById(nomination.data['Star Baker'][0]));
+      this.setSelection('technical', this.getContestantById(nomination.data['Wins Technical'][0]));
+      this.setSelection('eliminated', this.getContestantById(nomination.data['Eliminated'][0]));
       console.log('Selected star baker:', this.selectedStarBaker);
       console.log('Selected technical:', this.selectedTechnical);
       console.log('Selected eliminated:', this.selectedEliminated);
@@ -206,19 +253,83 @@ export class GBBOVote extends LitElement {
     return this.contestants.find(contestant => contestant.id === id);
   }
 
-  handleStarBakerChange(e) {
-    const selectedId = e.target.value;
-    this.selectedStarBaker = selectedId ? this.getContestantById(selectedId) : null;
+  getBakerField(name) {
+    return GBBOVote.BAKER_FIELDS.find(field => field.name === name);
   }
 
-  handleTechnicalChange(e) {
-    const selectedId = e.target.value;
-    this.selectedTechnical = selectedId ? this.getContestantById(selectedId) : null;
+  // Keeps the dropdown and the card below it showing the same baker, whichever one was used to pick
+  async setSelection(name, contestant) {
+    const field = this.getBakerField(name);
+    this[field.property] = contestant || null;
+
+    await this.updateComplete;
+    const select = this.renderRoot.querySelector(`#${field.selectId}`);
+    if (select) select.value = contestant?.id || '';
   }
 
-  handleEliminatedChange(e) {
+  handleSelectChange(name, e) {
     const selectedId = e.target.value;
-    this.selectedEliminated = selectedId ? this.getContestantById(selectedId) : null;
+    this.setSelection(name, selectedId ? this.getContestantById(selectedId) : null);
+  }
+
+  // Steps to the next or previous baker, starting at either end of the list when nothing is picked
+  stepSelection(name, step) {
+    const total = this.contestants.length;
+    if (total === 0) return;
+
+    const selected = this[this.getBakerField(name).property];
+    const currentIndex = selected ? this.contestants.findIndex(c => c.id === selected.id) : -1;
+    const nextIndex = currentIndex === -1
+      ? (step > 0 ? 0 : total - 1)
+      : (currentIndex + step + total) % total;
+
+    this.setSelection(name, this.contestants[nextIndex]);
+  }
+
+  renderBakerField(field) {
+    const noContestants = this.contestants.length === 0;
+
+    return html`
+      <div class="form-group">
+        <label class="form-label" for="${field.selectId}">${field.label}</label>
+        <select
+          class="form-select"
+          id="${field.selectId}"
+          name="${field.name}"
+          required
+          ?disabled="${noContestants}"
+          @change="${(e) => this.handleSelectChange(field.name, e)}"
+        >
+          <option value="" disabled selected>Select Baker...</option>
+          ${this.contestants.map(contestant => html`
+            <option value="${contestant.id}">${contestant.name}</option>
+          `)}
+        </select>
+        <div class="card-stepper">
+          <button
+            type="button"
+            class="card-step-button"
+            ?disabled="${noContestants}"
+            aria-label="Previous baker for ${field.label}"
+            @click="${() => this.stepSelection(field.name, -1)}"
+          >
+            &lsaquo;
+          </button>
+          <gbbo-contestants-card
+            .contestant="${this[field.property]}">
+          </gbbo-contestants-card>
+          <button
+            type="button"
+            class="card-step-button"
+            ?disabled="${noContestants}"
+            aria-label="Next baker for ${field.label}"
+            @click="${() => this.stepSelection(field.name, 1)}"
+          >
+            &rsaquo;
+          </button>
+        </div>
+      </div>
+    `;
   }
 
   render() {
@@ -279,66 +390,8 @@ export class GBBOVote extends LitElement {
               </select>
             </div>
 
-            <div class="form-group-row">
-              <div class="form-group">
-                <label class="form-label" for="star-baker">Star Baker</label>
-                <select 
-                  class="form-select" 
-                  id="star-baker" 
-                  name="starBaker" 
-                  required 
-                  ?disabled="${this.contestants.length === 0}"
-                  @change="${this.handleStarBakerChange}"
-                >
-                  <option value="" disabled selected>Select Baker...</option>
-                  ${this.contestants.map(contestant => html`
-                    <option value="${contestant.id}">${contestant.name}</option>
-                  `)}
-                </select>
-                <gbbo-contestants-card
-                  .contestant="${this.selectedStarBaker}">
-                </gbbo-contestants-card>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="technical">Technical Winner</label>
-                <select
-                  class="form-select"
-                  id="technical"
-                  name="technical"
-                  required
-                  ?disabled="${this.contestants.length === 0}"
-                  @change="${this.handleTechnicalChange}"
-                >
-                  <option value="" disabled selected>Select Baker...</option>
-                  ${this.contestants.map(contestant => html`
-                    <option value="${contestant.id}">${contestant.name}</option>
-                  `)}
-                </select>
-                <gbbo-contestants-card
-                  .contestant="${this.selectedTechnical}">
-                </gbbo-contestants-card>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="eliminated">Eliminated</label>
-                <select
-                  class="form-select"
-                  id="eliminated"
-                  name="eliminated"
-                  required
-                  ?disabled="${this.contestants.length === 0}"
-                  @change="${this.handleEliminatedChange}"
-                >
-                  <option value="" disabled selected>Select Baker...</option>
-                  ${this.contestants.map(contestant => html`
-                    <option value="${contestant.id}">${contestant.name}</option>
-                  `)}
-                </select>
-                <gbbo-contestants-card
-                  .contestant="${this.selectedEliminated}">
-                </gbbo-contestants-card>
-              </div>
+            <div class="form-group-row bakers-row">
+              ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerField(field))}
             </div>
 
             <primary-button 
