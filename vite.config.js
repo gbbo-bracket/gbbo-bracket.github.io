@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite';
+import gbboMetadata from './vite-plugins/gbbo-metadata.js';
 
 export default defineConfig({
+  // Expands the <gbbo-metadata> tag in each page's <head> into real meta tags
+  plugins: [gbboMetadata()],
   base: './', // This ensures assets use relative paths for GitHub Pages
   root: '.',
   build: {
