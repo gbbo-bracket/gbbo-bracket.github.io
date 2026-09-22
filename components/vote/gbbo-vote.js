@@ -374,6 +374,16 @@ export class GBBOVote extends LitElement {
         ${!this.loading && !this.error && !this.submitSuccess ? html`
           <form class="vote-form" @submit=${this._handleSubmit}>
             <div class="form-group-row">
+              <label class="form-label" for="name">Your Name</label>
+              <select class="form-select" id="name" name="name" required ?disabled="${this.names.length === 0}" @change="${this._handleNameAndWeekChange}">
+                <option value="" disabled selected>Select Your Name...</option>
+                ${this.names.map(name => html`
+                  <option value="${name.id}">${name.name}</option>
+                `)}
+              </select>
+            </div>
+
+            <div class="form-group-row">
               <label class="form-label" for="week">What week?</label>
               <select class="form-select" id="week" name="week" required ?disabled="${this.activeWeeks?.length === 0}" @change="${this._handleNameAndWeekChange}">
                 <option value="" disabled selected>Select Week...</option>
@@ -382,16 +392,6 @@ export class GBBOVote extends LitElement {
                 ` : this.activeWeeks?.map(week => html`
                     <option value="${week.id}">${week.week}</option>
                   `)}
-              </select>
-            </div>
-
-            <div class="form-group-row">
-              <label class="form-label" for="name">Your Name</label>
-              <select class="form-select" id="name" name="name" required ?disabled="${this.names.length === 0}" @change="${this._handleNameAndWeekChange}">
-                <option value="" disabled selected>Select Your Name...</option>
-                ${this.names.map(name => html`
-                  <option value="${name.id}">${name.name}</option>
-                `)}
               </select>
             </div>
 
