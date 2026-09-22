@@ -3,6 +3,7 @@ import '../foundations/card.js';
 import '../foundations/primary-button.js';
 import '../contestants/gbbo-contestants-data.js';
 import '../shared/gbbo-loading-container.js';
+import '../shared/gbbo-callout.js';
 import { fetchContestants } from '../../js/utils/bakers.js';
 import { fetchNames } from '../../js/utils/participants.js';
 import { fetchActiveWeeks } from '../../js/utils/baker-results.js';
@@ -174,7 +175,8 @@ export class GBBOVote extends LitElement {
     selectedWeek: { type: String },
     selectedStarBaker: { type: Object },
     selectedTechnical: { type: Object },
-    selectedEliminated: { type: Object }
+    selectedEliminated: { type: Object },
+    hasExistingVote: { type: Boolean }
   };
 
   constructor() {
@@ -192,6 +194,7 @@ export class GBBOVote extends LitElement {
     this.selectedStarBaker = null;
     this.selectedTechnical = null;
     this.selectedEliminated = null;
+    this.hasExistingVote = false;
   }
 
   connectedCallback() {
@@ -242,10 +245,13 @@ export class GBBOVote extends LitElement {
       this.setSelection('starBaker', this.getContestantById(nomination.data['Star Baker'][0]));
       this.setSelection('technical', this.getContestantById(nomination.data['Wins Technical'][0]));
       this.setSelection('eliminated', this.getContestantById(nomination.data['Eliminated'][0]));
+      // Only a vote we actually loaded should tell the voter they are changing an earlier pick
+      this.hasExistingVote = true;
       console.log('Selected star baker:', this.selectedStarBaker);
       console.log('Selected technical:', this.selectedTechnical);
       console.log('Selected eliminated:', this.selectedEliminated);
     } catch (error) {
+      this.hasExistingVote = false;
       console.error('Error fetching votes:', error);
     }
   }
@@ -272,6 +278,7 @@ export class GBBOVote extends LitElement {
 
   // Everyone starts on the first baker rather than an empty card to make selection navigation easier
   resetSelections() {
+    this.hasExistingVote = false;
     const firstContestant = this.contestants[0] || null;
     GBBOVote.BAKER_FIELDS.forEach(field => this.setSelection(field.name, firstContestant));
   }
@@ -416,6 +423,12 @@ export class GBBOVote extends LitElement {
             </div>
 
             ${this.nameAndWeekSelected ? html`
+              ${this.hasExistingVote ? html`
+                <gbbo-callout
+                  message="You already voted for this week, so we've loaded your picks. Change anything you like and update your votes."
+                ></gbbo-callout>
+              ` : ''}
+
               <div class="form-group-row bakers-row">
                 ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerField(field))}
               </div>
@@ -425,7 +438,7 @@ export class GBBOVote extends LitElement {
                 @click="${this._handleButtonClick}"
                 ?disabled="${this.contestants.length === 0 || this.activeWeeks.length === 0 || this.submitting}"
               >
-                ${this.submitting ? 'Submitting...' : 'Submit'}
+                ${this.submitting ? 'Submitting...' : (this.hasExistingVote ? 'Update votes' : 'Submit')}
               </primary-button>
             ` : ''}
           </form>
