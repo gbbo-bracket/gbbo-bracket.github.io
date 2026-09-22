@@ -288,6 +288,8 @@ export class GBBOVote extends LitElement {
 
   renderBakerField(field) {
     const noContestants = this.contestants.length === 0;
+    const selected = this[field.property];
+    const selectedIndex = selected ? this.contestants.findIndex(c => c.id === selected.id) : 0;
 
     return html`
       <div class="form-group">
@@ -316,7 +318,10 @@ export class GBBOVote extends LitElement {
             &lsaquo;
           </button>
           <gbbo-contestants-card
-            .contestant="${this[field.property]}">
+            .contestant="${selected}"
+            .contestants="${this.contestants}"
+            .index="${selectedIndex}"
+            @contestant-browse="${(e) => this.setSelection(field.name, e.detail.contestant)}">
           </gbbo-contestants-card>
           <button
             type="button"
