@@ -1,15 +1,26 @@
 import { LitElement, html, css } from 'lit';
 import '../foundations/primary-button';
 import './gbbo-region-toggle.js';
+import { US, REGION_CHANGE_EVENT, getRegion } from '../../js/utils/region.js';
+
+// The show goes by a different name either side of the Atlantic, so the title
+// in the nav bar follows whichever region the visitor has picked.
+const TITLES = {
+  UK: 'Great Bake Off Bracket',
+  US: 'Great British Baking Bracket'
+};
 
 export class GBBOHeader extends LitElement {
   static properties = {
-    mobileMenuOpen: { type: Boolean }
+    mobileMenuOpen: { type: Boolean },
+    region: { type: String }
   };
 
   constructor() {
     super();
     this.mobileMenuOpen = false;
+    this.region = getRegion();
+    this.handleRegionChange = this.handleRegionChange.bind(this);
   }
 
   static styles = css`
@@ -189,6 +200,20 @@ export class GBBOHeader extends LitElement {
     }
   `;
 
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+  }
+
+  handleRegionChange(event) {
+    this.region = event.detail.region;
+  }
+
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
   }
@@ -198,7 +223,7 @@ export class GBBOHeader extends LitElement {
       <nav>
         <a href="/" class="logo">
           <div class="emoji">🧁</div>
-          <h1>Great Bake Off Bracket</h1>
+          <h1>${this.region === US ? TITLES.US : TITLES.UK}</h1>
         </a>
         
         <div class="nav-right">
