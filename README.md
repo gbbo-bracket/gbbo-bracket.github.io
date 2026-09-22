@@ -4,7 +4,8 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
 
 ## 🚀 Features
 
-- **UK / US Schedules**: A flag in the nav bar switches the site between UK and US air dates
+- **UK / US Schedules**: A flag in the nav bar switches the site between UK and US air dates, and
+  renames the site to match what the show is called in that region
 - **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points,
   with toggles to look back at how the 2025 and 2024 seasons finished. The home page points at it
   from under its own standings table
