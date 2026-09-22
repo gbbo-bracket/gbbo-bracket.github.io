@@ -70,6 +70,21 @@ export class GBBOVote extends LitElement {
       cursor: not-allowed;
     }
 
+    /* The bakers are picked with the cards and the arrows, so the dropdown is hidden from view.
+       It stays in the form so the pick is still submitted and can still be reached by keyboard */
+    .form-select-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+
     /* The baker picks are wide enough to need wrapping before the mobile breakpoint,
        otherwise the last one is cut off by the edge of the card */
     .bakers-row {
@@ -170,6 +185,8 @@ export class GBBOVote extends LitElement {
     submitting: { type: Boolean },
     submitSuccess: { type: Boolean },
     submitError: { type: String },
+    selectedName: { type: String },
+    selectedWeek: { type: String },
     selectedStarBaker: { type: Object },
     selectedTechnical: { type: Object },
     selectedEliminated: { type: Object }
@@ -185,6 +202,8 @@ export class GBBOVote extends LitElement {
     this.submitting = false;
     this.submitSuccess = false;
     this.submitError = '';
+    this.selectedName = '';
+    this.selectedWeek = '';
     this.selectedStarBaker = null;
     this.selectedTechnical = null;
     this.selectedEliminated = null;
@@ -222,6 +241,10 @@ export class GBBOVote extends LitElement {
   async fetchActiveWeeks() {
     try {
       this.activeWeeks = await fetchActiveWeeks();
+      // A lone active week is already selected in the markup, so treat it as picked
+      if (this.activeWeeks.length === 1) {
+        this.selectedWeek = this.activeWeeks[0].id;
+      }
     } catch (error) {
       console.error('Failed to fetch weeks:', error);
     }
@@ -255,6 +278,17 @@ export class GBBOVote extends LitElement {
 
   getBakerField(name) {
     return GBBOVote.BAKER_FIELDS.find(field => field.name === name);
+  }
+
+  // The baker picks and the submit button only make sense once we know who is voting and for which week
+  get showBakerFields() {
+    return Boolean(this.selectedName && this.selectedWeek);
+  }
+
+  // Everyone starts on the first baker rather than an empty card
+  resetSelections() {
+    const firstContestant = this.contestants[0] || null;
+    GBBOVote.BAKER_FIELDS.forEach(field => this.setSelection(field.name, firstContestant));
   }
 
   // Keeps the dropdown and the card below it showing the same baker, whichever one was used to pick
@@ -295,7 +329,7 @@ export class GBBOVote extends LitElement {
       <div class="form-group">
         <label class="form-label" for="${field.selectId}">${field.label}</label>
         <select
-          class="form-select"
+          class="form-select form-select-hidden"
           id="${field.selectId}"
           name="${field.name}"
           required
@@ -395,17 +429,19 @@ export class GBBOVote extends LitElement {
               </select>
             </div>
 
-            <div class="form-group-row bakers-row">
-              ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerField(field))}
-            </div>
+            ${this.showBakerFields ? html`
+              <div class="form-group-row bakers-row">
+                ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerField(field))}
+              </div>
 
-            <primary-button 
-              type="submit" 
-              @click="${this._handleButtonClick}"
-              ?disabled="${this.contestants.length === 0 || this.activeWeeks.length === 0 || this.submitting}"
-            >
-              ${this.submitting ? 'Submitting...' : 'Submit'}
-            </primary-button>
+              <primary-button
+                type="submit"
+                @click="${this._handleButtonClick}"
+                ?disabled="${this.contestants.length === 0 || this.activeWeeks.length === 0 || this.submitting}"
+              >
+                ${this.submitting ? 'Submitting...' : 'Submit'}
+              </primary-button>
+            ` : ''}
           </form>
         ` : ''}
       </gbbo-card>
@@ -429,16 +465,18 @@ export class GBBOVote extends LitElement {
   }
 
   _handleNameAndWeekChange(e) {
-    const formData = new FormData(e.target.form);
-    const votes = {
-      weekId: formData.get('week'),
-      participantId: formData.get('name')
-    };
-    console.log('Votes:', votes);
-    if (votes.weekId && votes.participantId) {
-      console.log('Fetching votes...');
-      this.fetchNomination(votes);
+    if (e.target.name === 'name') {
+      this.selectedName = e.target.value;
+    } else {
+      this.selectedWeek = e.target.value;
     }
+
+    if (!this.showBakerFields) return;
+
+    // Start from the first baker, then let any vote already cast for this week take over
+    this.resetSelections();
+    console.log('Fetching votes...');
+    this.fetchNomination({ weekId: this.selectedWeek, participantId: this.selectedName });
   }
 
   _handleSubmit(e) {
