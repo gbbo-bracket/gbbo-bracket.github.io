@@ -232,6 +232,7 @@ export class GBBOHeader extends LitElement {
             <li><a href="/rules">Rules</a></li>
             <li><a href="/contestants">Contestants</a></li>
             <li><a href="/standings">Standings</a></li>
+            <li><gbbo-region-toggle></gbbo-region-toggle></li>
             <li><primary-button href="/vote">Vote now</primary-button></li>
           </ul>
           
@@ -251,7 +252,6 @@ export class GBBOHeader extends LitElement {
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
             <li><a href="/standings" @click="${this.toggleMobileMenu}">Standings</a></li>
-            <li><a href="/finals" @click="${this.toggleMobileMenu}">Pick your finalists</a></li>
             <li><primary-button href="/vote" @click="${this.toggleMobileMenu}">Vote now</primary-button></li>
           </ul>
         </div>
