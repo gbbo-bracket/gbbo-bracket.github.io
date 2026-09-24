@@ -92,9 +92,15 @@ export class GBBOStandings extends LitElement {
       transition: background-color 0.2s ease;
     }
 
-    .picks-cell {
+    /* .picks-cell stays a plain table-cell (no display override) so it
+       matches the row height and vertical-centering every other <td> gets
+       automatically - giving it display:flex directly used to pull it out
+       of table layout, leaving it a couple of pixels shorter than its
+       siblings. The flex-wrapping instead lives on this inner element. */
+    .picks-wrap {
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
       gap: 0.4rem;
     }
 
@@ -427,7 +433,9 @@ export class GBBOStandings extends LitElement {
                     </td>
                     <td class="participant-name">${participant.name}</td>
                     ${hasPicks ? html`
-                      <td class="picks-cell">${this.renderPicks(participant.picks)}</td>
+                      <td class="picks-cell">
+                        <div class="picks-wrap">${this.renderPicks(participant.picks)}</div>
+                      </td>
                     ` : ''}
                     <td class="points">${participant.points}</td>
                   </tr>
