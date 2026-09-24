@@ -204,13 +204,16 @@ export class GBBOHeader extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
-    document.addEventListener('click', this.handleOutsideClick);
+    // Capture phase, so this runs before the click reaches whatever it landed
+    // on - otherwise an outside tap would dismiss the menu *and* still open
+    // a modal, follow a link, etc. underneath it
+    document.addEventListener('click', this.handleOutsideClick, true);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
-    document.removeEventListener('click', this.handleOutsideClick);
+    document.removeEventListener('click', this.handleOutsideClick, true);
   }
 
   handleRegionChange(event) {
@@ -218,10 +221,13 @@ export class GBBOHeader extends LitElement {
   }
 
   // Closes the mobile menu when a tap/click lands outside this element, e.g.
-  // anywhere else on the page while the menu is open
+  // anywhere else on the page while the menu is open. Swallows that click so
+  // it only dismisses the menu instead of also acting on whatever it hit.
   handleOutsideClick(event) {
     if (!this.mobileMenuOpen) return;
     if (event.composedPath().includes(this)) return;
+    event.preventDefault();
+    event.stopPropagation();
     this.mobileMenuOpen = false;
   }
 
