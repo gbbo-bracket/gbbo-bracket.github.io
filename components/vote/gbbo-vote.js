@@ -120,7 +120,7 @@ export class GBBOVote extends LitElement {
     }
 
     .week-description.open {
-      max-height: 12rem;
+      max-height: 40rem;
       opacity: 1;
     }
 
