@@ -158,7 +158,7 @@ export class GBBOVote extends LitElement {
     }
 
     .week-messages {
-      padding: 0 0.25rem;
+      padding: 1rem 1.5rem 0;
     }
 
     /* Below the breakpoint there isn't room for three columns, so each field
@@ -442,6 +442,24 @@ export class GBBOVote extends LitElement {
             </primary-button>
           </div>
 
+          ${state.submitSuccess || state.submitError ? html`
+            <div class="week-messages">
+              ${state.submitSuccess ? html`
+                <div class="success">
+                  <div class="success-title">Votes Saved!</div>
+                  <div>Your nominations for this week have been recorded. Thank you for voting!</div>
+                </div>
+              ` : ''}
+
+              ${state.submitError ? html`
+                <div class="submit-error">
+                  <div class="submit-error-title">Error Saving Votes</div>
+                  <div>${state.submitError}</div>
+                </div>
+              ` : ''}
+            </div>
+          ` : ''}
+
           <table class="picks-table">
             <tbody>
               <tr>
@@ -450,24 +468,6 @@ export class GBBOVote extends LitElement {
             </tbody>
           </table>
         </div>
-
-        ${state.submitSuccess || state.submitError ? html`
-          <div class="week-messages">
-            ${state.submitSuccess ? html`
-              <div class="success">
-                <div class="success-title">Votes Saved!</div>
-                <div>Your nominations for this week have been recorded. Thank you for voting!</div>
-              </div>
-            ` : ''}
-
-            ${state.submitError ? html`
-              <div class="submit-error">
-                <div class="submit-error-title">Error Saving Votes</div>
-                <div>${state.submitError}</div>
-              </div>
-            ` : ''}
-          </div>
-        ` : ''}
       </div>
     `;
   }

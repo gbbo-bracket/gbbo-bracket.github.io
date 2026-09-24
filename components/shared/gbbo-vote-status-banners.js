@@ -5,10 +5,11 @@ import { fetchNomination } from '../../js/utils/nominations.js';
 import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
 
 /**
- * Sits below the nav on the home page and nags the current profile to vote.
+ * Sits at the bottom of the next-week card and nags the current profile to vote.
  * One banner per active week: a reminder if that profile hasn't saved a
- * nomination for the week yet, or a confirmation if they have. Shows nothing
- * until a profile is picked, since there's no vote record to check without one.
+ * nomination for the week yet, or a confirmation if they have. Prompts to log
+ * in instead when no profile is picked, since there's no vote record to check
+ * without one.
  */
 export class GBBOVoteStatusBanners extends LitElement {
   static properties = {
@@ -29,12 +30,10 @@ export class GBBOVoteStatusBanners extends LitElement {
       display: block;
       width: 100%;
       box-sizing: border-box;
-      padding: 0 1rem;
     }
 
     .stack {
-      max-width: 72rem;
-      margin: 1rem auto 0 auto;
+      margin-top: 1.5rem;
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -94,7 +93,20 @@ export class GBBOVoteStatusBanners extends LitElement {
   }
 
   render() {
-    if (!this.profile || this.weekStatuses.length === 0) return html``;
+    if (!this.profile) {
+      return html`
+        <div class="stack">
+          <gbbo-banner
+            variant="reminder"
+            message="Log in to make sure you have this week's picks."
+            ctaText="Vote now"
+            ctaHref="/vote"
+          ></gbbo-banner>
+        </div>
+      `;
+    }
+
+    if (this.weekStatuses.length === 0) return html``;
 
     return html`
       <div class="stack">

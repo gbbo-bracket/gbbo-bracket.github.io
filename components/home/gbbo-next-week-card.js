@@ -4,6 +4,7 @@ import { US, REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '..
 import '../foundations/primary-button.js';
 import '../shared/gbbo-loading-container.js';
 import '../shared/gbbo-callout.js';
+import '../shared/gbbo-vote-status-banners.js';
 
 export class GBBONextWeekCard extends LitElement {
   static properties = {
@@ -390,6 +391,7 @@ export class GBBONextWeekCard extends LitElement {
         <div class="next-week-card">
           <h2>That's all for now!</h2>
           <p>All weeks have been completed! Check back for the next season.</p>
+          <gbbo-vote-status-banners></gbbo-vote-status-banners>
         </div>
       `;
     }
@@ -430,6 +432,8 @@ export class GBBONextWeekCard extends LitElement {
         ` : html`
           <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
         `}
+
+        <gbbo-vote-status-banners></gbbo-vote-status-banners>
       </div>
     `;
   }
