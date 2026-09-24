@@ -18,7 +18,8 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   for whoever is picked in Site settings, with a Save button of its own. The three picks - Star
   Baker, Technical Winner, Eliminated - are small pickers you can step through with arrows either
   side, or tap to jump straight to a baker from the full list. If you already voted for a week, your
-  picks are loaded back in automatically
+  picks are loaded back in automatically. If a week has a description, an info icon next to its
+  heading toggles it open and closed
 - **Vote reminders**: A banner under the nav on the home page nags whoever is picked in Site
   settings to vote for any week that's currently open - a light pink warning with a link straight
   to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark

@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, svg } from 'lit';
 import '../foundations/card.js';
 import '../foundations/primary-button.js';
 import '../contestants/gbbo-contestant-picker.js';
@@ -60,12 +60,68 @@ export class GBBOVote extends LitElement {
       border-bottom: 2px solid rgba(247, 198, 217, 0.3);
     }
 
+    .week-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 0;
+    }
+
+    .week-heading-row {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
     .week-heading {
       font-family: inherit;
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--heading-text);
       margin: 0;
+    }
+
+    .info-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.125rem;
+      height: 1.125rem;
+      padding: 0;
+      border: none;
+      background: none;
+      color: var(--heading-text);
+      opacity: 0.55;
+      cursor: pointer;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .info-toggle:hover,
+    .info-toggle:focus-visible {
+      opacity: 1;
+    }
+
+    .info-toggle svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .week-description {
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--body-text);
+      margin: 0;
+      line-height: 1.4;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.25s ease, opacity 0.2s ease;
+    }
+
+    .week-description.open {
+      max-height: 40rem;
+      opacity: 1;
     }
 
     .picks-table {
@@ -196,7 +252,9 @@ export class GBBOVote extends LitElement {
     error: { type: String },
     profile: { type: Object },
     // Keyed by week id: { selectedStarBaker, selectedTechnical, selectedEliminated, submitting, submitSuccess, submitError }
-    weekVotes: { type: Object }
+    weekVotes: { type: Object },
+    // Keyed by week id: whether that week's description is expanded
+    expandedDescriptions: { type: Object }
   };
 
   constructor() {
@@ -209,6 +267,7 @@ export class GBBOVote extends LitElement {
     this.error = '';
     this.profile = null;
     this.weekVotes = {};
+    this.expandedDescriptions = {};
     this.handleProfileChange = this.handleProfileChange.bind(this);
   }
 
@@ -312,6 +371,23 @@ export class GBBOVote extends LitElement {
     this.updateWeekState(weekId, { [property]: contestant });
   }
 
+  toggleDescription(weekId) {
+    this.expandedDescriptions = {
+      ...this.expandedDescriptions,
+      [weekId]: !this.expandedDescriptions[weekId]
+    };
+  }
+
+  renderInfoIcon() {
+    return svg`
+      <svg viewBox="0 0 20 20" role="presentation" aria-hidden="true">
+        <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <line x1="10" y1="9" x2="10" y2="14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="10" cy="6" r="1" fill="currentColor" />
+      </svg>
+    `;
+  }
+
   renderBakerCell(weekId, field, state) {
     return html`
       <td class="pick-cell">
@@ -332,12 +408,31 @@ export class GBBOVote extends LitElement {
   renderWeek(week) {
     const state = this.weekVotes[week.id];
     if (!state) return '';
+    const descriptionOpen = !!this.expandedDescriptions[week.id];
 
     return html`
       <div class="week">
         <div class="week-table">
           <div class="week-header">
-            <h3 class="week-heading">${week.week}</h3>
+            <div class="week-info">
+              <div class="week-heading-row">
+                <h3 class="week-heading">${week.week}</h3>
+                ${week.Description ? html`
+                  <button
+                    type="button"
+                    class="info-toggle"
+                    aria-expanded="${descriptionOpen}"
+                    aria-label="${descriptionOpen ? 'Hide week details' : 'Show week details'}"
+                    @click="${() => this.toggleDescription(week.id)}"
+                  >
+                    ${this.renderInfoIcon()}
+                  </button>
+                ` : ''}
+              </div>
+              ${week.Description ? html`
+                <p class="week-description ${descriptionOpen ? 'open' : ''}">${week.Description}</p>
+              ` : ''}
+            </div>
             <primary-button
               type="button"
               @click="${() => this._handleSubmit(week.id)}"
