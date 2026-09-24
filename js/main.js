@@ -8,7 +8,7 @@ import '../components/foundations/card.js';
 import '../components/foundations/primary-button.js';
 // GBBO Components
 import '../components/shared/gbbo-header.js';
-import '../components/shared/gbbo-region-toggle.js';
+import '../components/shared/gbbo-profile-toggle.js';
 import '../components/home/gbbo-welcome-card.js';
 import '../components/home/gbbo-next-week-card.js';
 import '../components/contestants/gbbo-contestants-data.js';
