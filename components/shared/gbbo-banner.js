@@ -1,10 +1,13 @@
 import { LitElement, html, css } from 'lit';
+import '../foundations/primary-button.js';
 
 export class GBBOBanner extends LitElement {
   static properties = {
     message: { type: String },
     ctaText: { type: String },
-    ctaHref: { type: String }
+    ctaHref: { type: String },
+    // 'reminder' (default) or 'confirmed' - confirmed swaps in a checkmark and a calmer color
+    variant: { type: String }
   };
 
   constructor() {
@@ -12,6 +15,7 @@ export class GBBOBanner extends LitElement {
     this.message = 'Cast your vote for finalists before Week 2!';
     this.ctaText = 'Pick your finalists';
     this.ctaHref = '/finals';
+    this.variant = 'reminder';
   }
 
   static styles = css`
@@ -27,7 +31,11 @@ export class GBBOBanner extends LitElement {
       border-bottom: 1px solid rgba(190, 228, 210, 0.3);
       box-shadow: 0 2px 4px rgba(33, 65, 119, 0.1);
     }
-    
+
+    .banner.confirmed {
+      background: var(--mint-green);
+    }
+
     .banner-content {
       display: flex;
       align-items: center;
@@ -36,12 +44,16 @@ export class GBBOBanner extends LitElement {
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .banner-message {
       font-size: 1rem;
       color: var(--royal-blue);
       font-weight: 500;
       margin: 0;
+    }
+
+    .banner-checkmark {
+      margin-right: 0.35rem;
     }
     
     /* Mobile styles */
@@ -64,9 +76,12 @@ export class GBBOBanner extends LitElement {
 
   render() {
     return html`
-      <div class="banner">
+      <div class="banner ${this.variant === 'confirmed' ? 'confirmed' : ''}">
         <div class="banner-content">
-          <p class="banner-message">${this.message}</p>
+          <p class="banner-message">
+            ${this.variant === 'confirmed' ? html`<span class="banner-checkmark" aria-hidden="true">✓</span>` : ''}
+            ${this.message}
+          </p>
           <primary-button href="${this.ctaHref}" class="banner-cta">${this.ctaText}</primary-button>
         </div>
       </div>
