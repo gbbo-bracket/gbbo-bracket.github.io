@@ -1,6 +1,15 @@
 import { LitElement, html, css } from 'lit';
 import '../shared/gbbo-loading-container.js';
+import '../contestants/gbbo-contestants-modal.js';
 import { airtableService } from '../../js/airtable-service.js';
+
+// The three picks shown per participant on a week/Finals view, and how to
+// label/icon each one - matches the icons already used on the Contestants page
+const PICK_FIELDS = [
+  { key: 'starBaker', icon: '⭐', label: 'Star Baker' },
+  { key: 'technical', icon: '🧁', label: 'Technical Winner' },
+  { key: 'eliminated', icon: '❌', label: 'Eliminated' }
+];
 
 export class GBBOStandings extends LitElement {
   static properties = {
@@ -8,7 +17,9 @@ export class GBBOStandings extends LitElement {
     title: { type: String },
     description: { type: String },
     loading: { type: Boolean },
-    error: { type: String }
+    error: { type: String },
+    modalContestant: { type: Object },
+    modalOpen: { type: Boolean }
   };
 
   constructor() {
@@ -19,6 +30,8 @@ export class GBBOStandings extends LitElement {
     this.description = '';
     this.loading = true;
     this.error = null;
+    this.modalContestant = null;
+    this.modalOpen = false;
   }
 
   static styles = css`
@@ -113,8 +126,27 @@ export class GBBOStandings extends LitElement {
       border-radius: 999px;
       padding: 0.2rem 0.65rem;
       font-size: 0.85rem;
+      font-family: inherit;
       color: var(--body-text);
       white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .pick-tag:hover,
+    .pick-tag:focus-visible {
+      background-color: rgba(169, 208, 245, 0.3);
+      border-color: rgba(169, 208, 245, 0.6);
+    }
+
+    .pick-tag:focus-visible {
+      outline: 2px solid var(--royal-blue);
+      outline-offset: 2px;
+    }
+
+    .pick-tag:disabled {
+      cursor: default;
+      opacity: 0.6;
     }
 
     .no-picks {
@@ -357,16 +389,36 @@ export class GBBOStandings extends LitElement {
     return '';
   }
 
+  // Opens the same baker detail modal the Contestants page uses. No
+  // .contestants list is handed over, so the modal has nothing to browse
+  // between and leaves out its previous/next arrows.
+  openBakerModal(baker) {
+    if (!baker) return;
+    this.modalContestant = baker;
+    this.modalOpen = true;
+  }
+
+  closeBakerModal() {
+    this.modalOpen = false;
+  }
+
   renderPicks(picks) {
     if (!picks) {
       return html`<span class="no-picks">No vote yet</span>`;
     }
 
-    return html`
-      <span class="pick-tag" title="Star Baker">⭐ ${picks.starBaker}</span>
-      <span class="pick-tag" title="Technical Winner">🧁 ${picks.technical}</span>
-      <span class="pick-tag" title="Eliminated">❌ ${picks.eliminated}</span>
-    `;
+    return PICK_FIELDS.map(field => {
+      const baker = picks[field.key];
+      return html`
+        <button
+          type="button"
+          class="pick-tag"
+          title="${field.label}"
+          ?disabled="${!baker}"
+          @click="${() => this.openBakerModal(baker)}"
+        >${field.icon} ${baker?.name || 'Unknown'}</button>
+      `;
+    });
   }
 
   render() {
@@ -445,6 +497,12 @@ export class GBBOStandings extends LitElement {
           </table>
         </div>
       </div>
+
+      <gbbo-contestants-modal
+        .open="${this.modalOpen}"
+        .contestant="${this.modalContestant}"
+        @modal-close="${this.closeBakerModal}"
+      ></gbbo-contestants-modal>
     `;
   }
 }

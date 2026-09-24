@@ -162,9 +162,11 @@ export async function createFinalistNomination({
  * their Star Baker/Technical/Eliminated picks if they voted, for the
  * Standings page's per-week toggles. Participants who haven't been scored
  * for the week yet (or haven't voted at all) show as 0 points with no picks,
- * same as the overall standings do before any points are in.
+ * same as the overall standings do before any points are in. Picks are the
+ * full baker record (not just a name) so Standings can open the same detail
+ * modal the Contestants page uses when one is clicked.
  * @param {string} weekId - Record ID of the week in the baker results table
- * @returns {Promise<Array<{name: string, points: number, picks: ?{starBaker: string, technical: string, eliminated: string}}>>}
+ * @returns {Promise<Array<{name: string, points: number, picks: ?{starBaker: ?Object, technical: ?Object, eliminated: ?Object}}>>}
  */
 export async function fetchWeekStandings(weekId) {
   const [nominationRecords, participants, contestants] = await Promise.all([
@@ -175,8 +177,8 @@ export async function fetchWeekStandings(weekId) {
     fetchContestants()
   ]);
 
-  const bakerNameById = new Map(contestants.map(contestant => [contestant.id, contestant.name]));
-  const getBakerName = id => id ? (bakerNameById.get(id) || 'Unknown baker') : null;
+  const bakerById = new Map(contestants.map(contestant => [contestant.id, contestant]));
+  const getBaker = id => id ? (bakerById.get(id) || null) : null;
 
   const nominationByParticipantId = new Map();
   nominationRecords.forEach(record => {
@@ -195,9 +197,9 @@ export async function fetchWeekStandings(weekId) {
         name: participant.name,
         points: parseInt(nomination?.['Total Points']) || 0,
         picks: hasWeeklyPicks ? {
-          starBaker: getBakerName(nomination['Star Baker']?.[0]),
-          technical: getBakerName(nomination['Wins Technical']?.[0]),
-          eliminated: getBakerName(nomination['Eliminated']?.[0])
+          starBaker: getBaker(nomination['Star Baker']?.[0]),
+          technical: getBaker(nomination['Wins Technical']?.[0]),
+          eliminated: getBaker(nomination['Eliminated']?.[0])
         } : null
       };
     })
