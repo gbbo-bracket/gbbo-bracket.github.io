@@ -41,7 +41,6 @@ export class GBBONextWeekCard extends LitElement {
       padding: 3rem;
       padding-left: calc(3rem + 6px);
       border-radius: 1.5rem;
-      text-align: center;
       box-shadow: 0 25px 50px -12px rgba(33, 65, 119, 0.1);
       border: 1px solid rgba(247, 198, 217, 0.3);
       position: relative;
@@ -159,7 +158,6 @@ export class GBBONextWeekCard extends LitElement {
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 1.5rem;
     }
     
     .countdown-label {
@@ -407,6 +405,12 @@ export class GBBONextWeekCard extends LitElement {
 
     return html`
       <div class="next-week-card">
+        ${this.showingPrevious ? html`
+          <div class="spoiler-banner">Did you catch the latest episode? Vote now to avoid getting spoiled!</div>
+        ` : this.countdownText ? html`
+          <div class="coming-soon-badge">Next episode in ${this.countdownText}</div>
+        ` : ''}
+
         <h2>${title ? title : 'Next Week: Coming Soon'}</h2>
         
         ${description ? html`
@@ -426,16 +430,6 @@ export class GBBONextWeekCard extends LitElement {
         ` : html`
           <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
         `}
-
-        ${this.showingPrevious ? html`
-          <div class="spoiler-banner">Did you catch the latest episode? Vote now to avoid getting spoiled!</div>
-        ` : this.countdownText ? html`
-          <div class="coming-soon-badge">Next episode in ${this.countdownText}</div>
-        ` : ''}
-
-        <div class="card-actions">
-          <primary-button href="/vote">Vote now</primary-button>
-        </div>
       </div>
     `;
   }
