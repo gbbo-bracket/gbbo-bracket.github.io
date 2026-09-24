@@ -28,14 +28,20 @@ export class GBBOVoteStatusBanners extends LitElement {
     :host {
       display: block;
       width: 100%;
+      box-sizing: border-box;
+      padding: 0 1rem;
+    }
+
+    .stack {
+      max-width: 72rem;
+      margin: 1rem auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
     gbbo-banner {
       display: block;
-    }
-
-    gbbo-banner + gbbo-banner {
-      margin-top: 1px;
     }
   `;
 
@@ -91,21 +97,23 @@ export class GBBOVoteStatusBanners extends LitElement {
     if (!this.profile || this.weekStatuses.length === 0) return html``;
 
     return html`
-      ${this.weekStatuses.map(status => status.voted ? html`
-        <gbbo-banner
-          variant="confirmed"
-          message="You've already voted for ${status.week}."
-          ctaText="View your picks"
-          ctaHref="/vote"
-        ></gbbo-banner>
-      ` : html`
-        <gbbo-banner
-          variant="reminder"
-          message="Don't forget to vote for ${status.week}!"
-          ctaText="Vote now"
-          ctaHref="/vote"
-        ></gbbo-banner>
-      `)}
+      <div class="stack">
+        ${this.weekStatuses.map(status => status.voted ? html`
+          <gbbo-banner
+            variant="confirmed"
+            message="You've already voted for ${status.week}."
+            ctaText="View your picks"
+            ctaHref="/vote"
+          ></gbbo-banner>
+        ` : html`
+          <gbbo-banner
+            variant="reminder"
+            message="Don't forget to vote for ${status.week}!"
+            ctaText="Vote now"
+            ctaHref="/vote"
+          ></gbbo-banner>
+        `)}
+      </div>
     `;
   }
 }
