@@ -9,17 +9,19 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   a profile picker so a visitor can pick who they are from the list of participants. Both are
   remembered in the browser instead of a full login - once a profile is picked, the button shows
   that person's name and emoji, and the Vote page shows and saves that person's picks automatically
-- **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points,
-  with toggles to look back at how the 2025 and 2024 seasons finished. The home page points at it
-  from under its own standings table
+- **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points for the
+  current season under a "2026" toggle. Alongside it are toggles for each week that's already aired
+  (plus whichever week is up next), the 2026 Finals, and the final standings from the 2025 and 2024
+  seasons. The home page points at it from under its own standings table
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table
   for whoever is picked in Site settings, with a Save button of its own. The three picks - Star
   Baker, Technical Winner, Eliminated - are small pickers you can step through with arrows either
   side, or tap to jump straight to a baker from the full list. If you already voted for a week, your
-  picks are loaded back in automatically. If a week has a description, an info icon next to its
-  heading toggles it open and closed
+  picks are loaded back in automatically, and saving again updates that same pick rather than adding
+  a duplicate. If a week has a description, an info icon next to its heading toggles it open and
+  closed
 - **Vote reminders**: A banner under the nav on the home page nags whoever is picked in Site
   settings to vote for any week that's currently open - a light pink warning with a link straight
   to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark

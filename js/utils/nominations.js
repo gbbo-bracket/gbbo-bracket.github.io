@@ -1,7 +1,12 @@
 import airtableService from '../airtable-service.js';
+import { fetchNames } from './participants.js';
 
 // Table ID for nominations
 const NOMINATIONS_TABLE_ID = 'tblL01LW4xJwPHfiq';
+
+// Record ID of the Finals week in the baker results table - the finals form
+// nominates against this fixed week rather than one a participant picks
+export const FINALS_WEEK_ID = 'recqnEKzRQ1v1lTke';
 
 // Field IDs for the nominations table
 const FIELD_IDS = {
@@ -13,14 +18,17 @@ const FIELD_IDS = {
 };
 
 /**
- * Create a new nomination record in Airtable
+ * Create or update a participant's nomination for a week in Airtable. A
+ * participant can only have one nomination per week, so if they already have
+ * one it's updated in place (preserving any points an admin has already
+ * scored it with) rather than leaving behind a stale duplicate.
  * @param {Object} nominationData - The nomination data
  * @param {string} nominationData.weekId - Record ID of the week in the baker results table
  * @param {string} nominationData.participantId - Record ID of the participant who is nominating
  * @param {string} nominationData.starBakerId - Record ID of the baker nominated for star baker
  * @param {string} nominationData.technicalId - Record ID of the baker nominated for technical
  * @param {string} nominationData.eliminatedId - Record ID of the baker nominated for eliminated
- * @returns {Promise<Object>} The created nomination record
+ * @returns {Promise<Object>} The created or updated nomination record
  */
 export async function createNomination({
   weekId,
@@ -30,20 +38,11 @@ export async function createNomination({
   eliminatedId
 }) {
   try {
-    console.log('Creating nomination record...');
-    console.log('Input data:', {
-      weekId,
-      participantId,
-      starBakerId,
-      technicalId,
-      eliminatedId
-    });
-    
     // Validate required fields
     if (!weekId || !participantId || !starBakerId || !technicalId || !eliminatedId) {
       throw new Error('Missing required fields for nomination');
     }
-    
+
     // Prepare the fields object with the correct field IDs
     const fields = {
       [FIELD_IDS.week]: [weekId],           // Link to week record
@@ -53,19 +52,33 @@ export async function createNomination({
       [FIELD_IDS.eliminated]: [eliminatedId]    // Link to eliminated baker record
     };
 
-    console.log('Fields:', fields);
-    console.log('Field IDs:', FIELD_IDS);
-    console.log('Table ID:', NOMINATIONS_TABLE_ID);
-    
-    const createdRecord = await airtableService.createRecord(NOMINATIONS_TABLE_ID, fields);
-    
-    console.log('Nomination created successfully:', createdRecord);
-    return createdRecord;
-    
+    return await upsertNomination({ weekId, participantId, fields });
+
   } catch (error) {
-    console.error('Failed to create nomination:', error);
+    console.error('Failed to save nomination:', error);
     throw error;
   }
+}
+
+/**
+ * Create the record if this participant has no nomination for the week yet,
+ * otherwise update their existing one instead of creating a duplicate.
+ */
+async function upsertNomination({ weekId, participantId, fields }) {
+  let existing = null;
+  try {
+    existing = await fetchNomination({ weekId, participantId });
+  } catch (error) {
+    // No existing nomination for this participant/week yet - a new one is created below
+  }
+
+  if (existing) {
+    console.log(`Updating existing nomination ${existing.id}`);
+    return await airtableService.updateRecord(NOMINATIONS_TABLE_ID, existing.id, fields);
+  }
+
+  console.log('Creating new nomination record');
+  return await airtableService.createRecord(NOMINATIONS_TABLE_ID, fields);
 }
 
 /**
@@ -121,39 +134,56 @@ export async function createFinalistNomination({
   finalist2Id,
 }) {
   try {
-    console.log('Creating nomination record...');
-    console.log('Input data:', {
-      participantId,
-      winnerId, 
-      finalist1Id,
-      finalist2Id,
-    });
-    
     // Validate required fields
     if (!participantId || !winnerId || !finalist1Id || !finalist2Id) {
       throw new Error('Missing required fields for nomination');
     }
-    
+
     // Prepare the fields object with the correct field IDs
     const fields = {
-      [FIELD_IDS.week]: ['recqnEKzRQ1v1lTke'],  // Link to week record
+      [FIELD_IDS.week]: [FINALS_WEEK_ID],       // Link to week record
       [FIELD_IDS.participant]: [participantId], // Link to participant record
       'fldsc0oULKrEs8wDZ': [winnerId],        // Link to winner record
       'fldOugexvoVFbEAHx': [finalist1Id],     // Link to finalist1 record
       'fld6vuk7h63FT9PV0': [finalist2Id]      // Link to finalist2 record
     };
 
-    console.log('Fields:', fields);
-    console.log('Field IDs:', FIELD_IDS);
-    console.log('Table ID:', NOMINATIONS_TABLE_ID);
-    
-    const createdRecord = await airtableService.createRecord(NOMINATIONS_TABLE_ID, fields);
-    
-    console.log('Nomination created successfully:', createdRecord);
-    return createdRecord;
-    
+    return await upsertNomination({ weekId: FINALS_WEEK_ID, participantId, fields });
+
   } catch (error) {
-    console.error('Failed to create nomination:', error);
+    console.error('Failed to save finalist nomination:', error);
     throw error;
   }
+}
+
+/**
+ * The points every participant scored for a given week (or Finals), for the
+ * Standings page's per-week toggles. Participants who haven't been scored
+ * for the week yet (or haven't voted at all) show as 0, same as the overall
+ * standings do before any points are in.
+ * @param {string} weekId - Record ID of the week in the baker results table
+ * @returns {Promise<Array<{name: string, points: number}>>} Sorted standings for that week
+ */
+export async function fetchWeekStandings(weekId) {
+  const [nominationRecords, participants] = await Promise.all([
+    airtableService.fetchFilteredRecords({
+      filterByFormula: `{Week Record ID} = "${weekId}"`
+    }, NOMINATIONS_TABLE_ID),
+    fetchNames()
+  ]);
+
+  const pointsByParticipantId = new Map();
+  nominationRecords.forEach(record => {
+    const participantId = record.data['Participant']?.[0];
+    if (participantId) {
+      pointsByParticipantId.set(participantId, parseInt(record.data['Total Points']) || 0);
+    }
+  });
+
+  return participants
+    .map(participant => ({
+      name: participant.name,
+      points: pointsByParticipantId.get(participant.id) || 0
+    }))
+    .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
 }
