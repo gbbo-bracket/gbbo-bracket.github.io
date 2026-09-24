@@ -14,13 +14,18 @@ import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
 export class GBBOVoteStatusBanners extends LitElement {
   static properties = {
     profile: { type: Object },
-    // [{ id, week, voted }] for each active week
+    // When set, only that week's status is shown (if it's currently open for
+    // voting) instead of one banner per active week - lets a caller like the
+    // next-week card keep this in sync with whichever week it's displaying.
+    weekId: { type: String },
+    // [{ id, week, voted }] for each active week (or just the given weekId)
     weekStatuses: { type: Array }
   };
 
   constructor() {
     super();
     this.profile = getProfile();
+    this.weekId = '';
     this.weekStatuses = [];
     this.handleProfileChange = this.handleProfileChange.bind(this);
   }
@@ -55,6 +60,12 @@ export class GBBOVoteStatusBanners extends LitElement {
     window.removeEventListener(PROFILE_CHANGE_EVENT, this.handleProfileChange);
   }
 
+  updated(changedProperties) {
+    // Once a caller's own data has loaded in and it hands us the week to
+    // scope to (or switches which week that is), re-check status for it
+    if (changedProperties.has('weekId')) this.loadWeekStatuses();
+  }
+
   async handleProfileChange(event) {
     this.profile = event.detail.profile;
     await this.loadWeekStatuses();
@@ -67,17 +78,24 @@ export class GBBOVoteStatusBanners extends LitElement {
     }
 
     const profileAtRequest = this.profile;
+    const weekIdAtRequest = this.weekId;
 
     try {
       const activeWeeks = await fetchActiveWeeks();
-      const weekStatuses = await Promise.all(activeWeeks.map(async week => ({
+      const weeksToCheck = weekIdAtRequest
+        ? activeWeeks.filter(week => week.id === weekIdAtRequest)
+        : activeWeeks;
+      const weekStatuses = await Promise.all(weeksToCheck.map(async week => ({
         id: week.id,
         week: week.week,
         voted: await this.hasVoted(week.id, profileAtRequest.id)
       })));
 
-      // The profile may have changed again while these requests were in flight
-      if (this.profile === profileAtRequest) this.weekStatuses = weekStatuses;
+      // The profile or the week we're scoped to may have changed again while
+      // these requests were in flight
+      if (this.profile === profileAtRequest && this.weekId === weekIdAtRequest) {
+        this.weekStatuses = weekStatuses;
+      }
     } catch (error) {
       console.error('Failed to load vote status banners:', error);
     }

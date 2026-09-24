@@ -433,7 +433,7 @@ export class GBBONextWeekCard extends LitElement {
           <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
         `}
 
-        <gbbo-vote-status-banners></gbbo-vote-status-banners>
+        <gbbo-vote-status-banners .weekId="${displayWeek.id}"></gbbo-vote-status-banners>
       </div>
     `;
   }
