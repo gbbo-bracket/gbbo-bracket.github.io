@@ -8,17 +8,17 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   that switches air dates and renames the site to match what the show is called in that region, and
   a profile picker so a visitor can pick who they are from the list of participants. Both are
   remembered in the browser instead of a full login - once a profile is picked, the button shows
-  that person's name and emoji, and the Vote page pre-selects their name automatically
+  that person's name and emoji, and the Vote page shows and saves that person's picks automatically
 - **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points,
   with toggles to look back at how the 2025 and 2024 seasons finished. The home page points at it
   from under its own standings table
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
-- **Voting**: Pick your name and the week first, and the three baker picks appear below. Each pick is
-  a baker's card with arrows either side, starting on the first baker, with a dropdown underneath if
-  you would rather pick by name - the card and the dropdown always agree on who is picked. If you
-  already voted for that week, the form loads your picks back in, says so in a message above them,
-  and the button reads "Update votes" instead of "Submit"
+- **Voting**: Every week currently open for voting loads on the page at once, each in its own table
+  for whoever is picked in Site settings, with a Save button of its own. The three picks - Star
+  Baker, Technical Winner, Eliminated - are small pickers you can step through with arrows either
+  side, or tap to jump straight to a baker from the full list. If you already voted for a week, your
+  picks are loaded back in automatically
 - **LitElement Components**: Modern, reactive web components using LitElement
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Web Components**: Native browser support with Shadow DOM
