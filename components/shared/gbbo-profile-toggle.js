@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import './gbbo-region-toggle.js';
 import { fetchNames } from '../../js/utils/participants.js';
 import { PROFILE_CHANGE_EVENT, getProfile, setProfile } from '../../js/utils/profile.js';
 
@@ -6,10 +7,10 @@ import { PROFILE_CHANGE_EVENT, getProfile, setProfile } from '../../js/utils/pro
 const EMPTY_PROFILE_EMOJI = '👤';
 
 /**
- * A button in the nav bar, styled to match the UK/US flag toggle, that lets a
- * visitor pick which participant they are. The choice is remembered in
- * localStorage instead of a real login, and other components - like the vote
- * form - read it to pre-fill who is voting.
+ * The nav bar's site settings button. Opens a pop-up where a visitor can
+ * switch the UK/US region and pick which participant they are. The profile
+ * choice is remembered in localStorage instead of a real login, and other
+ * components - like the vote form - read it to pre-fill who is voting.
  */
 export class GBBOProfileToggle extends LitElement {
   static properties = {
@@ -148,6 +149,10 @@ export class GBBOProfileToggle extends LitElement {
       margin: 0;
     }
 
+    gbbo-region-toggle {
+      margin: 0 0.75rem 1rem 0.75rem;
+    }
+
     .participant-list {
       list-style: none;
       margin: 0;
@@ -274,6 +279,9 @@ export class GBBOProfileToggle extends LitElement {
             <button class="modal-close-button" @click="${this.closeModal}" aria-label="Close">✕</button>
           </div>
           <div class="modal-body">
+            <p class="modal-hint">Regional preference</p>
+            <gbbo-region-toggle></gbbo-region-toggle>
+
             ${this.loading ? html`<div class="modal-status">Loading participants...</div>` : ''}
             ${this.error ? html`<div class="modal-status">${this.error}</div>` : ''}
             ${!this.loading && !this.error ? html`
