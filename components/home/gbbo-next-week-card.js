@@ -8,18 +8,22 @@ import '../shared/gbbo-callout.js';
 export class GBBONextWeekCard extends LitElement {
   static properties = {
     nextWeek: { type: Object },
+    previousWeek: { type: Object },
     loading: { type: Boolean },
     error: { type: String },
     countdownText: { type: String },
+    showingPrevious: { type: Boolean },
     region: { type: String }
   };
 
   constructor() {
     super();
     this.nextWeek = null;
+    this.previousWeek = null;
     this.loading = false;
     this.error = '';
     this.countdownText = '';
+    this.showingPrevious = false;
     this.countdownInterval = null;
     this.region = getRegion();
     this.records = [];
@@ -165,6 +169,15 @@ export class GBBONextWeekCard extends LitElement {
       letter-spacing: 0.05em;
       font-weight: 600;
     }
+
+    .spoiler-banner {
+      background-color: var(--icing-pink);
+      color: var(--royal-blue);
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
     
     .card-actions {
       display: flex;
@@ -223,20 +236,26 @@ export class GBBONextWeekCard extends LitElement {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // Reset time to start of day for comparison
     
-    const upcomingWeeks = this.records
+    const weeksWithDates = this.records
       .map(record => ({
         ...record,
         parsedAirDate: parseAirDate(getAirDate(record.data, this.region))
       }))
-      .filter(record => {
-        // Only include real dates that are today or in the future
-        return !isNaN(record.parsedAirDate) && record.parsedAirDate >= today;
-      })
-      .sort((a, b) => a.parsedAirDate - b.parsedAirDate);
-    
-    // Get the next upcoming week (earliest future date)
-    const nextWeek = upcomingWeeks[0];
-    
+      .filter(record => !isNaN(record.parsedAirDate));
+
+    // Get the next upcoming week (earliest date today or later)
+    const nextWeek = weeksWithDates
+      .filter(record => record.parsedAirDate >= today)
+      .sort((a, b) => a.parsedAirDate - b.parsedAirDate)[0];
+
+    // Get the most recently aired week (latest date before today), used when
+    // the next episode hasn't been picked yet - see updateCountdown()
+    const previousWeek = weeksWithDates
+      .filter(record => record.parsedAirDate < today)
+      .sort((a, b) => b.parsedAirDate - a.parsedAirDate)[0];
+
+    this.previousWeek = previousWeek || null;
+
     if (nextWeek) {
       this.nextWeek = nextWeek;
       this.error = '';
@@ -244,6 +263,7 @@ export class GBBONextWeekCard extends LitElement {
       this.startCountdown();
     } else {
       this.nextWeek = null;
+      this.showingPrevious = false;
       this.countdownText = '';
       if (this.countdownInterval) {
         clearInterval(this.countdownInterval);
@@ -300,6 +320,7 @@ export class GBBONextWeekCard extends LitElement {
   updateCountdown() {
     if (!this.nextWeek?.parsedAirDate) {
       this.countdownText = '';
+      this.showingPrevious = false;
       return;
     }
 
@@ -307,8 +328,20 @@ export class GBBONextWeekCard extends LitElement {
 
     const now = new Date();
     const timeDiff = targetDate.getTime() - now.getTime();
+    const oneDayInMs = 24 * 60 * 60 * 1000;
+
+    // Episodes air weekly, ~7 days apart. If the next one is still more than
+    // 6 days out, the previous episode aired less than 24 hours ago - show
+    // that episode instead of counting down to the following week.
+    if (timeDiff > 6 * oneDayInMs && this.previousWeek) {
+      this.showingPrevious = true;
+      this.countdownText = '';
+      return;
+    }
+    this.showingPrevious = false;
+
     const oneHourInMs = 60 * 60 * 1000;
-    
+
     if (Math.abs(timeDiff) <= oneHourInMs) {
       this.countdownText = 'Episode is live!';
       if (this.countdownInterval) {
@@ -363,7 +396,8 @@ export class GBBONextWeekCard extends LitElement {
       `;
     }
 
-    const { data } = this.nextWeek;
+    const displayWeek = this.showingPrevious && this.previousWeek ? this.previousWeek : this.nextWeek;
+    const { data } = displayWeek;
     const title = data.Title || '';
     const description = data.Description || '';
     const trailerUrl = data.Trailer || '';
@@ -393,7 +427,9 @@ export class GBBONextWeekCard extends LitElement {
           <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
         `}
 
-        ${this.countdownText ? html`
+        ${this.showingPrevious ? html`
+          <div class="spoiler-banner">Did you catch the latest episode? Vote now to avoid getting spoiled!</div>
+        ` : this.countdownText ? html`
           <div class="coming-soon-badge">Next episode in ${this.countdownText}</div>
         ` : ''}
 
