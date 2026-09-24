@@ -350,13 +350,19 @@ export class GBBONextWeekCard extends LitElement {
       return;
     }
 
-    const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    // More than a day out, a day-level count reads calmer than a ticking
+    // clock - drop straight to "X days" instead of the full breakdown
+    if (timeDiff > oneDayInMs) {
+      const days = Math.floor(timeDiff / oneDayInMs);
+      this.countdownText = `${days} day${days === 1 ? '' : 's'}`;
+      return;
+    }
+
     const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
     let countdownParts = [];
-    if (days > 0) countdownParts.push(`${days}d`);
     if (hours > 0) countdownParts.push(`${hours}h`);
     if (minutes > 0) countdownParts.push(`${minutes}m`);
     if (seconds > 0) countdownParts.push(`${seconds}s`);
