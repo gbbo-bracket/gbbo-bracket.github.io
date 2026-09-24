@@ -8,6 +8,7 @@ import { fetchContestants } from '../../js/utils/bakers.js';
 import { fetchNames } from '../../js/utils/participants.js';
 import { fetchActiveWeeks } from '../../js/utils/baker-results.js';
 import { createNomination, fetchNomination } from '../../js/utils/nominations.js';
+import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
 
 export class GBBOVote extends LitElement {
   static styles = css`
@@ -195,13 +196,20 @@ export class GBBOVote extends LitElement {
     this.selectedTechnical = null;
     this.selectedEliminated = null;
     this.hasExistingVote = false;
+    this.handleProfileChange = this.handleProfileChange.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
+    window.addEventListener(PROFILE_CHANGE_EVENT, this.handleProfileChange);
     this.fetchContestants();
-    this.fetchNames();
-    this.fetchActiveWeeks();
+    // The name/week auto-select from the profile depends on both having loaded
+    Promise.all([this.fetchNames(), this.fetchActiveWeeks()]).then(() => this.applyProfile(getProfile()));
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener(PROFILE_CHANGE_EVENT, this.handleProfileChange);
   }
 
   async fetchContestants() {
@@ -254,6 +262,26 @@ export class GBBOVote extends LitElement {
       this.hasExistingVote = false;
       console.error('Error fetching votes:', error);
     }
+  }
+
+  // Pre-fills the Name select from the profile picked in the header, the same way
+  // choosing it from the dropdown would
+  applyProfile(profile) {
+    if (!profile) return;
+
+    const match = this.names.find(name => name.id === profile.id);
+    if (!match) return;
+
+    this.selectedName = match.id;
+
+    if (!this.nameAndWeekSelected) return;
+
+    this.resetSelections();
+    this.fetchNomination({ weekId: this.selectedWeek, participantId: this.selectedName });
+  }
+
+  handleProfileChange(event) {
+    this.applyProfile(event.detail.profile);
   }
 
   async handleRetry() {
@@ -402,7 +430,7 @@ export class GBBOVote extends LitElement {
           <form class="vote-form" @submit=${this._handleSubmit}>
             <div class="form-group-row">
               <label class="form-label" for="name">Your Name</label>
-              <select class="form-select" id="name" name="name" required ?disabled="${this.names.length === 0}" @change="${this._handleNameAndWeekChange}">
+              <select class="form-select" id="name" name="name" required ?disabled="${this.names.length === 0}" .value="${this.selectedName}" @change="${this._handleNameAndWeekChange}">
                 <option value="" disabled selected>Select Your Name...</option>
                 ${this.names.map(name => html`
                   <option value="${name.id}">${name.name}</option>
