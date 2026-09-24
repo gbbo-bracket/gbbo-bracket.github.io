@@ -13,15 +13,13 @@
     <div class="min-h-screen flex flex-col md:container md:mx-auto md:px-8 md:py-8">
         <!-- GBBO Header Component -->
         <gbbo-header></gbbo-header>
-        
+
+        <!-- Vote reminders for the current profile -->
+        <gbbo-vote-status-banners></gbbo-vote-status-banners>
+
         <!-- Main Content -->
         <main class="container mx-auto px-4 py-8 flex-1 flex flex-col items-center justify-start max-w-6xl">
             <gbbo-next-week-card></gbbo-next-week-card>
-            <gbbo-callout
-                message="Missed a week? Don't get spoiled!"
-                link-text="Vote now"
-                link-href="/vote"
-            ></gbbo-callout>
             <br/>
             <gbbo-standings title="Current Standings" description="Who will reign? Who will be redeemed?"></gbbo-standings>
             <gbbo-callout

@@ -4,7 +4,9 @@ export class GBBOBanner extends LitElement {
   static properties = {
     message: { type: String },
     ctaText: { type: String },
-    ctaHref: { type: String }
+    ctaHref: { type: String },
+    // 'reminder' (default) or 'confirmed' - confirmed swaps in a checkmark and a calmer color
+    variant: { type: String }
   };
 
   constructor() {
@@ -12,63 +14,62 @@ export class GBBOBanner extends LitElement {
     this.message = 'Cast your vote for finalists before Week 2!';
     this.ctaText = 'Pick your finalists';
     this.ctaHref = '/finals';
+    this.variant = 'reminder';
   }
 
+  // Styled like gbbo-callout - a neutral box for a confirmed vote, with a
+  // very light pink "warning" tint when the profile still needs to vote
   static styles = css`
     :host {
       display: block;
       width: 100%;
+      box-sizing: border-box;
     }
-    
+
     .banner {
-      background: var(--icing-pink);
-      padding: 1rem 2rem;
+      padding: 1rem 1.5rem;
+      background-color: rgba(255, 253, 245, 0.75);
+      border: 1px solid rgba(247, 198, 217, 0.5);
+      border-radius: 1rem;
       text-align: center;
-      border-bottom: 1px solid rgba(190, 228, 210, 0.3);
-      box-shadow: 0 2px 4px rgba(33, 65, 119, 0.1);
-    }
-    
-    .banner-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    
-    .banner-message {
       font-size: 1rem;
-      color: var(--royal-blue);
-      font-weight: 500;
-      margin: 0;
+      color: var(--body-text);
     }
-    
-    /* Mobile styles */
-    @media (max-width: 768px) {
+
+    .banner.reminder {
+      background-color: rgba(247, 198, 217, 0.85);
+    }
+
+    .banner-checkmark {
+      margin-right: 0.35rem;
+    }
+
+    a.banner-cta {
+      color: var(--link-text);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    a.banner-cta:hover {
+      color: var(--link-text-on-hover);
+    }
+
+    @media (max-width: 640px) {
       .banner {
-        padding: 1.5rem;
-      }
-      
-      .banner-content {
-        flex-direction: column;
-        gap: 0.75rem;
-      }
-      
-      .banner-message {
-        font-size: 1rem;
-        margin-bottom: .5rem;
+        font-size: 0.9375rem;
+        padding: 1rem;
       }
     }
   `;
 
   render() {
     return html`
-      <div class="banner">
-        <div class="banner-content">
-          <p class="banner-message">${this.message}</p>
-          <primary-button href="${this.ctaHref}" class="banner-cta">${this.ctaText}</primary-button>
-        </div>
+      <div class="banner ${this.variant === 'confirmed' ? 'confirmed' : 'reminder'}">
+        ${this.variant === 'confirmed' ? html`<span class="banner-checkmark" aria-hidden="true">✓</span>` : ''}
+        ${this.message}
+        ${this.ctaText && this.ctaHref ? html`
+          <a class="banner-cta" href="${this.ctaHref}">${this.ctaText}</a>
+        ` : ''}
       </div>
     `;
   }
