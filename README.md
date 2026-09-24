@@ -12,7 +12,9 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
 - **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points for the
   current season under a "2026" toggle. Alongside it are toggles for each week that's already aired
   (plus whichever week is up next), the 2026 Finals, and the final standings from the 2025 and 2024
-  seasons. The home page points at it from under its own standings table
+  seasons. Switching to a week or Finals also shows each person's Star Baker, Technical Winner and
+  Eliminated picks for that week, stacking into their own row on mobile so the table stays readable
+  on a phone. The home page points at it from under its own standings table
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table

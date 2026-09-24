@@ -92,6 +92,32 @@ export class GBBOStandings extends LitElement {
       transition: background-color 0.2s ease;
     }
 
+    .picks-cell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .pick-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background-color: rgba(169, 208, 245, 0.15);
+      border: 1px solid rgba(169, 208, 245, 0.35);
+      border-radius: 999px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.85rem;
+      color: var(--body-text);
+      white-space: nowrap;
+    }
+
+    .no-picks {
+      font-size: 0.85rem;
+      color: var(--body-text);
+      opacity: 0.6;
+      font-style: italic;
+    }
+
     tr:hover td {
       background-color: rgba(190, 228, 210, 0.1);
     }
@@ -162,18 +188,63 @@ export class GBBOStandings extends LitElement {
       }
     }
 
+    /* Below the breakpoint there isn't room for a Rank/Participant/Picks/Points
+       row of columns, so each participant becomes its own stacked card:
+       rank, name and points on one line, picks wrapping onto their own line
+       below instead of squeezing into a fifth narrow column. */
     @media (max-width: 640px) {
-      th, td {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.9rem;
-      }
-
       .standings-title {
         font-size: 1.75rem;
       }
 
+      thead {
+        display: none;
+      }
+
+      table, tbody {
+        display: block;
+        width: 100%;
+      }
+
+      tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 0.75rem;
+        row-gap: 0.5rem;
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid rgba(190, 228, 210, 0.3);
+      }
+
+      tr:last-child {
+        border-bottom: none;
+      }
+
+      td {
+        display: block;
+        padding: 0;
+        border-bottom: none;
+        font-size: 0.9rem;
+      }
+
+      .rank {
+        order: 1;
+        width: auto;
+      }
+
       .participant-name {
+        order: 2;
         font-size: 1rem;
+      }
+
+      .points {
+        order: 3;
+        margin-left: auto;
+      }
+
+      .picks-cell {
+        order: 4;
+        flex-basis: 100%;
       }
     }
   `;
@@ -280,6 +351,18 @@ export class GBBOStandings extends LitElement {
     return '';
   }
 
+  renderPicks(picks) {
+    if (!picks) {
+      return html`<span class="no-picks">No vote yet</span>`;
+    }
+
+    return html`
+      <span class="pick-tag" title="Star Baker">⭐ ${picks.starBaker}</span>
+      <span class="pick-tag" title="Technical Winner">🧁 ${picks.technical}</span>
+      <span class="pick-tag" title="Eliminated">❌ ${picks.eliminated}</span>
+    `;
+  }
+
   render() {
     if (this.loading) {
       return html`
@@ -309,19 +392,25 @@ export class GBBOStandings extends LitElement {
       `;
     }
 
+    // Only the per-week and Finals toggles hand over picks alongside points -
+    // the live season total and the archived years don't have a single set
+    // of picks to show, so the column is left out entirely for those.
+    const hasPicks = this.standings.some(participant => participant.picks);
+
     return html`
       <div class="standings-container">
         <div class="standings-header">
           <h1 class="standings-title">${this.title}</h1>
           <p class="standings-subtitle">${this.description}</p>
         </div>
-        
+
         <div class="glass-card standings-table">
           <table>
             <thead>
               <tr>
                 <th>Rank</th>
                 <th>Participant</th>
+                ${hasPicks ? html`<th>Picks</th>` : ''}
                 <th>Total Points</th>
               </tr>
             </thead>
@@ -329,7 +418,7 @@ export class GBBOStandings extends LitElement {
               ${this.standings.map((participant, index) => {
                 const { rank, medal } = this.getRankDisplay(index);
                 const rankClass = this.getRankClass(index);
-                
+
                 return html`
                   <tr>
                     <td class="rank ${rankClass}">
@@ -337,6 +426,9 @@ export class GBBOStandings extends LitElement {
                       ${rank}
                     </td>
                     <td class="participant-name">${participant.name}</td>
+                    ${hasPicks ? html`
+                      <td class="picks-cell">${this.renderPicks(participant.picks)}</td>
+                    ` : ''}
                     <td class="points">${participant.points}</td>
                   </tr>
                 `;
