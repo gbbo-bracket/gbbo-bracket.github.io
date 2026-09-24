@@ -307,7 +307,7 @@ export class GBBOVote extends LitElement {
   // Sets every active week back to the first baker, then lets any vote this profile
   // already cast for that week take over once it has loaded
   async initializeWeekVotes() {
-    const firstContestant = this.contestants[0] || null;
+    const firstContestant = this.activeContestants[0] || null;
     const weekVotes = {};
     this.activeWeeks.forEach(week => {
       weekVotes[week.id] = {
@@ -343,7 +343,7 @@ export class GBBOVote extends LitElement {
     // The initial load already applies whichever profile is saved once it finishes
     if (this.loading) return;
 
-    const firstContestant = this.contestants[0] || null;
+    const firstContestant = this.activeContestants[0] || null;
     this.activeWeeks.forEach(week => this.updateWeekState(week.id, {
       selectedStarBaker: firstContestant,
       selectedTechnical: firstContestant,
@@ -359,6 +359,12 @@ export class GBBOVote extends LitElement {
   // Method to find contestant by ID
   getContestantById(id) {
     return this.contestants.find(contestant => contestant.id === id);
+  }
+
+  // Bakers who have already been eliminated can't win star baker or technical,
+  // or be eliminated again, so they're left off the picker options
+  get activeContestants() {
+    return this.contestants.filter(contestant => !contestant['Eliminated']);
   }
 
   updateWeekState(weekId, changes) {
@@ -394,10 +400,10 @@ export class GBBOVote extends LitElement {
         <span class="pick-label">${field.label}</span>
         <div class="pick-value">
           <gbbo-contestant-picker
-            .contestants="${this.contestants}"
+            .contestants="${this.activeContestants}"
             .selected="${state[field.property]}"
             .label="${field.label}"
-            .disabled="${this.contestants.length === 0}"
+            .disabled="${this.activeContestants.length === 0}"
             @contestant-change="${(e) => this.setSelection(weekId, field.property, e.detail.contestant)}"
           ></gbbo-contestant-picker>
         </div>

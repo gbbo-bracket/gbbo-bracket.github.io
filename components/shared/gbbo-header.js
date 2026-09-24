@@ -21,6 +21,7 @@ export class GBBOHeader extends LitElement {
     this.mobileMenuOpen = false;
     this.region = getRegion();
     this.handleRegionChange = this.handleRegionChange.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   static styles = css`
@@ -203,15 +204,25 @@ export class GBBOHeader extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+    document.addEventListener('click', this.handleOutsideClick);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+    document.removeEventListener('click', this.handleOutsideClick);
   }
 
   handleRegionChange(event) {
     this.region = event.detail.region;
+  }
+
+  // Closes the mobile menu when a tap/click lands outside this element, e.g.
+  // anywhere else on the page while the menu is open
+  handleOutsideClick(event) {
+    if (!this.mobileMenuOpen) return;
+    if (event.composedPath().includes(this)) return;
+    this.mobileMenuOpen = false;
   }
 
   toggleMobileMenu() {
