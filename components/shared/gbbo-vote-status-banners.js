@@ -5,7 +5,7 @@ import { fetchNomination } from '../../js/utils/nominations.js';
 import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
 
 /**
- * Sits below the nav on every page and nags the current profile to vote.
+ * Sits below the nav on the home page and nags the current profile to vote.
  * One banner per active week: a reminder if that profile hasn't saved a
  * nomination for the week yet, or a confirmation if they have. Shows nothing
  * until a profile is picked, since there's no vote record to check without one.

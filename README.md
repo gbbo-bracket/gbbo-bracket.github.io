@@ -19,11 +19,11 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   Baker, Technical Winner, Eliminated - are small pickers you can step through with arrows either
   side, or tap to jump straight to a baker from the full list. If you already voted for a week, your
   picks are loaded back in automatically
-- **Vote reminders**: A banner under the nav, on every page except the Vote page itself, nags
-  whoever is picked in Site settings to vote for any week that's currently open - a light pink
-  warning with a link straight to the Vote page. Once they've saved picks for that week, it switches
-  to a neutral checkmark banner linking to the Vote page to review them instead. Weeks stack into
-  their own banner if more than one is open at once
+- **Vote reminders**: A banner under the nav on the home page nags whoever is picked in Site
+  settings to vote for any week that's currently open - a light pink warning with a link straight
+  to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark
+  banner linking to the Vote page to review them instead. Weeks stack into their own banner if more
+  than one is open at once
 - **LitElement Components**: Modern, reactive web components using LitElement
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Web Components**: Native browser support with Shadow DOM
