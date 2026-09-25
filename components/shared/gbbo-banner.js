@@ -65,7 +65,6 @@ export class GBBOBanner extends LitElement {
   render() {
     return html`
       <div class="banner ${this.variant === 'confirmed' ? 'confirmed' : 'reminder'}">
-        ${this.variant === 'confirmed' ? html`<span class="banner-checkmark" aria-hidden="true">✓</span>` : ''}
         ${this.message}
         ${this.ctaText && this.ctaHref ? html`
           <a class="banner-cta" href="${this.ctaHref}">${this.ctaText}</a>

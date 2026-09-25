@@ -115,9 +115,9 @@ export class GBBOVoteStatusBanners extends LitElement {
       return html`
         <div class="stack">
           <gbbo-banner
-            variant="reminder"
-            message="Log in to make sure you have this week's picks."
-            ctaText="Vote now"
+            variant="confirmed"
+            message="Make sure you have this week's picks:"
+            ctaText="Log in"
             ctaHref="/vote"
           ></gbbo-banner>
         </div>
@@ -131,14 +131,14 @@ export class GBBOVoteStatusBanners extends LitElement {
         ${this.weekStatuses.map(status => status.voted ? html`
           <gbbo-banner
             variant="confirmed"
-            message="You've already voted for ${status.week}."
+            message="✓ You've already voted."
             ctaText="View your picks"
             ctaHref="/vote"
           ></gbbo-banner>
         ` : html`
           <gbbo-banner
             variant="reminder"
-            message="Don't forget to vote for ${status.week}!"
+            message="You're missing out on potential points!"
             ctaText="Vote now"
             ctaHref="/vote"
           ></gbbo-banner>
