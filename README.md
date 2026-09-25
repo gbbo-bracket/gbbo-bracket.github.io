@@ -9,15 +9,13 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   a profile picker so a visitor can pick who they are from the list of participants. Both are
   remembered in the browser instead of a full login - once a profile is picked, the button shows
   that person's name and emoji, and the Vote page shows and saves that person's picks automatically
-- **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points for the
-  current season under a "2026" toggle. Alongside it are toggles for each week that's already aired
-  (plus whichever week is up next), the 2026 Finals, and the final standings from the 2025 and 2024
-  seasons. Switching to a week or Finals also shows each person's Star Baker, Technical Winner and
-  Eliminated picks for that week, stacking into their own row on mobile so the table stays readable
-  on a phone. Tapping a pick opens that baker's profile pop-up, same as the Contestants page but
-  without the arrows to browse to other bakers. Season totals (2026, 2025, 2024) show the top three
-  with 🥇🥈🥉 medals and gold/silver/bronze ranks; the week and Finals views use plain numbered
-  ranks. The home page points at it from under its own standings table
+- **Standings**: A leaderboard page, linked from the nav, with toggles for the 2026 Finals picks and
+  the final standings from the 2024 and 2025 seasons. The Finals view shows each person's Star Baker,
+  Technical Winner and Eliminated picks, stacking into their own row on mobile so the table stays
+  readable on a phone. Tapping a pick opens that baker's profile pop-up, same as the Contestants page
+  but without the arrows to browse to other bakers. Season totals (on the home page, 2025 and 2024)
+  show the top three with 🥇🥈🥉 medals and gold/silver/bronze ranks; the Finals view uses plain
+  numbered ranks. The home page points at it from under its own standings table
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table
