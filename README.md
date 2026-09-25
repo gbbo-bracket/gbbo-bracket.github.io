@@ -26,6 +26,9 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   picks are loaded back in automatically, and saving again updates that same pick rather than adding
   a duplicate. If a week has a description, an info icon next to its heading toggles it open and
   closed
+- **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
+  selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
+  Channel 4 in the UK or Netflix in the US
 - **Vote reminders**: A banner under the nav on the home page nags whoever is picked in Site
   settings to vote for any week that's currently open - a light pink warning with a link straight
   to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark
