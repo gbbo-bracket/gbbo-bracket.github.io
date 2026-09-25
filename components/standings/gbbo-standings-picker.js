@@ -2,14 +2,19 @@ import { LitElement, html, css } from 'lit';
 import '../home/gbbo-standings.js';
 import '../shared/gbbo-loading-container.js';
 import { pastYears } from './static-data.js';
+import airtableService from '../../js/airtable-service.js';
+import { REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
 import { FINALS_WEEK_ID, fetchWeekStandings } from '../../js/utils/nominations.js';
 
 // The current season. Update it (and the archive in static-data.js) once it ends.
 const CURRENT_YEAR = '2026';
 
-// The toggles: the current season's Finals picks, then the archived final
-// standings from past seasons. `final` marks the season totals that get the
-// podium medals and colours.
+const BAKER_RESULTS_TABLE_ID = 'tblCV1RozeH3oz1DW';
+
+// The toggles that never change: the current season's Finals picks and the
+// archived final standings from past seasons. Weeks are worked out at runtime
+// from air dates and go in front of them. `final` marks the season totals that
+// get the podium medals and colours.
 const STATIC_OPTIONS = {
   finals: { id: FINALS_WEEK_ID, label: 'Finals', title: `${CURRENT_YEAR} Finals Picks`, kind: 'week' },
   archive: Object.keys(pastYears).map(year => ({
@@ -22,14 +27,25 @@ const STATIC_OPTIONS = {
   }))
 };
 
+// "Week 2: Biscuit Week" -> "Week 2", so the toggle stays short
+function shortWeekLabel(title) {
+  const match = /^Week\s+\d+/i.exec(title || '');
+  return match ? match[0] : (title || 'Week');
+}
+
+// Nobody voted in Week 1, so it has no standings worth a toggle
+const HIDDEN_WEEK_LABELS = ['Week 1'];
+
 /**
  * A row of toggles above the standings card that switches it between the
- * current season's Finals picks and the final standings from past seasons.
+ * current season's already-aired weeks (plus whichever week is up next, and
+ * leaving out Week 1), Finals, and the final standings from past seasons.
  */
 export class GBBOStandingsPicker extends LitElement {
   static properties = {
     selected: { type: String },
     description: { type: String },
+    weekOptions: { type: Array },
     weekStandingsCache: { type: Object }
   };
 
@@ -37,7 +53,10 @@ export class GBBOStandingsPicker extends LitElement {
     super();
     this.selected = STATIC_OPTIONS.finals.id;
     this.description = '';
+    this.weekOptions = [];
     this.weekStandingsCache = {};
+    this.region = getRegion();
+    this.handleRegionChange = this.handleRegionChange.bind(this);
   }
 
   static styles = css`
@@ -100,12 +119,65 @@ export class GBBOStandingsPicker extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    // Finals is selected by default, so load its picks straight away
+    window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+    this.loadWeekOptions();
+    // Finals is selected until the weeks load, so start fetching its picks now
     this.handleSelect(this.selected);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+  }
+
+  handleRegionChange(event) {
+    this.region = event.detail.region;
+    this.loadWeekOptions();
+  }
+
+  // Weeks that have already aired, plus whichever week airs next - in the
+  // visitor's region, since the UK and US see different episodes air first.
+  async loadWeekOptions() {
+    try {
+      const records = await airtableService.fetchRecords(BAKER_RESULTS_TABLE_ID);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const weeksWithDates = records
+        .filter(record => record.id !== FINALS_WEEK_ID)
+        .map(record => ({
+          ...record,
+          parsedAirDate: parseAirDate(getAirDate(record.data, this.region))
+        }))
+        .filter(record => !isNaN(record.parsedAirDate));
+
+      const pastWeeks = weeksWithDates.filter(record => record.parsedAirDate < today);
+      const nextWeek = weeksWithDates
+        .filter(record => record.parsedAirDate >= today)
+        .sort((a, b) => a.parsedAirDate - b.parsedAirDate)[0];
+
+      const relevantWeeks = nextWeek ? [...pastWeeks, nextWeek] : pastWeeks;
+      relevantWeeks.sort((a, b) => b.parsedAirDate - a.parsedAirDate);
+
+      this.weekOptions = relevantWeeks
+        .map(record => {
+          const label = shortWeekLabel(record.data.Title);
+          return { id: record.id, label, title: `${label} Standings`, kind: 'week' };
+        })
+        .filter(option => !HIDDEN_WEEK_LABELS.includes(option.label));
+
+      // The previously selected week may no longer be on offer after a region switch
+      if (!this.options.some(option => option.id === this.selected)) {
+        this.handleSelect(STATIC_OPTIONS.finals.id);
+      }
+    } catch (error) {
+      console.error('Failed to load standings week options:', error);
+    }
   }
 
   get options() {
     return [
+      ...this.weekOptions,
       STATIC_OPTIONS.finals,
       ...STATIC_OPTIONS.archive
     ];
@@ -126,7 +198,7 @@ export class GBBOStandingsPicker extends LitElement {
     }
   }
 
-  // undefined means the Finals picks are still being fetched
+  // undefined means a week's standings are still being fetched
   resolveStandings(option) {
     if (option.kind === 'archive') return option.standings;
     return this.weekStandingsCache[option.id];
