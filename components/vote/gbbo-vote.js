@@ -5,8 +5,8 @@ import '../contestants/gbbo-contestant-picker.js';
 import '../shared/gbbo-loading-container.js';
 import '../shared/gbbo-profile-toggle.js';
 import { fetchContestants } from '../../js/utils/bakers.js';
-import { fetchActiveWeeks } from '../../js/utils/baker-results.js';
-import { createNomination, fetchNomination } from '../../js/utils/nominations.js';
+import { fetchActiveWeeks, fetchWeek } from '../../js/utils/baker-results.js';
+import { FINALS_WEEK_ID, createFinalistNomination, createNomination, fetchNomination } from '../../js/utils/nominations.js';
 import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
 
 export class GBBOVote extends LitElement {
@@ -238,20 +238,36 @@ export class GBBOVote extends LitElement {
     }
   `;
 
-  // The three baker picks, so the picker and its table row can be rendered from one place
+  // The three baker picks, so the picker and its table row can be rendered from one place.
+  // nominationField is the Nominations table column an existing pick is read back from
   static BAKER_FIELDS = [
-    { name: 'starBaker', label: 'Star Baker', property: 'selectedStarBaker' },
-    { name: 'technical', label: 'Technical Winner', property: 'selectedTechnical' },
-    { name: 'eliminated', label: 'Eliminated', property: 'selectedEliminated' }
+    { name: 'starBaker', label: 'Star Baker', property: 'selectedStarBaker', nominationField: 'Star Baker' },
+    { name: 'technical', label: 'Technical Winner', property: 'selectedTechnical', nominationField: 'Wins Technical' },
+    { name: 'eliminated', label: 'Eliminated', property: 'selectedEliminated', nominationField: 'Eliminated' }
   ];
 
+  // The Finals week asks for the overall winner and the other two finalists instead
+  static FINALS_FIELDS = [
+    { name: 'winner', label: 'All-around Winner', property: 'selectedWinner', nominationField: 'Finalist #1' },
+    { name: 'finalist1', label: 'Finalist', property: 'selectedFinalist1', nominationField: 'Finalist #2' },
+    { name: 'finalist2', label: 'Finalist', property: 'selectedFinalist2', nominationField: 'Finalist #3' }
+  ];
+
+  static fieldsForWeek(weekId) {
+    return weekId === FINALS_WEEK_ID ? GBBOVote.FINALS_FIELDS : GBBOVote.BAKER_FIELDS;
+  }
+
   static properties = {
+    // Record ID of one week to vote on (e.g. Finals), shown whether or not it's active.
+    // Left unset, every active week is shown
+    weekId: { type: String, attribute: 'week-id' },
+    heading: { type: String },
     contestants: { type: Array },
     activeWeeks: { type: Array },
     loading: { type: Boolean },
     error: { type: String },
     profile: { type: Object },
-    // Keyed by week id: { selectedStarBaker, selectedTechnical, selectedEliminated, submitting, submitSuccess, submitError }
+    // Keyed by week id: { <one selected baker per field property>, submitting, submitSuccess, submitError }
     weekVotes: { type: Object },
     // Keyed by week id: whether that week's description is expanded
     expandedDescriptions: { type: Object }
@@ -259,6 +275,8 @@ export class GBBOVote extends LitElement {
 
   constructor() {
     super();
+    this.weekId = '';
+    this.heading = 'On your marks... get set... vote!';
     this.contestants = [];
     this.activeWeeks = [];
     // Stays true until the saved profile and the Airtable data have both loaded, so the
@@ -288,7 +306,7 @@ export class GBBOVote extends LitElement {
     this.error = '';
 
     try {
-      const [contestants, activeWeeks] = await Promise.all([fetchContestants(), fetchActiveWeeks()]);
+      const [contestants, activeWeeks] = await Promise.all([fetchContestants(), this.fetchWeeks()]);
       this.contestants = contestants;
       this.activeWeeks = activeWeeks;
       await this.initializeWeekVotes();
@@ -300,6 +318,12 @@ export class GBBOVote extends LitElement {
     }
   }
 
+  async fetchWeeks() {
+    if (!this.weekId) return fetchActiveWeeks();
+    const week = await fetchWeek(this.weekId);
+    return week ? [week] : [];
+  }
+
   async handleRetry() {
     await this.loadVotingData();
   }
@@ -307,13 +331,10 @@ export class GBBOVote extends LitElement {
   // Sets every active week back to the first baker, then lets any vote this profile
   // already cast for that week take over once it has loaded
   async initializeWeekVotes() {
-    const firstContestant = this.activeContestants[0] || null;
     const weekVotes = {};
     this.activeWeeks.forEach(week => {
       weekVotes[week.id] = {
-        selectedStarBaker: firstContestant,
-        selectedTechnical: firstContestant,
-        selectedEliminated: firstContestant,
+        ...this.defaultSelections(week.id),
         submitting: false,
         submitSuccess: false,
         submitError: ''
@@ -325,14 +346,19 @@ export class GBBOVote extends LitElement {
     await Promise.all(this.activeWeeks.map(week => this.applyExistingNomination(week.id)));
   }
 
+  // Every pick for the week starts on the first baker still in the competition
+  defaultSelections(weekId) {
+    const firstContestant = this.activeContestants[0] || null;
+    return Object.fromEntries(GBBOVote.fieldsForWeek(weekId).map(field => [field.property, firstContestant]));
+  }
+
   async applyExistingNomination(weekId) {
     try {
       const nomination = await fetchNomination({ weekId, participantId: this.profile.id });
-      this.updateWeekState(weekId, {
-        selectedStarBaker: this.getContestantById(nomination.data['Star Baker'][0]),
-        selectedTechnical: this.getContestantById(nomination.data['Wins Technical'][0]),
-        selectedEliminated: this.getContestantById(nomination.data['Eliminated'][0])
-      });
+      this.updateWeekState(weekId, Object.fromEntries(GBBOVote.fieldsForWeek(weekId).map(field => [
+        field.property,
+        this.getContestantById(nomination.data[field.nominationField][0])
+      ])));
     } catch (error) {
       // No existing nomination for this profile/week yet - the defaults already picked stand
     }
@@ -343,11 +369,8 @@ export class GBBOVote extends LitElement {
     // The initial load already applies whichever profile is saved once it finishes
     if (this.loading) return;
 
-    const firstContestant = this.activeContestants[0] || null;
     this.activeWeeks.forEach(week => this.updateWeekState(week.id, {
-      selectedStarBaker: firstContestant,
-      selectedTechnical: firstContestant,
-      selectedEliminated: firstContestant,
+      ...this.defaultSelections(week.id),
       submitSuccess: false,
       submitError: ''
     }));
@@ -469,7 +492,7 @@ export class GBBOVote extends LitElement {
           <table class="picks-table">
             <tbody>
               <tr>
-                ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerCell(week.id, field, state))}
+                ${GBBOVote.fieldsForWeek(week.id).map(field => this.renderBakerCell(week.id, field, state))}
               </tr>
             </tbody>
           </table>
@@ -480,7 +503,7 @@ export class GBBOVote extends LitElement {
 
   render() {
     return html`
-      <gbbo-card title="On your marks... get set... vote!">
+      <gbbo-card title="${this.heading}">
         ${this.loading ? html`
           <gbbo-loading-container></gbbo-loading-container>
         ` : ''}
@@ -526,18 +549,25 @@ export class GBBOVote extends LitElement {
     const state = this.weekVotes[weekId];
     if (!state || !this.profile) return;
 
-    const votes = {
-      weekId,
-      participantId: this.profile.id,
-      starBakerId: state.selectedStarBaker?.id,
-      technicalId: state.selectedTechnical?.id,
-      eliminatedId: state.selectedEliminated?.id
-    };
-
     this.updateWeekState(weekId, { submitting: true, submitError: '', submitSuccess: false });
 
     try {
-      await createNomination(votes);
+      if (weekId === FINALS_WEEK_ID) {
+        await createFinalistNomination({
+          participantId: this.profile.id,
+          winnerId: state.selectedWinner?.id,
+          finalist1Id: state.selectedFinalist1?.id,
+          finalist2Id: state.selectedFinalist2?.id
+        });
+      } else {
+        await createNomination({
+          weekId,
+          participantId: this.profile.id,
+          starBakerId: state.selectedStarBaker?.id,
+          technicalId: state.selectedTechnical?.id,
+          eliminatedId: state.selectedEliminated?.id
+        });
+      }
       this.updateWeekState(weekId, { submitSuccess: true });
     } catch (error) {
       console.error('Error submitting votes:', error);
