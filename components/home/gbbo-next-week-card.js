@@ -339,9 +339,8 @@ export class GBBONextWeekCard extends LitElement {
     }
     this.showingPrevious = false;
 
-    const oneHourInMs = 60 * 60 * 1000;
-
-    if (Math.abs(timeDiff) <= oneHourInMs) {
+    // The premiere has already happened - nothing left to count down to
+    if (timeDiff <= 0) {
       this.countdownText = 'Episode is live!';
       if (this.countdownInterval) {
         clearInterval(this.countdownInterval);
@@ -354,7 +353,7 @@ export class GBBONextWeekCard extends LitElement {
     // clock - drop straight to "X days" instead of the full breakdown
     if (timeDiff > oneDayInMs) {
       const days = Math.floor(timeDiff / oneDayInMs);
-      this.countdownText = `${days} day${days === 1 ? '' : 's'}`;
+      this.countdownText = `Next episode in ${days} day${days === 1 ? '' : 's'}`;
       return;
     }
 
@@ -367,7 +366,7 @@ export class GBBONextWeekCard extends LitElement {
     if (minutes > 0) countdownParts.push(`${minutes}m`);
     if (seconds > 0) countdownParts.push(`${seconds}s`);
 
-    this.countdownText = countdownParts.join(' ') || '0s';
+    this.countdownText = `Next episode in ${countdownParts.join(' ') || '0s'}`;
   }
 
   renderLoading() {
@@ -416,7 +415,7 @@ export class GBBONextWeekCard extends LitElement {
         ${this.showingPrevious ? html`
           <div class="spoiler-banner">Did you catch the latest episode? Vote now to avoid getting spoiled!</div>
         ` : this.countdownText ? html`
-          <div class="coming-soon-badge">Next episode in ${this.countdownText}</div>
+          <div class="coming-soon-badge">${this.countdownText}</div>
         ` : ''}
 
         <h2>${title ? title : 'Next Week: Coming Soon'}</h2>
