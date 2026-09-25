@@ -34,6 +34,9 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark
   banner linking to the Vote page to review them instead. Weeks stack into their own banner if more
   than one is open at once
+- **Shared Page Metadata**: One `<gbbo-metadata>` tag in each page's `<head>` sets the browser tab
+  title, the search description, and the picture and blurb that show up when someone shares a link
+  in a group chat. Pages that say nothing fall back to shared defaults, so every link looks the same
 - **LitElement Components**: Modern, reactive web components using LitElement
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Web Components**: Native browser support with Shadow DOM
@@ -100,6 +103,7 @@ gbbo-bracket.github.io/
 │   ├── input.css       # Tailwind CSS input
 │   └── styles.css      # Colour palette and global styles
 ├── assets/images/      # Images served with the site
+├── vite-plugins/       # Build helpers, including the <gbbo-metadata> head component
 ├── dist/               # Built files (auto-generated)
 ├── index.html          # Home page (one HTML file per page)
 ├── vite.config.js      # Vite configuration
