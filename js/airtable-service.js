@@ -123,6 +123,29 @@ class AirtableService {
       throw new Error(`Failed to create record: ${error.message}`);
     }
   }
+
+  /**
+   * Update an existing record in the specified table
+   * @param {string} tableId - The table ID the record lives in
+   * @param {string} recordId - The Airtable record ID to update
+   * @param {Object} fields - The field data to update
+   * @returns {Promise<Object>} The updated record data
+   */
+  async updateRecord(tableId, recordId, fields) {
+    try {
+      const record = await this.base(tableId).update(recordId, fields);
+
+      console.log(`Updated record ${recordId} in table ${tableId}`);
+      return {
+        id: record.id,
+        data: record.fields
+      };
+
+    } catch (error) {
+      console.error(`Error updating record ${recordId} in table ${tableId}:`, error);
+      throw new Error(`Failed to update record: ${error.message}`);
+    }
+  }
 }
 
 // Export singleton instance

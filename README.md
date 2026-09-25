@@ -4,18 +4,36 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
 
 ## 🚀 Features
 
-- **UK / US Schedules**: A flag in the nav bar switches the site between UK and US air dates, and
-  renames the site to match what the show is called in that region
-- **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points,
-  with toggles to look back at how the 2025 and 2024 seasons finished. The home page points at it
-  from under its own standings table
+- **Site settings**: A single button in the nav bar opens a pop-up with two things: a UK/US toggle
+  (US by default) that switches air dates and renames the site to match what the show is called in that region, and
+  a profile picker so a visitor can pick who they are from the list of participants. Both are
+  remembered in the browser instead of a full login - once a profile is picked, the button shows
+  that person's name and emoji, and the Vote page shows and saves that person's picks automatically
+- **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points for the
+  current season under a "2026" toggle. Alongside it are toggles for each week that's already aired
+  (plus whichever week is up next), the 2026 Finals, and the final standings from the 2025 and 2024
+  seasons. Switching to a week or Finals also shows each person's Star Baker, Technical Winner and
+  Eliminated picks for that week, stacking into their own row on mobile so the table stays readable
+  on a phone. Tapping a pick opens that baker's profile pop-up, same as the Contestants page but
+  without the arrows to browse to other bakers. The home page points at it from under its own
+  standings table
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
-- **Voting**: Pick your name and the week first, and the three baker picks appear below. Each pick is
-  a baker's card with arrows either side, starting on the first baker, with a dropdown underneath if
-  you would rather pick by name - the card and the dropdown always agree on who is picked. If you
-  already voted for that week, the form loads your picks back in, says so in a message above them,
-  and the button reads "Update votes" instead of "Submit"
+- **Voting**: Every week currently open for voting loads on the page at once, each in its own table
+  for whoever is picked in Site settings, with a Save button of its own. The three picks - Star
+  Baker, Technical Winner, Eliminated - are small pickers you can step through with arrows either
+  side, or tap to jump straight to a baker from the full list. If you already voted for a week, your
+  picks are loaded back in automatically, and saving again updates that same pick rather than adding
+  a duplicate. If a week has a description, an info icon next to its heading toggles it open and
+  closed
+- **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
+  selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
+  Channel 4 in the UK or Netflix in the US
+- **Vote reminders**: A banner under the nav on the home page nags whoever is picked in Site
+  settings to vote for any week that's currently open - a light pink warning with a link straight
+  to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark
+  banner linking to the Vote page to review them instead. Weeks stack into their own banner if more
+  than one is open at once
 - **Shared Page Metadata**: One `<gbbo-metadata>` tag in each page's `<head>` sets the browser tab
   title, the search description, and the picture and blurb that show up when someone shares a link
   in a group chat. Pages that say nothing fall back to shared defaults, so every link looks the same
@@ -75,12 +93,12 @@ npm run preview
 gbbo-bracket.github.io/
 ├── components/         # LitElement web components
 │   ├── foundations/    # Shared building blocks (card, primary-button)
-│   ├── shared/         # Header, footer, banners, callouts, loading states, UK/US flag toggle
+│   ├── shared/         # Header, footer, banners, callouts, loading states, site settings pop-up
 │   └── home/ contestants/ finals/ join/ rules/ standings/ vote/   # Per-page components
 ├── js/
 │   ├── main.js              # Main application logic
 │   ├── airtable-service.js  # Reads and writes to Airtable
-│   └── utils/               # Bakers, results, nominations, participants, UK/US region
+│   └── utils/               # Bakers, results, nominations, participants, UK/US region, profile
 ├── src/
 │   ├── input.css       # Tailwind CSS input
 │   └── styles.css      # Colour palette and global styles

@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import '../foundations/primary-button';
-import './gbbo-region-toggle.js';
+import './gbbo-profile-toggle.js';
 import { US, REGION_CHANGE_EVENT, getRegion } from '../../js/utils/region.js';
 
 // The show goes by a different name either side of the Atlantic, so the title
@@ -21,6 +21,7 @@ export class GBBOHeader extends LitElement {
     this.mobileMenuOpen = false;
     this.region = getRegion();
     this.handleRegionChange = this.handleRegionChange.bind(this);
+    this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
   static styles = css`
@@ -203,15 +204,31 @@ export class GBBOHeader extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+    // Capture phase, so this runs before the click reaches whatever it landed
+    // on - otherwise an outside tap would dismiss the menu *and* still open
+    // a modal, follow a link, etc. underneath it
+    document.addEventListener('click', this.handleOutsideClick, true);
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+    document.removeEventListener('click', this.handleOutsideClick, true);
   }
 
   handleRegionChange(event) {
     this.region = event.detail.region;
+  }
+
+  // Closes the mobile menu when a tap/click lands outside this element, e.g.
+  // anywhere else on the page while the menu is open. Swallows that click so
+  // it only dismisses the menu instead of also acting on whatever it hit.
+  handleOutsideClick(event) {
+    if (!this.mobileMenuOpen) return;
+    if (event.composedPath().includes(this)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    this.mobileMenuOpen = false;
   }
 
   toggleMobileMenu() {
@@ -232,7 +249,7 @@ export class GBBOHeader extends LitElement {
             <li><a href="/rules">Rules</a></li>
             <li><a href="/contestants">Contestants</a></li>
             <li><a href="/standings">Standings</a></li>
-            <li><gbbo-region-toggle></gbbo-region-toggle></li>
+            <li><gbbo-profile-toggle></gbbo-profile-toggle></li>
             <li><primary-button href="/vote">Vote now</primary-button></li>
           </ul>
           
@@ -247,7 +264,7 @@ export class GBBOHeader extends LitElement {
         
         <div class="mobile-menu ${this.mobileMenuOpen ? 'open' : ''}">
           <ul class="mobile-nav-links">
-            <li><gbbo-region-toggle></gbbo-region-toggle></li>
+            <li><gbbo-profile-toggle></gbbo-profile-toggle></li>
             <li><a href="/" @click="${this.toggleMobileMenu}">Home</a></li>
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>

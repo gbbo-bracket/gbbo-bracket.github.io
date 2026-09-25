@@ -1,6 +1,15 @@
 import { LitElement, html, css } from 'lit';
 import '../shared/gbbo-loading-container.js';
+import '../contestants/gbbo-contestants-modal.js';
 import { airtableService } from '../../js/airtable-service.js';
+
+// The three picks shown per participant on a week/Finals view, and how to
+// label/icon each one - matches the icons already used on the Contestants page
+const PICK_FIELDS = [
+  { key: 'starBaker', icon: '⭐', label: 'Star Baker' },
+  { key: 'technical', icon: '🧁', label: 'Technical Winner' },
+  { key: 'eliminated', icon: '❌', label: 'Eliminated' }
+];
 
 export class GBBOStandings extends LitElement {
   static properties = {
@@ -8,7 +17,9 @@ export class GBBOStandings extends LitElement {
     title: { type: String },
     description: { type: String },
     loading: { type: Boolean },
-    error: { type: String }
+    error: { type: String },
+    modalContestant: { type: Object },
+    modalOpen: { type: Boolean }
   };
 
   constructor() {
@@ -19,6 +30,8 @@ export class GBBOStandings extends LitElement {
     this.description = '';
     this.loading = true;
     this.error = null;
+    this.modalContestant = null;
+    this.modalOpen = false;
   }
 
   static styles = css`
@@ -92,6 +105,57 @@ export class GBBOStandings extends LitElement {
       transition: background-color 0.2s ease;
     }
 
+    /* .picks-cell stays a plain table-cell (no display override) so it
+       matches the row height and vertical-centering every other <td> gets
+       automatically - giving it display:flex directly used to pull it out
+       of table layout, leaving it a couple of pixels shorter than its
+       siblings. The flex-wrapping instead lives on this inner element. */
+    .picks-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .pick-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background-color: rgba(169, 208, 245, 0.15);
+      border: 1px solid rgba(169, 208, 245, 0.35);
+      border-radius: 999px;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: var(--body-text);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .pick-tag:hover,
+    .pick-tag:focus-visible {
+      background-color: rgba(169, 208, 245, 0.3);
+      border-color: rgba(169, 208, 245, 0.6);
+    }
+
+    .pick-tag:focus-visible {
+      outline: 2px solid var(--royal-blue);
+      outline-offset: 2px;
+    }
+
+    .pick-tag:disabled {
+      cursor: default;
+      opacity: 0.6;
+    }
+
+    .no-picks {
+      font-size: 0.85rem;
+      color: var(--body-text);
+      opacity: 0.6;
+      font-style: italic;
+    }
+
     tr:hover td {
       background-color: rgba(190, 228, 210, 0.1);
     }
@@ -162,18 +226,63 @@ export class GBBOStandings extends LitElement {
       }
     }
 
+    /* Below the breakpoint there isn't room for a Rank/Participant/Picks/Points
+       row of columns, so each participant becomes its own stacked card:
+       rank, name and points on one line, picks wrapping onto their own line
+       below instead of squeezing into a fifth narrow column. */
     @media (max-width: 640px) {
-      th, td {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.9rem;
-      }
-
       .standings-title {
         font-size: 1.75rem;
       }
 
+      thead {
+        display: none;
+      }
+
+      table, tbody {
+        display: block;
+        width: 100%;
+      }
+
+      tr {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: 0.75rem;
+        row-gap: 0.5rem;
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid rgba(190, 228, 210, 0.3);
+      }
+
+      tr:last-child {
+        border-bottom: none;
+      }
+
+      td {
+        display: block;
+        padding: 0;
+        border-bottom: none;
+        font-size: 0.9rem;
+      }
+
+      .rank {
+        order: 1;
+        width: auto;
+      }
+
       .participant-name {
+        order: 2;
         font-size: 1rem;
+      }
+
+      .points {
+        order: 3;
+        margin-left: auto;
+      }
+
+      .picks-cell {
+        order: 4;
+        flex-basis: 100%;
       }
     }
   `;
@@ -280,6 +389,38 @@ export class GBBOStandings extends LitElement {
     return '';
   }
 
+  // Opens the same baker detail modal the Contestants page uses. No
+  // .contestants list is handed over, so the modal has nothing to browse
+  // between and leaves out its previous/next arrows.
+  openBakerModal(baker) {
+    if (!baker) return;
+    this.modalContestant = baker;
+    this.modalOpen = true;
+  }
+
+  closeBakerModal() {
+    this.modalOpen = false;
+  }
+
+  renderPicks(picks) {
+    if (!picks) {
+      return html`<span class="no-picks">No vote yet</span>`;
+    }
+
+    return PICK_FIELDS.map(field => {
+      const baker = picks[field.key];
+      return html`
+        <button
+          type="button"
+          class="pick-tag"
+          title="${field.label}"
+          ?disabled="${!baker}"
+          @click="${() => this.openBakerModal(baker)}"
+        >${field.icon} ${baker?.name || 'Unknown'}</button>
+      `;
+    });
+  }
+
   render() {
     if (this.loading) {
       return html`
@@ -309,19 +450,25 @@ export class GBBOStandings extends LitElement {
       `;
     }
 
+    // Only the per-week and Finals toggles hand over picks alongside points -
+    // the live season total and the archived years don't have a single set
+    // of picks to show, so the column is left out entirely for those.
+    const hasPicks = this.standings.some(participant => participant.picks);
+
     return html`
       <div class="standings-container">
         <div class="standings-header">
           <h1 class="standings-title">${this.title}</h1>
           <p class="standings-subtitle">${this.description}</p>
         </div>
-        
+
         <div class="glass-card standings-table">
           <table>
             <thead>
               <tr>
                 <th>Rank</th>
                 <th>Participant</th>
+                ${hasPicks ? html`<th>Picks</th>` : ''}
                 <th>Total Points</th>
               </tr>
             </thead>
@@ -329,7 +476,7 @@ export class GBBOStandings extends LitElement {
               ${this.standings.map((participant, index) => {
                 const { rank, medal } = this.getRankDisplay(index);
                 const rankClass = this.getRankClass(index);
-                
+
                 return html`
                   <tr>
                     <td class="rank ${rankClass}">
@@ -337,6 +484,11 @@ export class GBBOStandings extends LitElement {
                       ${rank}
                     </td>
                     <td class="participant-name">${participant.name}</td>
+                    ${hasPicks ? html`
+                      <td class="picks-cell">
+                        <div class="picks-wrap">${this.renderPicks(participant.picks)}</div>
+                      </td>
+                    ` : ''}
                     <td class="points">${participant.points}</td>
                   </tr>
                 `;
@@ -345,6 +497,12 @@ export class GBBOStandings extends LitElement {
           </table>
         </div>
       </div>
+
+      <gbbo-contestants-modal
+        .open="${this.modalOpen}"
+        .contestant="${this.modalContestant}"
+        @modal-close="${this.closeBakerModal}"
+      ></gbbo-contestants-modal>
     `;
   }
 }

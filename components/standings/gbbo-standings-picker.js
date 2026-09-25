@@ -1,32 +1,58 @@
 import { LitElement, html, css } from 'lit';
 import '../home/gbbo-standings.js';
+import '../shared/gbbo-loading-container.js';
 import { pastYears } from './static-data.js';
+import airtableService from '../../js/airtable-service.js';
+import { REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
+import { FINALS_WEEK_ID, fetchWeekStandings } from '../../js/utils/nominations.js';
 
-// The label for the live standings. Update it as the season goes on.
-const CURRENT_LABEL = 'Week 1';
+// The current season. Update it (and the archive in static-data.js) once it ends.
+const CURRENT_YEAR = '2026';
 
-// The toggles, in the order they appear. `standings: null` means "fetch the
-// live standings from Airtable"; the past seasons pass their static data.
-const STANDINGS_OPTIONS = [
-  { id: 'current', label: CURRENT_LABEL, title: 'Current Standings', standings: null },
-  { id: '2025', label: '2025', title: '2025 Final Results', standings: pastYears[2025] },
-  { id: '2024', label: '2024', title: '2024 Final Results', standings: pastYears[2024] }
-];
+const BAKER_RESULTS_TABLE_ID = 'tblCV1RozeH3oz1DW';
+
+// The toggles that never change: the live current-season total, the Finals
+// standings, and the archived final standings from past seasons. Weeks are
+// worked out at runtime from air dates and spliced in between the first two.
+const STATIC_OPTIONS = {
+  current: { id: 'current', label: CURRENT_YEAR, title: 'Current Standings', kind: 'current' },
+  finals: { id: FINALS_WEEK_ID, label: 'Finals', title: `${CURRENT_YEAR} Finals Standings`, kind: 'week' },
+  archive: Object.keys(pastYears).map(year => ({
+    id: year,
+    label: year,
+    title: `${year} Final Results`,
+    kind: 'archive',
+    standings: pastYears[year]
+  }))
+};
+
+// "Week 2: Biscuit Week" -> "Week 2", so the toggle stays short
+function shortWeekLabel(title) {
+  const match = /^Week\s+\d+/i.exec(title || '');
+  return match ? match[0] : (title || 'Week');
+}
 
 /**
  * A row of toggles above the standings card that switches it between the live
- * standings and the final standings from past seasons.
+ * current-season standings, that season's already-aired weeks (plus whichever
+ * week is up next), Finals, and the final standings from past seasons.
  */
 export class GBBOStandingsPicker extends LitElement {
   static properties = {
     selected: { type: String },
-    description: { type: String }
+    description: { type: String },
+    weekOptions: { type: Array },
+    weekStandingsCache: { type: Object }
   };
 
   constructor() {
     super();
-    this.selected = STANDINGS_OPTIONS[0].id;
+    this.selected = STATIC_OPTIONS.current.id;
     this.description = '';
+    this.weekOptions = [];
+    this.weekStandingsCache = {};
+    this.region = getRegion();
+    this.handleRegionChange = this.handleRegionChange.bind(this);
   }
 
   static styles = css`
@@ -87,16 +113,99 @@ export class GBBOStandingsPicker extends LitElement {
     }
   `;
 
-  handleSelect(id) {
+  connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+    this.loadWeekOptions();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+  }
+
+  handleRegionChange(event) {
+    this.region = event.detail.region;
+    this.loadWeekOptions();
+  }
+
+  // Weeks that have already aired, plus whichever week airs next - in the
+  // visitor's region, since the UK and US see different episodes air first.
+  async loadWeekOptions() {
+    try {
+      const records = await airtableService.fetchRecords(BAKER_RESULTS_TABLE_ID);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const weeksWithDates = records
+        .filter(record => record.id !== FINALS_WEEK_ID)
+        .map(record => ({
+          ...record,
+          parsedAirDate: parseAirDate(getAirDate(record.data, this.region))
+        }))
+        .filter(record => !isNaN(record.parsedAirDate));
+
+      const pastWeeks = weeksWithDates.filter(record => record.parsedAirDate < today);
+      const nextWeek = weeksWithDates
+        .filter(record => record.parsedAirDate >= today)
+        .sort((a, b) => a.parsedAirDate - b.parsedAirDate)[0];
+
+      const relevantWeeks = nextWeek ? [...pastWeeks, nextWeek] : pastWeeks;
+      relevantWeeks.sort((a, b) => b.parsedAirDate - a.parsedAirDate);
+
+      this.weekOptions = relevantWeeks.map(record => {
+        const label = shortWeekLabel(record.data.Title);
+        return { id: record.id, label, title: `${label} Standings`, kind: 'week' };
+      });
+
+      // The previously selected week may no longer be on offer after a region switch
+      if (!this.options.some(option => option.id === this.selected)) {
+        this.selected = STATIC_OPTIONS.current.id;
+      }
+    } catch (error) {
+      console.error('Failed to load standings week options:', error);
+    }
+  }
+
+  get options() {
+    return [
+      STATIC_OPTIONS.current,
+      ...this.weekOptions,
+      STATIC_OPTIONS.finals,
+      ...STATIC_OPTIONS.archive
+    ];
+  }
+
+  async handleSelect(id) {
     this.selected = id;
+
+    const option = this.options.find(item => item.id === id);
+    if (option?.kind === 'week' && !(id in this.weekStandingsCache)) {
+      try {
+        const standings = await fetchWeekStandings(id);
+        this.weekStandingsCache = { ...this.weekStandingsCache, [id]: standings };
+      } catch (error) {
+        console.error(`Failed to load standings for ${option.label}:`, error);
+        this.weekStandingsCache = { ...this.weekStandingsCache, [id]: [] };
+      }
+    }
+  }
+
+  // null tells <gbbo-standings> to fetch and cache the live totals itself;
+  // undefined means a week's standings are still being fetched
+  resolveStandings(option) {
+    if (option.kind === 'current') return null;
+    if (option.kind === 'archive') return option.standings;
+    return this.weekStandingsCache[option.id];
   }
 
   render() {
-    const option = STANDINGS_OPTIONS.find(item => item.id === this.selected) || STANDINGS_OPTIONS[0];
+    const option = this.options.find(item => item.id === this.selected) || STATIC_OPTIONS.current;
+    const standings = this.resolveStandings(option);
 
     return html`
       <div class="standings-toggles">
-        ${STANDINGS_OPTIONS.map((item, index) => html`
+        ${this.options.map((item, index) => html`
           ${index > 0 ? html`<span class="separator" aria-hidden="true">|</span>` : ''}
           <button
             @click="${() => this.handleSelect(item.id)}"
@@ -105,11 +214,15 @@ export class GBBOStandingsPicker extends LitElement {
         `)}
       </div>
 
-      <gbbo-standings
-        .standings="${option.standings}"
-        title="${option.title}"
-        description="${this.description}"
-      ></gbbo-standings>
+      ${standings === undefined ? html`
+        <gbbo-loading-container></gbbo-loading-container>
+      ` : html`
+        <gbbo-standings
+          .standings="${standings}"
+          title="${option.title}"
+          description="${this.description}"
+        ></gbbo-standings>
+      `}
     `;
   }
 }

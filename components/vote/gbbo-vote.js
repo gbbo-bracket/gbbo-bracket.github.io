@@ -1,13 +1,13 @@
-import { LitElement, html, css } from 'lit';
+import { LitElement, html, css, svg } from 'lit';
 import '../foundations/card.js';
 import '../foundations/primary-button.js';
-import '../contestants/gbbo-contestants-data.js';
+import '../contestants/gbbo-contestant-picker.js';
 import '../shared/gbbo-loading-container.js';
-import '../shared/gbbo-callout.js';
+import '../shared/gbbo-profile-toggle.js';
 import { fetchContestants } from '../../js/utils/bakers.js';
-import { fetchNames } from '../../js/utils/participants.js';
 import { fetchActiveWeeks } from '../../js/utils/baker-results.js';
 import { createNomination, fetchNomination } from '../../js/utils/nominations.js';
+import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
 
 export class GBBOVote extends LitElement {
   static styles = css`
@@ -16,99 +16,174 @@ export class GBBOVote extends LitElement {
       width: 100%;
     }
 
-    .vote-form {
+    .profile-row {
       display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
       gap: 0.5rem;
-      width: 100%;
+      margin-bottom: 1.5rem;
     }
 
-    .form-group-row {
+    .profile-row-label {
+      font-size: 0.9375rem;
+      color: var(--body-text);
+    }
+
+    .weeks {
       display: flex;
-      flex-direction: row;
-      gap: 1.5rem;
+      flex-direction: column;
+      gap: 2rem;
+      text-align: left;
     }
 
-    @media (max-width: 768px) {
-      .form-group-row {
-        flex-direction: column;
-      }
+    .week {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    .form-label {
+    .week-table {
+      background-color: rgba(255, 253, 245, 0.9);
+      border-radius: 1rem;
+      border: 1px solid rgba(169, 208, 245, 0.3);
+      overflow: hidden;
+    }
+
+    .week-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      background-color: rgba(247, 198, 217, 0.2);
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid rgba(247, 198, 217, 0.3);
+    }
+
+    .week-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      min-width: 0;
+    }
+
+    .week-heading-row {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .week-heading {
+      font-family: inherit;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--heading-text);
+      margin: 0;
+    }
+
+    .info-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.125rem;
+      height: 1.125rem;
+      padding: 0;
+      border: none;
+      background: none;
+      color: var(--heading-text);
+      opacity: 0.55;
+      cursor: pointer;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .info-toggle:hover,
+    .info-toggle:focus-visible {
+      opacity: 1;
+    }
+
+    .info-toggle svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .week-description {
+      font-family: inherit;
+      font-size: 0.9rem;
+      color: var(--body-text);
+      margin: 0;
+      line-height: 1.4;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.25s ease, opacity 0.2s ease;
+    }
+
+    .week-description.open {
+      max-height: 40rem;
+      opacity: 1;
+    }
+
+    .picks-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    /* On desktop each field is its own column: label on top, picker below,
+       three columns across one row */
+    .picks-table td.pick-cell {
+      padding: 1.25rem 1.5rem;
+      vertical-align: top;
+      text-align: center;
+      border-right: 1px solid rgba(190, 228, 210, 0.3);
+    }
+
+    .picks-table td.pick-cell:last-child {
+      border-right: none;
+    }
+
+    .pick-label {
+      display: block;
       font-weight: 600;
       color: #374151;
       font-size: 0.875rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
     }
 
-    .form-select {
-      padding: 0.75rem;
-      border: 2px solid #d1d5db;
-      border-radius: 0.5rem;
-      font-size: 1rem;
-      background-color: white;
-      transition: border-color 0.2s ease;
-      width: 100%;
-    }
-
-    .form-select:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-
-    .form-select:disabled {
-      background-color: #f9fafb;
-      color: #9ca3af;
-      cursor: not-allowed;
-    }
-
-    /* The baker picks are wide enough to need wrapping before the mobile breakpoint,
-       otherwise the last one is cut off by the edge of the card */
-    .bakers-row {
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .bakers-row .form-group {
-      width: auto;
-    }
-
-    .card-stepper {
+    .pick-value {
       display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 0.25rem;
     }
 
-    .card-step-button {
-      background: none;
-      border: none;
-      font-size: 1.75rem;
-      line-height: 1;
-      color: var(--body-text);
-      cursor: pointer;
-      padding: 0.75rem 0.25rem;
-      border-radius: 0.25rem;
-      transition: background-color 0.2s ease, color 0.2s ease;
+    .week-messages {
+      padding: 1rem 1.5rem 0;
     }
 
-    .card-step-button:hover:not(:disabled) {
-      background-color: rgba(190, 228, 210, 0.35);
-      color: var(--heading-text);
-    }
+    /* Below the breakpoint there isn't room for three columns, so each field
+       goes back to being its own full-width row, label above picker */
+    @media (max-width: 640px) {
+      .picks-table, .picks-table tbody, .picks-table tr, .picks-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+      }
 
-    .card-step-button:disabled {
-      color: rgba(124, 116, 103, 0.35);
-      cursor: not-allowed;
+      .picks-table td.pick-cell {
+        text-align: left;
+        border-right: none;
+        border-bottom: 1px solid rgba(190, 228, 210, 0.3);
+        padding: 1rem 1.5rem;
+      }
+
+      .picks-table tr td.pick-cell:last-child {
+        border-bottom: none;
+      }
+
+      .pick-value {
+        justify-content: flex-start;
+      }
     }
 
     .error {
@@ -125,13 +200,22 @@ export class GBBOVote extends LitElement {
       margin-bottom: 0.25rem;
     }
 
+    .no-profile {
+      color: var(--body-text);
+      font-size: 1.0625rem;
+    }
+
+    .no-weeks {
+      color: var(--body-text);
+      font-size: 1.0625rem;
+    }
+
     .success {
       background-color: rgba(187, 247, 208, 0.1);
       border: 1px solid rgba(34, 197, 94, 0.3);
       color: #16a34a;
       padding: 1rem;
       border-radius: 0.5rem;
-      margin-bottom: 1rem;
       text-align: center;
     }
 
@@ -146,7 +230,6 @@ export class GBBOVote extends LitElement {
       color: #d94c57;
       padding: 1rem;
       border-radius: 0.5rem;
-      margin-bottom: 1rem;
     }
 
     .submit-error-title {
@@ -155,111 +238,122 @@ export class GBBOVote extends LitElement {
     }
   `;
 
-  // The three baker picks, so the select, the card and the arrows can be rendered from one place
+  // The three baker picks, so the picker and its table row can be rendered from one place
   static BAKER_FIELDS = [
-    { name: 'starBaker', selectId: 'star-baker', label: 'Star Baker', property: 'selectedStarBaker' },
-    { name: 'technical', selectId: 'technical', label: 'Technical Winner', property: 'selectedTechnical' },
-    { name: 'eliminated', selectId: 'eliminated', label: 'Eliminated', property: 'selectedEliminated' }
+    { name: 'starBaker', label: 'Star Baker', property: 'selectedStarBaker' },
+    { name: 'technical', label: 'Technical Winner', property: 'selectedTechnical' },
+    { name: 'eliminated', label: 'Eliminated', property: 'selectedEliminated' }
   ];
 
   static properties = {
     contestants: { type: Array },
-    names: { type: Array },
     activeWeeks: { type: Array },
     loading: { type: Boolean },
     error: { type: String },
-    submitting: { type: Boolean },
-    submitSuccess: { type: Boolean },
-    submitError: { type: String },
-    selectedName: { type: String },
-    selectedWeek: { type: String },
-    selectedStarBaker: { type: Object },
-    selectedTechnical: { type: Object },
-    selectedEliminated: { type: Object },
-    hasExistingVote: { type: Boolean }
+    profile: { type: Object },
+    // Keyed by week id: { selectedStarBaker, selectedTechnical, selectedEliminated, submitting, submitSuccess, submitError }
+    weekVotes: { type: Object },
+    // Keyed by week id: whether that week's description is expanded
+    expandedDescriptions: { type: Object }
   };
 
   constructor() {
     super();
     this.contestants = [];
-    this.names = [];
     this.activeWeeks = [];
-    this.loading = false;
+    // Stays true until the saved profile and the Airtable data have both loaded, so the
+    // page never flashes another profile's picks before we know who is actually voting
+    this.loading = true;
     this.error = '';
-    this.submitting = false;
-    this.submitSuccess = false;
-    this.submitError = '';
-    this.selectedName = '';
-    this.selectedWeek = '';
-    this.selectedStarBaker = null;
-    this.selectedTechnical = null;
-    this.selectedEliminated = null;
-    this.hasExistingVote = false;
+    this.profile = null;
+    this.weekVotes = {};
+    this.expandedDescriptions = {};
+    this.handleProfileChange = this.handleProfileChange.bind(this);
   }
 
   connectedCallback() {
     super.connectedCallback();
-    this.fetchContestants();
-    this.fetchNames();
-    this.fetchActiveWeeks();
+    window.addEventListener(PROFILE_CHANGE_EVENT, this.handleProfileChange);
+    this.profile = getProfile();
+    this.loadVotingData();
   }
 
-  async fetchContestants() {
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener(PROFILE_CHANGE_EVENT, this.handleProfileChange);
+  }
+
+  async loadVotingData() {
     this.loading = true;
     this.error = '';
-    
+
     try {
-      this.contestants = await fetchContestants();
+      const [contestants, activeWeeks] = await Promise.all([fetchContestants(), fetchActiveWeeks()]);
+      this.contestants = contestants;
+      this.activeWeeks = activeWeeks;
+      await this.initializeWeekVotes();
     } catch (error) {
       this.error = error.message;
-      console.error('Failed to fetch contestants for voting:', error);
+      console.error('Failed to load voting data:', error);
     } finally {
       this.loading = false;
     }
   }
 
-  async fetchNames() {
-    try {
-      this.names = await fetchNames();
-    } catch (error) {
-      console.error('Failed to fetch names:', error);
-    }
-  }
-
-  async fetchActiveWeeks() {
-    try {
-      this.activeWeeks = await fetchActiveWeeks();
-      // A lone active week is already selected in the markup, so treat it as picked
-      if (this.activeWeeks.length === 1) {
-        this.selectedWeek = this.activeWeeks[0].id;
-      }
-    } catch (error) {
-      console.error('Failed to fetch weeks:', error);
-    }
-  }
-
-  async fetchNomination(votes) {
-    try {
-      const nomination = await fetchNomination(votes);
-      console.log('Nomination fetched successfully:', nomination);
-      this.setSelection('starBaker', this.getContestantById(nomination.data['Star Baker'][0]));
-      this.setSelection('technical', this.getContestantById(nomination.data['Wins Technical'][0]));
-      this.setSelection('eliminated', this.getContestantById(nomination.data['Eliminated'][0]));
-      // Only a vote we actually loaded should tell the voter they are changing an earlier pick
-      this.hasExistingVote = true;
-      console.log('Selected star baker:', this.selectedStarBaker);
-      console.log('Selected technical:', this.selectedTechnical);
-      console.log('Selected eliminated:', this.selectedEliminated);
-    } catch (error) {
-      this.hasExistingVote = false;
-      console.error('Error fetching votes:', error);
-    }
-  }
-
   async handleRetry() {
-    await this.fetchContestants();
-    await this.fetchNames();
-    await this.fetchActiveWeeks();
+    await this.loadVotingData();
+  }
+
+  // Sets every active week back to the first baker, then lets any vote this profile
+  // already cast for that week take over once it has loaded
+  async initializeWeekVotes() {
+    const firstContestant = this.activeContestants[0] || null;
+    const weekVotes = {};
+    this.activeWeeks.forEach(week => {
+      weekVotes[week.id] = {
+        selectedStarBaker: firstContestant,
+        selectedTechnical: firstContestant,
+        selectedEliminated: firstContestant,
+        submitting: false,
+        submitSuccess: false,
+        submitError: ''
+      };
+    });
+    this.weekVotes = weekVotes;
+
+    if (!this.profile) return;
+    await Promise.all(this.activeWeeks.map(week => this.applyExistingNomination(week.id)));
+  }
+
+  async applyExistingNomination(weekId) {
+    try {
+      const nomination = await fetchNomination({ weekId, participantId: this.profile.id });
+      this.updateWeekState(weekId, {
+        selectedStarBaker: this.getContestantById(nomination.data['Star Baker'][0]),
+        selectedTechnical: this.getContestantById(nomination.data['Wins Technical'][0]),
+        selectedEliminated: this.getContestantById(nomination.data['Eliminated'][0])
+      });
+    } catch (error) {
+      // No existing nomination for this profile/week yet - the defaults already picked stand
+    }
+  }
+
+  async handleProfileChange(event) {
+    this.profile = event.detail.profile;
+    // The initial load already applies whichever profile is saved once it finishes
+    if (this.loading) return;
+
+    const firstContestant = this.activeContestants[0] || null;
+    this.activeWeeks.forEach(week => this.updateWeekState(week.id, {
+      selectedStarBaker: firstContestant,
+      selectedTechnical: firstContestant,
+      selectedEliminated: firstContestant,
+      submitSuccess: false,
+      submitError: ''
+    }));
+
+    if (!this.profile) return;
+    await Promise.all(this.activeWeeks.map(week => this.applyExistingNomination(week.id)));
   }
 
   // Method to find contestant by ID
@@ -267,99 +361,119 @@ export class GBBOVote extends LitElement {
     return this.contestants.find(contestant => contestant.id === id);
   }
 
-  getBakerField(name) {
-    return GBBOVote.BAKER_FIELDS.find(field => field.name === name);
+  // Bakers who have already been eliminated can't win star baker or technical,
+  // or be eliminated again, so they're left off the picker options
+  get activeContestants() {
+    return this.contestants.filter(contestant => !contestant['Eliminated']);
   }
 
-  // The baker picks and the submit button only make sense once we know who is voting and for which week
-  get nameAndWeekSelected() {
-    return Boolean(this.selectedName && this.selectedWeek);
+  updateWeekState(weekId, changes) {
+    const current = this.weekVotes[weekId];
+    if (!current) return;
+    this.weekVotes = { ...this.weekVotes, [weekId]: { ...current, ...changes } };
   }
 
-  // Everyone starts on the first baker rather than an empty card to make selection navigation easier
-  resetSelections() {
-    this.hasExistingVote = false;
-    const firstContestant = this.contestants[0] || null;
-    GBBOVote.BAKER_FIELDS.forEach(field => this.setSelection(field.name, firstContestant));
+  setSelection(weekId, property, contestant) {
+    this.updateWeekState(weekId, { [property]: contestant });
   }
 
-  // Keeps the dropdown and the card below it showing the same baker, whichever one was used to pick
-  async setSelection(name, contestant) {
-    const field = this.getBakerField(name);
-    this[field.property] = contestant || null;
-
-    await this.updateComplete;
-    const select = this.renderRoot.querySelector(`#${field.selectId}`);
-    if (select) select.value = contestant?.id || '';
+  toggleDescription(weekId) {
+    this.expandedDescriptions = {
+      ...this.expandedDescriptions,
+      [weekId]: !this.expandedDescriptions[weekId]
+    };
   }
 
-  handleSelectChange(name, e) {
-    const selectedId = e.target.value;
-    this.setSelection(name, selectedId ? this.getContestantById(selectedId) : null);
+  renderInfoIcon() {
+    return svg`
+      <svg viewBox="0 0 20 20" role="presentation" aria-hidden="true">
+        <circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <line x1="10" y1="9" x2="10" y2="14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <circle cx="10" cy="6" r="1" fill="currentColor" />
+      </svg>
+    `;
   }
 
-  // Steps to the next or previous baker, starting at either end of the list when nothing is picked
-  stepSelection(name, step) {
-    const total = this.contestants.length;
-    if (total === 0) return;
-
-    const selected = this[this.getBakerField(name).property];
-    const currentIndex = selected ? this.contestants.findIndex(c => c.id === selected.id) : -1;
-    const nextIndex = currentIndex === -1
-      ? (step > 0 ? 0 : total - 1)
-      : (currentIndex + step + total) % total;
-
-    this.setSelection(name, this.contestants[nextIndex]);
+  renderBakerCell(weekId, field, state) {
+    return html`
+      <td class="pick-cell">
+        <span class="pick-label">${field.label}</span>
+        <div class="pick-value">
+          <gbbo-contestant-picker
+            .contestants="${this.activeContestants}"
+            .selected="${state[field.property]}"
+            .label="${field.label}"
+            .disabled="${this.activeContestants.length === 0}"
+            @contestant-change="${(e) => this.setSelection(weekId, field.property, e.detail.contestant)}"
+          ></gbbo-contestant-picker>
+        </div>
+      </td>
+    `;
   }
 
-  renderBakerField(field) {
-    const noContestants = this.contestants.length === 0;
-    const selected = this[field.property];
-    const selectedIndex = selected ? this.contestants.findIndex(c => c.id === selected.id) : 0;
+  renderWeek(week) {
+    const state = this.weekVotes[week.id];
+    if (!state) return '';
+    const descriptionOpen = !!this.expandedDescriptions[week.id];
 
     return html`
-      <div class="form-group">
-        <label class="form-label" for="${field.selectId}">${field.label}</label>
-        <div class="card-stepper">
-          <button
-            type="button"
-            class="card-step-button"
-            ?disabled="${noContestants}"
-            aria-label="Previous baker for ${field.label}"
-            @click="${() => this.stepSelection(field.name, -1)}"
-          >
-            &lsaquo;
-          </button>
-          <gbbo-contestants-card
-            .contestant="${selected}"
-            .contestants="${this.contestants}"
-            .index="${selectedIndex}"
-            .hideName="${true}"
-            @contestant-browse="${(e) => this.setSelection(field.name, e.detail.contestant)}">
-          </gbbo-contestants-card>
-          <button
-            type="button"
-            class="card-step-button"
-            ?disabled="${noContestants}"
-            aria-label="Next baker for ${field.label}"
-            @click="${() => this.stepSelection(field.name, 1)}"
-          >
-            &rsaquo;
-          </button>
+      <div class="week">
+        <div class="week-table">
+          <div class="week-header">
+            <div class="week-info">
+              <div class="week-heading-row">
+                <h3 class="week-heading">${week.week}</h3>
+                ${week.Description ? html`
+                  <button
+                    type="button"
+                    class="info-toggle"
+                    aria-expanded="${descriptionOpen}"
+                    aria-label="${descriptionOpen ? 'Hide week details' : 'Show week details'}"
+                    @click="${() => this.toggleDescription(week.id)}"
+                  >
+                    ${this.renderInfoIcon()}
+                  </button>
+                ` : ''}
+              </div>
+              ${week.Description ? html`
+                <p class="week-description ${descriptionOpen ? 'open' : ''}">${week.Description}</p>
+              ` : ''}
+            </div>
+            <primary-button
+              type="button"
+              @click="${() => this._handleSubmit(week.id)}"
+              ?disabled="${this.contestants.length === 0 || state.submitting}"
+            >
+              Save
+            </primary-button>
+          </div>
+
+          ${state.submitSuccess || state.submitError ? html`
+            <div class="week-messages">
+              ${state.submitSuccess ? html`
+                <div class="success">
+                  <div class="success-title">Votes Saved!</div>
+                  <div>Your nominations for this week have been recorded. Thank you for voting!</div>
+                </div>
+              ` : ''}
+
+              ${state.submitError ? html`
+                <div class="submit-error">
+                  <div class="submit-error-title">Error Saving Votes</div>
+                  <div>${state.submitError}</div>
+                </div>
+              ` : ''}
+            </div>
+          ` : ''}
+
+          <table class="picks-table">
+            <tbody>
+              <tr>
+                ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerCell(week.id, field, state))}
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <select
-          class="form-select"
-          id="${field.selectId}"
-          name="${field.name}"
-          required
-          ?disabled="${noContestants}"
-          @change="${(e) => this.handleSelectChange(field.name, e)}"
-        >
-          <option value="" disabled selected>Select Baker...</option>
-          ${this.contestants.map(contestant => html`
-            <option value="${contestant.id}">${contestant.name}</option>
-          `)}
-        </select>
       </div>
     `;
   }
@@ -370,12 +484,19 @@ export class GBBOVote extends LitElement {
         ${this.loading ? html`
           <gbbo-loading-container></gbbo-loading-container>
         ` : ''}
-        
-        ${this.error ? html`
+
+        ${!this.loading ? html`
+          <div class="profile-row">
+            ${this.profile ? html`<span class="profile-row-label">Showing submission for</span>` : ''}
+            <gbbo-profile-toggle></gbbo-profile-toggle>
+          </div>
+        ` : ''}
+
+        ${!this.loading && this.error ? html`
           <div class="error">
-            <div class="error-title">Error Loading Contestants</div>
+            <div class="error-title">Error Loading Voting</div>
             <div>${this.error}</div>
-            <primary-button 
+            <primary-button
               @click="${this.handleRetry}"
               ?disabled="${this.loading}"
             >
@@ -384,161 +505,47 @@ export class GBBOVote extends LitElement {
           </div>
         ` : ''}
 
-        ${this.submitSuccess ? html`
-          <div class="success">
-            <div class="success-title">Votes Submitted Successfully!</div>
-            <div>Your nominations have been recorded. Thank you for voting!</div>
-          </div>
+        ${!this.loading && !this.error && !this.profile ? html`
+          <div class="no-profile">Pick who you are above to start voting.</div>
         ` : ''}
 
-        ${this.submitError ? html`
-          <div class="submit-error">
-            <div class="submit-error-title">Error Submitting Votes</div>
-            <div>${this.submitError}</div>
-          </div>
+        ${!this.loading && !this.error && this.profile && this.activeWeeks.length === 0 ? html`
+          <div class="no-weeks">There's no week open for voting right now. Check back soon!</div>
         ` : ''}
 
-        ${!this.loading && !this.error && !this.submitSuccess ? html`
-          <form class="vote-form" @submit=${this._handleSubmit}>
-            <div class="form-group-row">
-              <label class="form-label" for="name">Your Name</label>
-              <select class="form-select" id="name" name="name" required ?disabled="${this.names.length === 0}" @change="${this._handleNameAndWeekChange}">
-                <option value="" disabled selected>Select Your Name...</option>
-                ${this.names.map(name => html`
-                  <option value="${name.id}">${name.name}</option>
-                `)}
-              </select>
-            </div>
-
-            <div class="form-group-row">
-              <label class="form-label" for="week">What week?</label>
-              <select class="form-select" id="week" name="week" required ?disabled="${this.activeWeeks?.length === 0}" @change="${this._handleNameAndWeekChange}">
-                <option value="" disabled selected>Select Week...</option>
-                ${this.activeWeeks?.length === 1 ? html`
-                  <option value="${this.activeWeeks[0].id}" selected>${this.activeWeeks[0].week}</option>
-                ` : this.activeWeeks?.map(week => html`
-                    <option value="${week.id}">${week.week}</option>
-                  `)}
-              </select>
-            </div>
-
-            ${this.nameAndWeekSelected ? html`
-              ${this.hasExistingVote ? html`
-                <gbbo-callout
-                  message="You already voted for this week, so we've loaded your picks. Change anything you like and update your votes."
-                ></gbbo-callout>
-              ` : ''}
-
-              <div class="form-group-row bakers-row">
-                ${GBBOVote.BAKER_FIELDS.map(field => this.renderBakerField(field))}
-              </div>
-
-              <primary-button
-                type="submit"
-                @click="${this._handleButtonClick}"
-                ?disabled="${this.contestants.length === 0 || this.activeWeeks.length === 0 || this.submitting}"
-              >
-                ${this.submitting ? 'Submitting...' : (this.hasExistingVote ? 'Update votes' : 'Submit')}
-              </primary-button>
-            ` : ''}
-          </form>
+        ${!this.loading && !this.error && this.profile && this.activeWeeks.length > 0 ? html`
+          <div class="weeks">
+            ${this.activeWeeks.map(week => this.renderWeek(week))}
+          </div>
         ` : ''}
       </gbbo-card>
     `;
   }
 
-  _handleButtonClick(e) {
-    e.preventDefault();
-    console.log('Submit button clicked');
-    
-    // Find the form and trigger submit
-    const form = this.shadowRoot.querySelector('form');
-    if (form) {
-      console.log('Form found, triggering submit');
-      // Create a submit event and dispatch it
-      const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
-      form.dispatchEvent(submitEvent);
-    } else {
-      console.error('Form not found');
-    }
-  }
+  async _handleSubmit(weekId) {
+    const state = this.weekVotes[weekId];
+    if (!state || !this.profile) return;
 
-  _handleNameAndWeekChange(e) {
-    if (e.target.name === 'name') {
-      this.selectedName = e.target.value;
-    } else {
-      this.selectedWeek = e.target.value;
-    }
-
-    if (!this.nameAndWeekSelected) return;
-
-    // Start from the first baker, then let any vote already cast for this week take over
-    this.resetSelections();
-    console.log('Fetching votes...');
-    this.fetchNomination({ weekId: this.selectedWeek, participantId: this.selectedName });
-  }
-
-  _handleSubmit(e) {
-    e.preventDefault();
-
-    console.log('Form submitted');
-    
-    const formData = new FormData(e.target);
     const votes = {
-      weekId: formData.get('week'),
-      participantId: formData.get('name'),
-      starBakerId: formData.get('starBaker'),
-      technicalId: formData.get('technical'),
-      eliminatedId: formData.get('eliminated')
+      weekId,
+      participantId: this.profile.id,
+      starBakerId: state.selectedStarBaker?.id,
+      technicalId: state.selectedTechnical?.id,
+      eliminatedId: state.selectedEliminated?.id
     };
 
-    console.log('Votes:', votes);
+    this.updateWeekState(weekId, { submitting: true, submitError: '', submitSuccess: false });
 
-    // Find contestant names for logging
-    const voterName = this.names.find(n => n.id === votes.participantId)?.name;
-    const starBakerName = this.contestants.find(c => c.id === votes.starBakerId)?.name;
-    const technicalName = this.contestants.find(c => c.id === votes.technicalId)?.name;
-    const eliminatedName = this.contestants.find(c => c.id === votes.eliminatedId)?.name;
-    const weekName = this.activeWeeks.find(w => w.id === votes.weekId)?.week;
-
-    console.log('Votes submitted:', {
-      ...votes,
-      voterName,
-      starBakerName,
-      technicalName,
-      eliminatedName,
-      weekName
-    });
-    
-    this._submitVotes(votes);
-  }
-
-  async _submitVotes(votes) {
-    this.submitting = true;
-    this.submitError = '';
-    
     try {
-      const nomination = await createNomination(votes);
-      console.log('Nomination created successfully:', nomination);
-      this.submitSuccess = true;
+      await createNomination(votes);
+      this.updateWeekState(weekId, { submitSuccess: true });
     } catch (error) {
       console.error('Error submitting votes:', error);
-      this.submitError = error.message || 'Failed to submit your votes. Please try again.';
+      this.updateWeekState(weekId, { submitError: error.message || 'Failed to submit your votes. Please try again.' });
     } finally {
-      this.submitting = false;
-    }
-  }
-
-  _resetForm() {
-    this.submitSuccess = false;
-    this.submitError = '';
-    
-    // Reset form fields
-    const form = this.shadowRoot.querySelector('form');
-    if (form) {
-      form.reset();
+      this.updateWeekState(weekId, { submitting: false });
     }
   }
 }
 
-customElements.define('gbbo-vote', GBBOVote); 
+customElements.define('gbbo-vote', GBBOVote);
