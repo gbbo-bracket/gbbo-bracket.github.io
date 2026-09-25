@@ -5,7 +5,7 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
 ## 🚀 Features
 
 - **Site settings**: A single button in the nav bar opens a pop-up with two things: a UK/US toggle
-  that switches air dates and renames the site to match what the show is called in that region, and
+  (US by default) that switches air dates and renames the site to match what the show is called in that region, and
   a profile picker so a visitor can pick who they are from the list of participants. Both are
   remembered in the browser instead of a full login - once a profile is picked, the button shows
   that person's name and emoji, and the Vote page shows and saves that person's picks automatically
