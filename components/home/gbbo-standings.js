@@ -16,6 +16,10 @@ export class GBBOStandings extends LitElement {
     standings: { type: Array },
     title: { type: String },
     description: { type: String },
+    // Final standings (a finished season) get the podium treatment - medals
+    // and gold/silver/bronze rank colours for the top three. Standings that
+    // are still in play are shown as plain numbered ranks.
+    final: { type: Boolean },
     loading: { type: Boolean },
     error: { type: String },
     modalContestant: { type: Object },
@@ -27,6 +31,7 @@ export class GBBOStandings extends LitElement {
     this.standings = null;
     this.currentStandings = null;
     this.title = '';
+    this.final = false;
     this.description = '';
     this.loading = true;
     this.error = null;
@@ -374,7 +379,9 @@ export class GBBOStandings extends LitElement {
   getRankDisplay(index) {
     const rank = index + 1;
     let medal = '';
-    
+
+    if (!this.final) return { rank, medal };
+
     if (rank === 1) medal = '🥇';
     else if (rank === 2) medal = '🥈';
     else if (rank === 3) medal = '🥉';
@@ -383,6 +390,7 @@ export class GBBOStandings extends LitElement {
   }
 
   getRankClass(index) {
+    if (!this.final) return '';
     if (index === 0) return 'first';
     if (index === 1) return 'second';
     if (index === 2) return 'third';

@@ -14,14 +14,16 @@ const BAKER_RESULTS_TABLE_ID = 'tblCV1RozeH3oz1DW';
 // The toggles that never change: the live current-season total, the Finals
 // standings, and the archived final standings from past seasons. Weeks are
 // worked out at runtime from air dates and spliced in between the first two.
+// `final` marks the season totals that get the podium medals and colours.
 const STATIC_OPTIONS = {
-  current: { id: 'current', label: CURRENT_YEAR, title: 'Current Standings', kind: 'current' },
+  current: { id: 'current', label: CURRENT_YEAR, title: 'Current Standings', kind: 'current', final: true },
   finals: { id: FINALS_WEEK_ID, label: 'Finals', title: `${CURRENT_YEAR} Finals Standings`, kind: 'week' },
   archive: Object.keys(pastYears).map(year => ({
     id: year,
     label: year,
     title: `${year} Final Results`,
     kind: 'archive',
+    final: true,
     standings: pastYears[year]
   }))
 };
@@ -220,6 +222,7 @@ export class GBBOStandingsPicker extends LitElement {
         <gbbo-standings
           .standings="${standings}"
           title="${option.title}"
+          ?final="${!!option.final}"
           description="${this.description}"
         ></gbbo-standings>
       `}
