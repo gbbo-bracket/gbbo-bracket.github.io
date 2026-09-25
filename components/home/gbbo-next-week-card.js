@@ -413,7 +413,7 @@ export class GBBONextWeekCard extends LitElement {
       return html`<div class="coming-soon-badge">${this.countdownText}</div>`;
     }
 
-    const { name, href, logo } = WATCH_LINKS[this.region] || WATCH_LINKS[UK];
+    const { name, href, logo } = WATCH_LINKS[this.region] || WATCH_LINKS[US];
     return html`
       <a class="coming-soon-badge" href="${href}" target="_blank" rel="noopener noreferrer">
         <img src="${logo}" alt="Watch on ${name}">

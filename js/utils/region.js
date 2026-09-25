@@ -19,16 +19,17 @@ const AIR_DATE_FIELDS = {
 };
 
 /**
- * The region the visitor is currently viewing, defaulting to the UK
+ * The region the visitor is currently viewing, defaulting to the US since
+ * most of the league watches there
  * @returns {string} UK or US
  */
 export function getRegion() {
   try {
-    return localStorage.getItem(STORAGE_KEY) === US ? US : UK;
+    return localStorage.getItem(STORAGE_KEY) === UK ? UK : US;
   } catch (error) {
     // Private browsing and blocked storage both throw here
-    console.warn('Could not read the saved region, defaulting to UK:', error);
-    return UK;
+    console.warn('Could not read the saved region, defaulting to US:', error);
+    return US;
   }
 }
 
@@ -37,7 +38,7 @@ export function getRegion() {
  * @param {string} region - UK or US
  */
 export function setRegion(region) {
-  const next = region === US ? US : UK;
+  const next = region === UK ? UK : US;
 
   try {
     localStorage.setItem(STORAGE_KEY, next);
