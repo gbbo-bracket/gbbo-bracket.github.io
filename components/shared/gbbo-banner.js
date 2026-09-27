@@ -68,7 +68,7 @@ export class GBBOBanner extends LitElement {
       <div class="banner ${this.variant === 'reminder' ? 'reminder' : 'confirmed'}">
         ${this.message}
         ${this.ctaText && this.ctaHref ? html`
-          <a class="banner-cta" href="${this.ctaHref}">${this.ctaText}</a>
+          <a class="banner-cta" href="${this.ctaHref}" target="_blank" rel="noopener noreferrer">${this.ctaText}</a>
         ` : ''}
       </div>
     `;
