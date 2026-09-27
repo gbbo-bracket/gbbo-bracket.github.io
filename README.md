@@ -28,7 +28,8 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   closed
 - **Finals**: The Finals page uses the same look as the Vote page, but shows just the Finals, with
   three pickers for the All-around Winner and the two other Finalists. It's always open, and it also
-  picks up whoever is chosen in Site settings and loads back any Finals picks they already saved
+  picks up whoever is chosen in Site settings and loads back any Finals picks they already saved.
+  When Finals is marked active, it also shows up on the Vote page, after any open weeks
 - **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
   selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
   Channel 4 in the UK or Netflix in the US

@@ -1,4 +1,5 @@
 import airtableService from '../airtable-service.js';
+import { FINALS_WEEK_ID } from './nominations.js';
 
 /**
  * Fetch weeks from the baker results table
@@ -35,6 +36,8 @@ export async function fetchActiveWeeks() {
       isActive: record.data['Is active?'] || false,
       ...record.data
     })).sort((a, b) => a.week.localeCompare(b.week));
+    // "Finals" sorts alphabetically ahead of "Week N", but it belongs after them
+    activeWeeks.sort((a, b) => (a.id === FINALS_WEEK_ID) - (b.id === FINALS_WEEK_ID));
     
     console.log('Active weeks loaded:', activeWeeks);
     return activeWeeks;
