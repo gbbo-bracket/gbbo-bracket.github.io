@@ -1,7 +1,7 @@
 import { LitElement, html, css, svg } from 'lit';
 import '../foundations/card.js';
 import '../foundations/primary-button.js';
-import '../contestants/gbbo-contestant-picker.js';
+import '../contestants/gbbo-contestants-card.js';
 import '../shared/gbbo-loading-container.js';
 import '../shared/gbbo-profile-toggle.js';
 import { fetchContestants } from '../../js/utils/bakers.js';
@@ -129,7 +129,7 @@ export class GBBOVote extends LitElement {
       border-collapse: collapse;
     }
 
-    /* On desktop each field is its own column: label on top, picker below,
+    /* On desktop each field is its own column: label on top, baker card below,
        three columns across one row */
     .picks-table td.pick-cell {
       padding: 1.25rem 1.5rem;
@@ -162,7 +162,7 @@ export class GBBOVote extends LitElement {
     }
 
     /* Below the breakpoint there isn't room for three columns, so each field
-       goes back to being its own full-width row, label above picker */
+       goes back to being its own full-width row, label above baker card */
     @media (max-width: 640px) {
       .picks-table, .picks-table tbody, .picks-table tr, .picks-table td {
         display: block;
@@ -238,7 +238,7 @@ export class GBBOVote extends LitElement {
     }
   `;
 
-  // The three baker picks, so the picker and its table row can be rendered from one place.
+  // The three baker picks, so each baker card and its table cell can be rendered from one place.
   // nominationField is the Nominations table column an existing pick is read back from
   static BAKER_FIELDS = [
     { name: 'starBaker', label: 'Star Baker', property: 'selectedStarBaker', nominationField: 'Star Baker' },
@@ -385,7 +385,7 @@ export class GBBOVote extends LitElement {
   }
 
   // Bakers who have already been eliminated can't win star baker or technical,
-  // or be eliminated again, so they're left off the picker options
+  // or be eliminated again, so they're left out of the cards
   get activeContestants() {
     return this.contestants.filter(contestant => !contestant['Eliminated']);
   }
@@ -417,18 +417,20 @@ export class GBBOVote extends LitElement {
     `;
   }
 
+  // Tapping the card opens the same baker profile as the Contestants page, and browsing
+  // through it with the arrows changes this pick to whoever is showing
   renderBakerCell(weekId, field, state) {
+    const selected = state[field.property];
     return html`
       <td class="pick-cell">
         <span class="pick-label">${field.label}</span>
         <div class="pick-value">
-          <gbbo-contestant-picker
+          <gbbo-contestants-card
+            .contestant="${selected}"
             .contestants="${this.activeContestants}"
-            .selected="${state[field.property]}"
-            .label="${field.label}"
-            .disabled="${this.activeContestants.length === 0}"
-            @contestant-change="${(e) => this.setSelection(weekId, field.property, e.detail.contestant)}"
-          ></gbbo-contestant-picker>
+            .index="${Math.max(this.activeContestants.indexOf(selected), 0)}"
+            @contestant-browse="${(e) => this.setSelection(weekId, field.property, e.detail.contestant)}"
+          ></gbbo-contestants-card>
         </div>
       </td>
     `;

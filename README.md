@@ -21,13 +21,14 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table
   for whoever is picked in Site settings, with a Save button of its own. The three picks - Star
-  Baker, Technical Winner, Eliminated - are small pickers you can step through with arrows either
-  side, or tap to jump straight to a baker from the full list. If you already voted for a week, your
+  Baker, Technical Winner, Eliminated - are baker cards. Tapping one opens the same profile pop-up
+  as the Contestants page, and browsing to another baker in it changes the pick to whoever is
+  showing. If you already voted for a week, your
   picks are loaded back in automatically, and saving again updates that same pick rather than adding
   a duplicate. If a week has a description, an info icon next to its heading toggles it open and
   closed
 - **Finals**: When Finals is marked active, it shows up on the Vote page after any open weeks, in
-  the same kind of table but with three pickers for the All-around Winner and the two other
+  the same kind of table but with three baker cards for the All-around Winner and the two other
   Finalists. There's no separate Finals page any more
 - **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
   selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
