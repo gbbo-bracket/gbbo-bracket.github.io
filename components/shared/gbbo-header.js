@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import '../foundations/primary-button';
 import './gbbo-profile-toggle.js';
 
-const NAV_TITLE = 'GBBO.Bracket';
+const NAV_TITLE = 'GBBO Bracket';
 
 export class GBBOHeader extends LitElement {
   static properties = {
