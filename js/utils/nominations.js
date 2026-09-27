@@ -5,8 +5,8 @@ import { fetchContestants } from './bakers.js';
 // Table ID for nominations
 const NOMINATIONS_TABLE_ID = 'tblL01LW4xJwPHfiq';
 
-// Record ID of the Finals week in the baker results table - the finals form
-// nominates against this fixed week rather than one a participant picks
+// Record ID of the Finals week in the baker results table - Finals picks are
+// always saved against this fixed week
 export const FINALS_WEEK_ID = 'recqnEKzRQ1v1lTke';
 
 // Field IDs for the nominations table
@@ -189,7 +189,7 @@ export async function fetchWeekStandings(weekId) {
   return participants
     .map(participant => {
       const nomination = nominationByParticipantId.get(participant.id);
-      // The Finals form saves to this same table but doesn't fill these three
+      // Finals picks save to this same table but don't fill these three
       // fields, so a Finals nomination correctly ends up with no picks here
       const hasWeeklyPicks = nomination && (nomination['Star Baker'] || nomination['Wins Technical'] || nomination['Eliminated']);
 

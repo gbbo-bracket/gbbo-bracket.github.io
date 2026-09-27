@@ -26,6 +26,9 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   picks are loaded back in automatically, and saving again updates that same pick rather than adding
   a duplicate. If a week has a description, an info icon next to its heading toggles it open and
   closed
+- **Finals**: When Finals is marked active, it shows up on the Vote page after any open weeks, in
+  the same kind of table but with three pickers for the All-around Winner and the two other
+  Finalists. There's no separate Finals page any more
 - **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
   selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
   Channel 4 in the UK or Netflix in the US
@@ -91,7 +94,7 @@ gbbo-bracket.github.io/
 ├── components/         # LitElement web components
 │   ├── foundations/    # Shared building blocks (card, primary-button)
 │   ├── shared/         # Header, footer, banners, callouts, loading states, site settings pop-up
-│   └── home/ contestants/ finals/ join/ rules/ standings/ vote/   # Per-page components
+│   └── home/ contestants/ join/ rules/ standings/ vote/   # Per-page components
 ├── js/
 │   ├── main.js              # Main application logic
 │   ├── airtable-service.js  # Reads and writes to Airtable

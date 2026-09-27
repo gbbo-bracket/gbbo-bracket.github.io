@@ -85,13 +85,13 @@ desktop widths, and checking the browser console for errors.
 ## Project layout
 
 ```
-index.html, contestants.html, finals.html,   # one HTML entry per page; each is registered in
-join.html, rules.html, standings.html,       # vite.config.js rollupOptions.input
-vote.html, 2024.html
+index.html, contestants.html, join.html,     # one HTML entry per page; each is registered in
+rules.html, standings.html, vote.html,       # vite.config.js rollupOptions.input
+2024.html
 components/
   foundations/    # generic building blocks: card, primary-button
   shared/         # header, footer, banner, mobile-banner, loading-container
-  home/ contestants/ finals/ join/ rules/ vote/   # page-specific components
+  home/ contestants/ join/ rules/ vote/   # page-specific components
 js/
   main.js             # imports every component and the CSS; the single entry point
   airtable-service.js # all Airtable reads and writes
