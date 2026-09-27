@@ -1,26 +1,17 @@
 import { LitElement, html, css } from 'lit';
 import '../foundations/primary-button';
 import './gbbo-profile-toggle.js';
-import { US, REGION_CHANGE_EVENT, getRegion } from '../../js/utils/region.js';
 
-// The show goes by a different name either side of the Atlantic, so the title
-// in the nav bar follows whichever region the visitor has picked.
-const TITLES = {
-  UK: 'Great Bake Off Bracket',
-  US: 'Great British Baking Bracket'
-};
+const NAV_TITLE = 'GBBO.Bracket';
 
 export class GBBOHeader extends LitElement {
   static properties = {
-    mobileMenuOpen: { type: Boolean },
-    region: { type: String }
+    mobileMenuOpen: { type: Boolean }
   };
 
   constructor() {
     super();
     this.mobileMenuOpen = false;
-    this.region = getRegion();
-    this.handleRegionChange = this.handleRegionChange.bind(this);
     this.handleOutsideClick = this.handleOutsideClick.bind(this);
   }
 
@@ -102,6 +93,10 @@ export class GBBOHeader extends LitElement {
       color: var(--link-text-on-hover);
     }
     
+    .mobile-profile-toggle {
+      display: none;
+    }
+
     .mobile-menu-button {
       display: none;
       background: none;
@@ -184,7 +179,11 @@ export class GBBOHeader extends LitElement {
       .nav-links {
         display: none;
       }
-      
+
+      .mobile-profile-toggle {
+        display: block;
+      }
+
       .mobile-menu-button {
         display: block;
       }
@@ -203,7 +202,6 @@ export class GBBOHeader extends LitElement {
 
   connectedCallback() {
     super.connectedCallback();
-    window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
     // Capture phase, so this runs before the click reaches whatever it landed
     // on - otherwise an outside tap would dismiss the menu *and* still open
     // a modal, follow a link, etc. underneath it
@@ -212,12 +210,7 @@ export class GBBOHeader extends LitElement {
 
   disconnectedCallback() {
     super.disconnectedCallback();
-    window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
     document.removeEventListener('click', this.handleOutsideClick, true);
-  }
-
-  handleRegionChange(event) {
-    this.region = event.detail.region;
   }
 
   // Closes the mobile menu when a tap/click lands outside this element, e.g.
@@ -240,9 +233,9 @@ export class GBBOHeader extends LitElement {
       <nav>
         <a href="/" class="logo">
           <div class="emoji">🧁</div>
-          <h1>${this.region === US ? TITLES.US : TITLES.UK}</h1>
+          <h1>${NAV_TITLE}</h1>
         </a>
-        
+
         <div class="nav-right">
           <ul class="nav-links">
             <li><a href="/">Home</a></li>
@@ -252,19 +245,22 @@ export class GBBOHeader extends LitElement {
             <li><gbbo-profile-toggle></gbbo-profile-toggle></li>
             <li><primary-button href="/vote">Vote now</primary-button></li>
           </ul>
-          
-          <button 
-            class="mobile-menu-button" 
+
+          <div class="mobile-profile-toggle">
+            <gbbo-profile-toggle></gbbo-profile-toggle>
+          </div>
+
+          <button
+            class="mobile-menu-button"
             @click="${this.toggleMobileMenu}"
             aria-label="Toggle mobile menu"
           >
             ${this.mobileMenuOpen ? '✕' : '☰'}
           </button>
         </div>
-        
+
         <div class="mobile-menu ${this.mobileMenuOpen ? 'open' : ''}">
           <ul class="mobile-nav-links">
-            <li><gbbo-profile-toggle></gbbo-profile-toggle></li>
             <li><a href="/" @click="${this.toggleMobileMenu}">Home</a></li>
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
