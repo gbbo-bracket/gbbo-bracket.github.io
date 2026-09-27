@@ -11,7 +11,7 @@ if (!fs.existsSync(distDir)) {
 }
 
 // Build for GitHub Pages
-console.log('🧁 Building GBBO Bracket 2025 for GitHub Pages...');
+console.log('🧁 Building GBBO Bracket for GitHub Pages...');
 console.log('📦 Building with Vite...');
 
 try {

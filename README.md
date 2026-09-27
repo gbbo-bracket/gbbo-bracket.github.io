@@ -1,6 +1,6 @@
-# GBBO Bracket 2025 🧁
+# GBBO Bracket 🧁
 
-Great British Bake Off Bracket 2025 - Built with **LitElement**.
+A Great British Bake Off bracket - Built with **LitElement**.
 
 ## 🚀 Features
 
@@ -10,13 +10,12 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   remembered in the browser instead of a full login - once a profile is picked, the button shows
   that person's name and emoji, and the Vote page shows and saves that person's picks automatically
 - **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points for the
-  current season under a "2026" toggle. Alongside it are toggles for each week that's already aired
-  (plus whichever week is up next), the 2026 Finals, and the final standings from the 2025 and 2024
-  seasons. Switching to a week or Finals also shows each person's Star Baker, Technical Winner and
-  Eliminated picks for that week, stacking into their own row on mobile so the table stays readable
-  on a phone. Tapping a pick opens that baker's profile pop-up, same as the Contestants page but
-  without the arrows to browse to other bakers. The home page points at it from under its own
-  standings table
+  current season. Alongside it are toggles for each week that's already aired (plus whichever week
+  is up next), the Finals, and the final standings from each past season. Switching to a week or
+  Finals also shows each person's Star Baker, Technical Winner and Eliminated picks for that week,
+  stacking into their own row on mobile so the table stays readable on a phone. Tapping a pick opens
+  that baker's profile pop-up, same as the Contestants page but without the arrows to browse to
+  other bakers. The home page points at it from under its own standings table
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table
@@ -38,6 +37,11 @@ Great British Bake Off Bracket 2025 - Built with **LitElement**.
   to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark
   banner linking to the Vote page to review them instead. Weeks stack into their own banner if more
   than one is open at once
+- **Shared Page Metadata**: One `<gbbo-metadata>` tag in each page's `<head>` sets the browser tab
+  title, the search description, and the picture and blurb that show up when someone shares a link
+  in a group chat. Pages that say nothing fall back to shared defaults, so every link looks the same.
+  Tabs show a cupcake 🧁 and read "GBBO Bracket: Standings" and the like - no year anywhere, so
+  nothing needs renaming come September
 - **LitElement Components**: Modern, reactive web components using LitElement
 - **Tailwind CSS**: Utility-first CSS framework for styling
 - **Web Components**: Native browser support with Shadow DOM
@@ -104,6 +108,7 @@ gbbo-bracket.github.io/
 │   ├── input.css       # Tailwind CSS input
 │   └── styles.css      # Colour palette and global styles
 ├── assets/images/      # Images served with the site
+├── vite-plugins/       # Build helpers, including the <gbbo-metadata> head component
 ├── dist/               # Built files (auto-generated)
 ├── index.html          # Home page (one HTML file per page)
 ├── vite.config.js      # Vite configuration
@@ -150,6 +155,11 @@ customElements.define('my-component', MyComponent);
 - Add new reactive properties in `static properties`
 - Use Tailwind CSS classes in your HTML templates
 - Extend components with new methods and lifecycle hooks
+
+## 🙏 Credits
+
+The cupcake favicon is [Twemoji](https://commons.wikimedia.org/wiki/File:Twemoji12_1f9c1.svg) by
+Twitter, used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 
 ## 🤝 Contributing
 

@@ -86,8 +86,7 @@ desktop widths, and checking the browser console for errors.
 
 ```
 index.html, contestants.html, join.html,     # one HTML entry per page; each is registered in
-rules.html, standings.html, vote.html,       # vite.config.js rollupOptions.input
-2024.html
+rules.html, standings.html, vote.html        # vite.config.js rollupOptions.input
 components/
   foundations/    # generic building blocks: card, primary-button
   shared/         # header, footer, banner, mobile-banner, loading-container

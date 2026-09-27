@@ -1,7 +1,7 @@
 {
-  "name": "gbbo-bracket-2025",
+  "name": "gbbo-bracket",
   "version": "1.0.0",
-  "description": "Great British Bake Off Bracket 2025",
+  "description": "A Great British Bake Off bracket",
   "main": "index.html",
   "type": "module",
   "scripts": {
