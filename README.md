@@ -15,7 +15,7 @@ A Great British Bake Off bracket - Built with **LitElement**.
   Finals also shows each person's Star Baker, Technical Winner and Eliminated picks for that week,
   stacking into their own row on mobile so the table stays readable on a phone. Tapping a pick opens
   that baker's profile pop-up, same as the Contestants page but without the arrows to browse to
-  other bakers. The home page points at it from under its own standings table
+  other bakers
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table
@@ -31,7 +31,9 @@ A Great British Bake Off bracket - Built with **LitElement**.
   Finalists. There's no separate Finals page any more
 - **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
   selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
-  Channel 4 in the UK or Netflix in the US
+  Channel 4 in the UK or Netflix in the US. Once anyone has voted for that week, a standings card
+  for it shows underneath with points and picks - but everyone else's picks stay hidden until the
+  visitor has cast their own, so no one gets spoiled before voting
 - **Vote reminders**: A banner under the nav on the home page nags whoever is picked in Site
   settings to vote for any week that's currently open - a light pink warning with a link straight
   to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark

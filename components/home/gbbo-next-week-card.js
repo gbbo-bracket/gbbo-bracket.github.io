@@ -1,10 +1,14 @@
 import { LitElement, html, css } from 'lit';
 import { airtableService } from '../../js/airtable-service.js';
 import { UK, US, REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
+import { fetchWeekStandings } from '../../js/utils/nominations.js';
+import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
 import '../foundations/primary-button.js';
 import '../shared/gbbo-loading-container.js';
+import '../shared/gbbo-banner.js';
 import '../shared/gbbo-callout.js';
 import '../shared/gbbo-vote-status-banners.js';
+import './gbbo-standings.js';
 
 // Where to watch an episode once it has premiered, per region
 const WATCH_LINKS = {
@@ -29,7 +33,9 @@ export class GBBONextWeekCard extends LitElement {
     countdownText: { type: String },
     premiered: { type: Boolean },
     showingPrevious: { type: Boolean },
-    region: { type: String }
+    region: { type: String },
+    weekStandings: { type: Array },
+    profile: { type: Object }
   };
 
   constructor() {
@@ -44,7 +50,11 @@ export class GBBONextWeekCard extends LitElement {
     this.countdownInterval = null;
     this.region = getRegion();
     this.records = [];
+    this.weekStandings = null;
+    this.standingsWeekId = null;
+    this.profile = getProfile();
     this.handleRegionChange = this.handleRegionChange.bind(this);
+    this.handleProfileChange = this.handleProfileChange.bind(this);
   }
 
   static styles = css`
@@ -215,7 +225,12 @@ export class GBBONextWeekCard extends LitElement {
       display: flex;
       justify-content: center;
     }
-    
+
+    gbbo-standings {
+      display: block;
+      margin-top: 2.5rem;
+    }
+
     .error {
       padding: 2rem;
       text-align: center;
@@ -226,12 +241,14 @@ export class GBBONextWeekCard extends LitElement {
   connectedCallback() {
     super.connectedCallback();
     window.addEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+    window.addEventListener(PROFILE_CHANGE_EVENT, this.handleProfileChange);
     this.fetchNextWeek();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener(REGION_CHANGE_EVENT, this.handleRegionChange);
+    window.removeEventListener(PROFILE_CHANGE_EVENT, this.handleProfileChange);
     if (this.countdownInterval) {
       clearInterval(this.countdownInterval);
     }
@@ -241,6 +258,47 @@ export class GBBONextWeekCard extends LitElement {
     this.region = event.detail.region;
     // The weeks are already loaded, so just pick the next one for the new region
     this.selectNextWeek();
+  }
+
+  handleProfileChange(event) {
+    this.profile = event.detail.profile;
+  }
+
+  // The week currently on display - either the upcoming one, or the one that
+  // just aired when we're still showing it in place of a far-off countdown
+  get displayWeek() {
+    return this.showingPrevious && this.previousWeek ? this.previousWeek : this.nextWeek;
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has('nextWeek') || changedProperties.has('previousWeek') || changedProperties.has('showingPrevious')) {
+      this.loadWeekStandings();
+    }
+  }
+
+  // Picks and points only exist once someone has voted for the displayed
+  // week, so the standings card stays hidden until there's something to show
+  async loadWeekStandings() {
+    const week = this.displayWeek;
+
+    if (!week) {
+      this.weekStandings = null;
+      this.standingsWeekId = null;
+      return;
+    }
+
+    if (week.id === this.standingsWeekId) return;
+    this.standingsWeekId = week.id;
+    this.weekStandings = null;
+
+    try {
+      const standings = await fetchWeekStandings(week.id);
+      // A different week may have started loading while this fetch was in flight
+      if (this.standingsWeekId === week.id) this.weekStandings = standings;
+    } catch (error) {
+      console.error('Failed to load week standings for next-week card:', error);
+      if (this.standingsWeekId === week.id) this.weekStandings = null;
+    }
   }
 
   async fetchNextWeek() {
@@ -453,7 +511,7 @@ export class GBBONextWeekCard extends LitElement {
       `;
     }
 
-    const displayWeek = this.showingPrevious && this.previousWeek ? this.previousWeek : this.nextWeek;
+    const displayWeek = this.displayWeek;
     const { data } = displayWeek;
     const title = data.Title || '';
     const description = data.Description || '';
@@ -491,7 +549,50 @@ export class GBBONextWeekCard extends LitElement {
         ` : html`
           <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
         `}
+
+        ${this.renderWeekStandings(displayWeek)}
       </div>
+    `;
+  }
+
+  // Whether the current profile has already made their picks for the
+  // displayed week - checked from the fetched standings themselves rather
+  // than a separate lookup, since a real (non-Finals) nomination always
+  // fills in all three pick fields together
+  get viewerHasVoted() {
+    if (!this.profile || !this.weekStandings) return false;
+    const own = this.weekStandings.find(participant => participant.id === this.profile.id);
+    return !!own?.picks;
+  }
+
+  // Only worth showing once someone has actually voted for this week -
+  // otherwise it's just an empty table of zero points and "No vote yet"
+  renderWeekStandings(displayWeek) {
+    if (!this.weekStandings || this.standingsWeekId !== displayWeek.id) return '';
+    if (!this.weekStandings.some(participant => participant.picks || participant.points > 0)) return '';
+
+    // Picks are a spoiler for anyone who hasn't voted yet, so everyone
+    // else's stay hidden until the viewer has made their own
+    const viewerHasVoted = this.viewerHasVoted;
+    const standings = viewerHasVoted ? this.weekStandings : this.weekStandings.map(participant => ({
+      ...participant,
+      picks: participant.id === this.profile?.id ? participant.picks : null
+    }));
+
+    return html`
+    ${viewerHasVoted ?
+        html`
+          <gbbo-standings
+            .standings="${standings}"
+          ></gbbo-standings>
+        ` : html`
+          <gbbo-banner
+            variant="confirmed"
+            message="Vote to see everyone's picks this week, or view week-by-week and last year's winners"
+            ctaText="here"
+            ctaHref="/standings"
+          ></gbbo-banner>
+        `}
     `;
   }
 

@@ -166,7 +166,7 @@ export async function createFinalistNomination({
  * full baker record (not just a name) so Standings can open the same detail
  * modal the Contestants page uses when one is clicked.
  * @param {string} weekId - Record ID of the week in the baker results table
- * @returns {Promise<Array<{name: string, points: number, picks: ?{starBaker: ?Object, technical: ?Object, eliminated: ?Object}}>>}
+ * @returns {Promise<Array<{id: string, name: string, points: number, picks: ?{starBaker: ?Object, technical: ?Object, eliminated: ?Object}}>>}
  */
 export async function fetchWeekStandings(weekId) {
   const [nominationRecords, participants, contestants] = await Promise.all([
@@ -194,6 +194,7 @@ export async function fetchWeekStandings(weekId) {
       const hasWeeklyPicks = nomination && (nomination['Star Baker'] || nomination['Wins Technical'] || nomination['Eliminated']);
 
       return {
+        id: participant.id,
         name: participant.name,
         points: parseInt(nomination?.['Total Points']) || 0,
         picks: hasWeeklyPicks ? {
