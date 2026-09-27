@@ -26,8 +26,13 @@
 /** Where the site lives, so share links and images can be absolute */
 const SITE_URL = 'https://gbbo-bracket.github.io';
 
-/** The name every page title starts with */
-const SITE_NAME = 'Great Bake Off Bracket';
+/**
+ * The name every page title starts with.
+ *
+ * Deliberately has no year in it. The bracket runs again every series, and a
+ * title with a year baked in is wrong by the following September.
+ */
+const SITE_NAME = 'GBBO Bracket';
 
 /** Said about the site when a page does not describe itself */
 const DEFAULT_DESCRIPTION =
@@ -48,8 +53,15 @@ const SHARE_IMAGE = {
   alt: 'The bakers of this series of the Great British Bake Off'
 };
 
-/** The cupcake avatar, for browser tabs and phone home screens */
-const ICON = '/images/gbbo-avatar.jpg';
+/**
+ * The cupcake, for browser tabs and phone home screens.
+ *
+ * The SVG is the one every modern browser uses and stays sharp at any size.
+ * Safari will not take an SVG for a home-screen icon, so there is a 180x180
+ * PNG alongside it for that.
+ */
+const ICON = '/images/favicon.svg';
+const APPLE_ICON = '/images/apple-touch-icon.png';
 
 /** Icing pink, for the browser chrome on mobile */
 const THEME_COLOR = '#F7C6D9';
@@ -113,8 +125,8 @@ function toPageUrl(htmlPath = '/index.html') {
 function renderMetadata(attributes, htmlPath) {
   const attr = escapeAttribute;
 
-  // "Great Bake Off Bracket | Vote Now!", or just the site name on its own
-  const title = attr(attributes.title ? `${SITE_NAME} | ${attributes.title}` : SITE_NAME);
+  // "GBBO Bracket: Contestants", or just the site name on its own
+  const title = attr(attributes.title ? `${SITE_NAME}: ${attributes.title}` : SITE_NAME);
   const description = attr(attributes.description || DEFAULT_DESCRIPTION);
   const url = attr(toPageUrl(htmlPath));
   const image = attr(SHARE_IMAGE.url);
@@ -128,8 +140,8 @@ function renderMetadata(attributes, htmlPath) {
     // The bracket is for friends playing along at home, not for search results
     `<meta name="robots" content="noindex, nofollow">`,
     `<meta name="theme-color" content="${THEME_COLOR}">`,
-    `<link rel="icon" href="${ICON}">`,
-    `<link rel="apple-touch-icon" href="${ICON}">`,
+    `<link rel="icon" type="image/svg+xml" href="${ICON}">`,
+    `<link rel="apple-touch-icon" href="${APPLE_ICON}">`,
 
     // Open Graph - what Facebook, Slack, WhatsApp, iMessage and LinkedIn read
     '',

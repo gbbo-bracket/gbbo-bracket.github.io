@@ -38,7 +38,7 @@ class GBBOApp {
   }
 
   setup() {
-    console.log('🧁 GBBO Bracket 2025 - Ready to bake with LitElement!');
+    console.log('🧁 GBBO Bracket - Ready to bake with LitElement!');
     
     // Add any additional initialization logic here
     this.addEventListeners();
