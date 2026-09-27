@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import '../foundations/primary-button';
 import './gbbo-profile-toggle.js';
+import { VOTE_FORM_URL } from '../../js/utils/external-links.js';
 
 const NAV_TITLE = 'GBBO Bracket';
 
@@ -243,7 +244,7 @@ export class GBBOHeader extends LitElement {
             <li><a href="/contestants">Contestants</a></li>
             <li><a href="/standings">Standings</a></li>
             <li><gbbo-profile-toggle></gbbo-profile-toggle></li>
-            <li><primary-button href="/vote">Vote now</primary-button></li>
+            <li><primary-button href="${VOTE_FORM_URL}" target="_blank" rel="noopener noreferrer">Vote now</primary-button></li>
           </ul>
 
           <div class="mobile-profile-toggle">
@@ -265,7 +266,7 @@ export class GBBOHeader extends LitElement {
             <li><a href="/rules" @click="${this.toggleMobileMenu}">Rules</a></li>
             <li><a href="/contestants" @click="${this.toggleMobileMenu}">Contestants</a></li>
             <li><a href="/standings" @click="${this.toggleMobileMenu}">Standings</a></li>
-            <li><primary-button href="/vote" @click="${this.toggleMobileMenu}">Vote now</primary-button></li>
+            <li><primary-button href="${VOTE_FORM_URL}" target="_blank" rel="noopener noreferrer" @click="${this.toggleMobileMenu}">Vote now</primary-button></li>
           </ul>
         </div>
       </nav>

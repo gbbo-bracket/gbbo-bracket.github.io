@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import '../foundations/primary-button';
+import { VOTE_FORM_URL } from '../../js/utils/external-links.js';
 
 export class GBBOMobileBanner extends LitElement {
   static styles = css`
@@ -66,7 +67,7 @@ export class GBBOMobileBanner extends LitElement {
     return html`
       <div class="banner">
         <div class="banner-content">
-          <a href="/vote" class="vote-button">
+          <a href="${VOTE_FORM_URL}" target="_blank" rel="noopener noreferrer" class="vote-button">
             Vote now
           </a>
         </div>
