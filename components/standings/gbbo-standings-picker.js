@@ -165,11 +165,12 @@ export class GBBOStandingsPicker extends LitElement {
     }
   }
 
+  // Week and Finals toggles are hidden for now while the product vision for
+  // that view gets reconsidered - the week-loading/fetch logic above is left
+  // in place so it's ready to bring back.
   get options() {
     return [
       STATIC_OPTIONS.current,
-      ...this.weekOptions,
-      STATIC_OPTIONS.finals,
       ...STATIC_OPTIONS.archive
     ];
   }

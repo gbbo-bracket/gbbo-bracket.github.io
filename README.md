@@ -10,12 +10,8 @@ A Great British Bake Off bracket - Built with **LitElement**.
   remembered in the browser instead of a full login - once a profile is picked, the button shows
   that person's name and emoji, and the Vote page shows and saves that person's picks automatically
 - **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points for the
-  current season. Alongside it are toggles for each week that's already aired (plus whichever week
-  is up next), the Finals, and the final standings from each past season. Switching to a week or
-  Finals also shows each person's Star Baker, Technical Winner and Eliminated picks for that week,
-  stacking into their own row on mobile so the table stays readable on a phone. Tapping a pick opens
-  that baker's profile pop-up, same as the Contestants page but without the arrows to browse to
-  other bakers
+  current season. Alongside it is a toggle for the final standings from each past season (the
+  per-week and Finals toggles are on hold while that part of the UI gets reconsidered)
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table
