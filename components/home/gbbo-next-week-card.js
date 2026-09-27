@@ -5,15 +5,10 @@ import { fetchWeekStandings } from '../../js/utils/nominations.js';
 import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
 import '../foundations/primary-button.js';
 import '../shared/gbbo-loading-container.js';
+import '../shared/gbbo-banner.js';
 import '../shared/gbbo-callout.js';
 import '../shared/gbbo-vote-status-banners.js';
 import './gbbo-standings.js';
-
-// "Week 2: Biscuit Week" -> "Week 2", so the standings title stays short
-function shortWeekLabel(title) {
-  const match = /^Week\s+\d+/i.exec(title || '');
-  return match ? match[0] : (title || 'Week');
-}
 
 // Where to watch an episode once it has premiered, per region
 const WATCH_LINKS = {
@@ -555,7 +550,7 @@ export class GBBONextWeekCard extends LitElement {
           <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
         `}
 
-        ${this.renderWeekStandings(displayWeek, title)}
+        ${this.renderWeekStandings(displayWeek)}
       </div>
     `;
   }
@@ -572,7 +567,7 @@ export class GBBONextWeekCard extends LitElement {
 
   // Only worth showing once someone has actually voted for this week -
   // otherwise it's just an empty table of zero points and "No vote yet"
-  renderWeekStandings(displayWeek, title) {
+  renderWeekStandings(displayWeek) {
     if (!this.weekStandings || this.standingsWeekId !== displayWeek.id) return '';
     if (!this.weekStandings.some(participant => participant.picks || participant.points > 0)) return '';
 
