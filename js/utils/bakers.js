@@ -1,22 +1,16 @@
-import airtableService from '../airtable-service.js';
+import { contestantsData } from '../data/contestants-data.js';
 
 /**
- * Fetch contestants from Airtable and format them for use in components
+ * The contestants, formatted for use in components. Bakers only change when
+ * an episode airs, so this reads the static data synced from Airtable
+ * (see scripts/sync-static-data.js) instead of fetching it live.
  * @returns {Promise<Array>} Array of formatted contestant objects
  */
 export async function fetchContestants() {
-  try {
-    console.log('Fetching contestants...');
-    const records = await airtableService.fetchRecords();
-    const contestants = records.map(record => ({
-      id: record.id,
-      name: record.data.Name || 'Unknown Contestant',
-      ...record.data
-    }));
-    console.log('Contestants loaded:', contestants);
-    return contestants.sort((a, b) => a.name.localeCompare(b.name));
-  } catch (error) {
-    console.error('Failed to fetch contestants:', error);
-    throw error;
-  }
+  const contestants = contestantsData.map(record => ({
+    id: record.id,
+    name: record.data.Name || 'Unknown Contestant',
+    ...record.data
+  }));
+  return contestants.sort((a, b) => a.name.localeCompare(b.name));
 }

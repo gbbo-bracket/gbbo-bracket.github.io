@@ -1,23 +1,17 @@
-import airtableService from '../airtable-service.js';
+import { participantsData } from '../data/participants-data.js';
 
 /**
- * Fetch names from the standings table
+ * The participant roster and their current points, formatted for use in
+ * components. This only changes when a participant is added directly in
+ * Airtable or a week is scored, so it reads the static data synced from
+ * Airtable (see scripts/sync-static-data.js) instead of fetching it live.
  * @returns {Promise<Array>} Array of formatted name objects
  */
 export async function fetchNames() {
-    try {
-      console.log('Fetching names from standings table...');
-      const records = await airtableService.fetchRecords(airtableService.standingsTableId);
-      const names = records.map(record => ({
-        id: record.id,
-        name: record.data.Name || 'Unknown Name',
-        ...record.data
-      }));
-      console.log('Names loaded:', names);
-      return names.sort((a, b) => a.name.localeCompare(b.name));
-    } catch (error) {
-      console.error('Failed to fetch names:', error);
-      throw error;
-    }
-  }
-  
+  const names = participantsData.map(record => ({
+    id: record.id,
+    name: record.data.Name || 'Unknown Name',
+    ...record.data
+  }));
+  return names.sort((a, b) => a.name.localeCompare(b.name));
+}

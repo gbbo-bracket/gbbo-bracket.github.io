@@ -1,7 +1,7 @@
 import { LitElement, html, css } from 'lit';
 import '../shared/gbbo-loading-container.js';
 import '../contestants/gbbo-contestants-modal.js';
-import { airtableService } from '../../js/airtable-service.js';
+import { participantsData } from '../../js/data/participants-data.js';
 
 // The three picks shown per participant on a week/Finals view, and how to
 // label/icon each one - matches the icons already used on the Contestants page
@@ -335,11 +335,7 @@ export class GBBOStandings extends LitElement {
       this.error = null;
       
       if (!this.standings) {
-        // Fetch standings data from the specific table using configurable fetchRecords
-        const records = await airtableService.fetchRecords('tblX7SVGLgZ59tiWB');
-        
-        // Process and sort the standings
-        this.currentStandings = this.processStandingsData(records);
+        this.currentStandings = this.processStandingsData(participantsData);
         this.standings = this.currentStandings;
       }
       

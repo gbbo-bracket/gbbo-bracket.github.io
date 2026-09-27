@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { airtableService } from '../../js/airtable-service.js';
+import { weeksData } from '../../js/data/weeks-data.js';
 import { UK, US, REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
 import { fetchWeekStandings } from '../../js/utils/nominations.js';
 import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
@@ -305,8 +305,7 @@ export class GBBONextWeekCard extends LitElement {
     this.error = '';
     
     try {
-      console.log('Fetching next week data from Airtable...');
-      this.records = await airtableService.fetchRecords('tblCV1RozeH3oz1DW');
+      this.records = weeksData;
       this.selectNextWeek();
       // Wait for the vote-status/standings data too, so the card doesn't
       // render its first pass with viewerHasVoted still false and then flash

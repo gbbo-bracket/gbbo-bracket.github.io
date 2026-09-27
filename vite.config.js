@@ -13,7 +13,6 @@ export default defineConfig({
       input: {
         main: 'index.html',
         contestants: 'contestants.html',
-        join: 'join.html',
         rules: 'rules.html',
         standings: 'standings.html',
         vote: 'vote.html'

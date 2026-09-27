@@ -98,11 +98,14 @@ gbbo-bracket.github.io/
 ├── components/         # LitElement web components
 │   ├── foundations/    # Shared building blocks (card, primary-button)
 │   ├── shared/         # Header, footer, banners, callouts, loading states, site settings pop-up
-│   └── home/ contestants/ join/ rules/ standings/ vote/   # Per-page components
+│   └── home/ contestants/ rules/ standings/ vote/   # Per-page components
 ├── js/
 │   ├── main.js              # Main application logic
-│   ├── airtable-service.js  # Reads and writes to Airtable
+│   ├── airtable-service.js  # Live Airtable reads/writes (votes)
+│   ├── data/                # Static snapshots of the bakers/participants/weeks tables
 │   └── utils/               # Bakers, results, nominations, participants, UK/US region, profile
+├── scripts/
+│   └── sync-static-data.js  # Refreshes js/data/ from Airtable - run by hand (npm run sync-static-data)
 ├── src/
 │   ├── input.css       # Tailwind CSS input
 │   └── styles.css      # Colour palette and global styles

@@ -85,16 +85,19 @@ desktop widths, and checking the browser console for errors.
 ## Project layout
 
 ```
-index.html, contestants.html, join.html,     # one HTML entry per page; each is registered in
-rules.html, standings.html, vote.html        # vite.config.js rollupOptions.input
+index.html, contestants.html, rules.html,    # one HTML entry per page; each is registered in
+standings.html, vote.html                    # vite.config.js rollupOptions.input
 components/
   foundations/    # generic building blocks: card, primary-button
   shared/         # header, footer, banner, mobile-banner, loading-container
-  home/ contestants/ join/ rules/ vote/   # page-specific components
+  home/ contestants/ rules/ vote/   # page-specific components
 js/
   main.js             # imports every component and the CSS; the single entry point
-  airtable-service.js # all Airtable reads and writes
-  utils/              # bakers, baker-results, nominations, participants, join
+  airtable-service.js # all live Airtable reads and writes
+  data/               # static snapshots of the bakers/participants/weeks tables (see below)
+  utils/              # bakers, baker-results, nominations, participants
+scripts/
+  sync-static-data.js # regenerates js/data/ from Airtable; run by hand, never from the browser
 src/
   input.css   # Tailwind directives, @layer components, Google Fonts
   styles.css  # CSS custom properties (the GBBO palette) and global styles
@@ -127,13 +130,23 @@ only on that page get purged from the stylesheet.
 
 ## Airtable and secrets
 
-`js/airtable-service.js` is the only place that talks to Airtable. It reads the API key from
-`import.meta.env.VITE_AIRTABLE_API_KEY`; base and table IDs are constants at the top of the class.
-Local development reads the key from `.env`, which is gitignored. CI injects it from the
+`js/airtable-service.js` is the only place the browser talks to Airtable, and it now only handles
+the one genuinely dynamic read/write: casting or updating a nomination (vote). It reads the API key
+from `import.meta.env.VITE_AIRTABLE_API_KEY`; base and table IDs are constants at the top of the
+class. Local development reads the key from `.env`, which is gitignored. CI injects it from the
 `VITE_AIRTABLE_API_KEY` repository secret.
 
+The bakers, participants (roster + current points), and weeks tables barely change - they're only
+touched when a participant is added directly in Airtable, an episode's results are scored, or the
+active week is toggled - so the site reads them from static files in `js/data/` instead of fetching
+them live on every visit. When one of those things changes in Airtable, run
+`npm run sync-static-data` to pull the latest and rewrite `js/data/*.js` (this hits Airtable
+directly from Node, not through `airtable-service.js`, since it runs outside the browser). A
+participant added in Airtable won't show up on the site until someone runs the sync.
+
 Never commit a key, a `.env` file, or a record of real participant data. Season rollover (new base
-or table IDs) is a deliberate change to that file - see `airtable-setup.md` for the setup notes.
+or table IDs) is a deliberate change to `airtable-service.js` and `scripts/sync-static-data.js` -
+see `airtable-setup.md` for the setup notes.
 
 ## Deploying
 

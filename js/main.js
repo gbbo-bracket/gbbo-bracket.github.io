@@ -17,7 +17,6 @@ import '../components/home/gbbo-standings.js';
 import '../components/standings/gbbo-standings-picker.js';
 import '../components/shared/gbbo-footer.js';
 import '../components/vote/gbbo-vote.js';
-import '../components/join/gbbo-join.js';
 import '../components/shared/gbbo-banner.js';
 import '../components/shared/gbbo-callout.js';
 
