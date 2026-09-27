@@ -4,7 +4,6 @@ export class PrimaryButton extends LitElement {
   static properties = {
     href: { type: String },
     target: { type: String },
-    rel: { type: String },
     disabled: { type: Boolean },
     type: { type: String }
   };
@@ -13,7 +12,6 @@ export class PrimaryButton extends LitElement {
     super();
     this.href = '';
     this.target = '';
-    this.rel = '';
     this.disabled = false;
     this.type = 'button';
   }
@@ -44,10 +42,9 @@ export class PrimaryButton extends LitElement {
     if (this.href) {
       return html`
         <a 
-          class="primary-button"
+          class="primary-button" 
           href="${this.href}"
           target="${this.target}"
-          rel="${this.rel}"
           ?disabled="${this.disabled}"
         >
           <slot></slot>
