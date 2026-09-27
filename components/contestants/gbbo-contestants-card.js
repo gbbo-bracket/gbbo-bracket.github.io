@@ -94,7 +94,7 @@ export class GBBOContestantsCard extends LitElement {
 
   render() {
     return html`
-      <div class="contestants-card ${this.withResults ? this.contestant['Eliminated'] ? 'eliminated' : '' : ''}" @click="${this.contestant ? this.openDetailsModal : null}">
+      <div class="contestants-card ${this.withResults ? this.contestant['Eliminated']?.length ? 'eliminated' : '' : ''}" @click="${this.contestant ? this.openDetailsModal : null}">
         ${this.contestant?.Image?.[0]?.url ?
           html`<img class="contestants-image" src="${this.contestant.Image?.[0]?.url}" alt="${this.contestant.name}" />` :
           html`<div class="contestants-image"></div>`
@@ -102,21 +102,21 @@ export class GBBOContestantsCard extends LitElement {
         ${this.hideName ? '' : html`<p class="contestants-name">${this.contestant?.name || 'Baker'}</p>`}
         ${this.withResults ? html`
           <div class="contestants-results">
-            ${this.contestant['Star Baker'] ? html`
+            ${this.contestant['Star Baker']?.length ? html`
               <div>
                 ${this.contestant['Star Baker'].map(() => html`
                   <span>⭐</span>
                 `)}
               </div>
             ` : ''}
-            ${this.contestant['Technical'] ? html`
+            ${this.contestant['Technical']?.length ? html`
               <div>
                 ${this.contestant['Technical'].map(() => html`
                   <span>🧁</span>
                 `)}
               </div>
             ` : ''}
-            ${this.contestant['Eliminated'] ? html`
+            ${this.contestant['Eliminated']?.length ? html`
               <div>
                 ${this.contestant['Eliminated'].map(() => html`
                   <span>❌</span>
