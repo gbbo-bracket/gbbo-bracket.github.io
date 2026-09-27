@@ -2,14 +2,12 @@ import { LitElement, html, css } from 'lit';
 import '../home/gbbo-standings.js';
 import '../shared/gbbo-loading-container.js';
 import { pastYears } from './static-data.js';
-import airtableService from '../../js/airtable-service.js';
+import { weeksData } from '../../js/data/weeks-data.js';
 import { REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
 import { FINALS_WEEK_ID, fetchWeekStandings } from '../../js/utils/nominations.js';
 
 // The current season. Update it (and the archive in static-data.js) once it ends.
 const CURRENT_YEAR = '2026';
-
-const BAKER_RESULTS_TABLE_ID = 'tblCV1RozeH3oz1DW';
 
 // The toggles that never change: the live current-season total, the Finals
 // standings, and the archived final standings from past seasons. Weeks are
@@ -133,7 +131,7 @@ export class GBBOStandingsPicker extends LitElement {
   // visitor's region, since the UK and US see different episodes air first.
   async loadWeekOptions() {
     try {
-      const records = await airtableService.fetchRecords(BAKER_RESULTS_TABLE_ID);
+      const records = weeksData;
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 

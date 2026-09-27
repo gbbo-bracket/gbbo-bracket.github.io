@@ -9,7 +9,8 @@
     "build": "vite build",
     "build:gh-pages": "vite build --base=./",
     "preview": "vite preview",
-    "start": "vite"
+    "start": "vite",
+    "sync-static-data": "node scripts/sync-static-data.js"
   },
   "author": "",
   "license": "MIT",
