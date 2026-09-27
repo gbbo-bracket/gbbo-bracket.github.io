@@ -1,6 +1,25 @@
 // Airtable Service for GBBO Bracket
 import Airtable from 'airtable';
 
+// How long to wait on an Airtable request before giving up and surfacing an
+// error, so the UI doesn't sit in a loading state forever (e.g. during rate limiting).
+const REQUEST_TIMEOUT_MS = 30000;
+
+function withTimeout(promise, ms = REQUEST_TIMEOUT_MS) {
+  let timeoutId;
+  const timeout = new Promise((_, reject) => {
+    timeoutId = setTimeout(() => {
+      reject(new Error(`Airtable request timed out after ${ms / 1000}s`));
+    }, ms);
+  });
+
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timeoutId));
+}
+
+function isRateLimitError(error) {
+  return error?.statusCode === 429 || error?.error === 'TOO_MANY_REQUESTS';
+}
+
 class AirtableService {
   constructor() {
     // You'll need to set your PAT (Personal Access Token) as an environment variable or directly here
@@ -10,12 +29,16 @@ class AirtableService {
     this.tableId = 'tblr3HgyuPk2rOLQJ';
     this.standingsTableId = 'tblX7SVGLgZ59tiWB';
     this.fieldId = 'fld0jifHbIykXaoqm';
-    
+
     // Initialize Airtable with Personal Access Token
-    this.base = new Airtable({ 
+    this.base = new Airtable({
       apiKey: this.apiKey,
       // Modern Airtable uses Personal Access Tokens
-      endpointUrl: 'https://api.airtable.com'
+      endpointUrl: 'https://api.airtable.com',
+      // Surface a 429 immediately instead of the SDK silently retrying with
+      // backoff, which would otherwise hang the UI's loading state during a rate limit
+      noRetryIfRateLimited: true,
+      requestTimeout: REQUEST_TIMEOUT_MS
     }).base(this.baseId);
   }
 
@@ -27,8 +50,8 @@ class AirtableService {
   async fetchRecords(tableId = null) {
     try {
       const targetTableId = tableId || this.tableId;
-      const airtableRecords = await this.base(targetTableId).select().all();
-      
+      const airtableRecords = await withTimeout(this.base(targetTableId).select().all());
+
       const records = airtableRecords.map(record => ({
         id: record.id,
         data: record.fields
@@ -36,9 +59,12 @@ class AirtableService {
 
       console.log(`Fetched ${records.length} records from table ${targetTableId}`);
       return records;
-      
+
     } catch (error) {
       console.error('Error fetching Airtable data:', error);
+      if (isRateLimitError(error)) {
+        throw new Error('Airtable rate limit exceeded. Please try again in a moment.');
+      }
       throw new Error(`Failed to fetch data from Airtable: ${error.message}`);
     }
   }
@@ -50,15 +76,18 @@ class AirtableService {
    */
   async fetchRecord(recordId) {
     try {
-      const record = await this.base(this.tableId).find(recordId);
-      
+      const record = await withTimeout(this.base(this.tableId).find(recordId));
+
       return {
         id: record.id,
         data: record.fields
       };
-      
+
     } catch (error) {
       console.error(`Error fetching record ${recordId}:`, error);
+      if (isRateLimitError(error)) {
+        throw new Error('Airtable rate limit exceeded. Please try again in a moment.');
+      }
       throw new Error(`Failed to fetch record: ${error.message}`);
     }
   }
@@ -77,17 +106,20 @@ class AirtableService {
         ...options
       };
       
-      const airtableRecords = await this.base(targetTableId).select(selectOptions).all();
-      
+      const airtableRecords = await withTimeout(this.base(targetTableId).select(selectOptions).all());
+
       const records = airtableRecords.map(record => ({
         id: record.id,
         data: record.fields
       }));
 
       return records;
-      
+
     } catch (error) {
       console.error('Error fetching filtered Airtable data:', error);
+      if (isRateLimitError(error)) {
+        throw new Error('Airtable rate limit exceeded. Please try again in a moment.');
+      }
       throw new Error(`Failed to fetch filtered data: ${error.message}`);
     }
   }
@@ -104,14 +136,14 @@ class AirtableService {
       console.log(`Using API key: ${this.apiKey.substring(0, 10)}...`);
       console.log(`Using base ID: ${this.baseId}`);
       
-      const record = await this.base(tableId).create(fields);
-      
+      const record = await withTimeout(this.base(tableId).create(fields));
+
       console.log(`Created new record in table ${tableId}:`, record.id);
       return {
         id: record.id,
         data: record.fields
       };
-      
+
     } catch (error) {
       console.error(`Error creating record in table ${tableId}:`, error);
       console.error(`Error details:`, {
@@ -120,6 +152,9 @@ class AirtableService {
         statusText: error.statusText,
         response: error.response
       });
+      if (isRateLimitError(error)) {
+        throw new Error('Airtable rate limit exceeded. Please try again in a moment.');
+      }
       throw new Error(`Failed to create record: ${error.message}`);
     }
   }
@@ -133,7 +168,7 @@ class AirtableService {
    */
   async updateRecord(tableId, recordId, fields) {
     try {
-      const record = await this.base(tableId).update(recordId, fields);
+      const record = await withTimeout(this.base(tableId).update(recordId, fields));
 
       console.log(`Updated record ${recordId} in table ${tableId}`);
       return {
@@ -143,6 +178,9 @@ class AirtableService {
 
     } catch (error) {
       console.error(`Error updating record ${recordId} in table ${tableId}:`, error);
+      if (isRateLimitError(error)) {
+        throw new Error('Airtable rate limit exceeded. Please try again in a moment.');
+      }
       throw new Error(`Failed to update record: ${error.message}`);
     }
   }
