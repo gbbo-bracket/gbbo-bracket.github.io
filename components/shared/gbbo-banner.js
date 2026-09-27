@@ -11,9 +11,9 @@ export class GBBOBanner extends LitElement {
 
   constructor() {
     super();
-    this.message = 'Cast your vote for finalists before Week 2!';
-    this.ctaText = 'Pick your finalists';
-    this.ctaHref = '/vote';
+    this.message = '';
+    this.ctaText = '';
+    this.ctaHref = '';
     this.variant = 'reminder';
   }
 
@@ -34,6 +34,7 @@ export class GBBOBanner extends LitElement {
       text-align: center;
       font-size: 1rem;
       color: var(--body-text);
+      min-height: 26px;
     }
 
     .banner.reminder {
