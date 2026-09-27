@@ -7,7 +7,6 @@ import '../foundations/primary-button.js';
 import '../shared/gbbo-loading-container.js';
 import '../shared/gbbo-banner.js';
 import '../shared/gbbo-callout.js';
-import '../shared/gbbo-vote-status-banners.js';
 import './gbbo-standings.js';
 
 // Where to watch an episode once it has premiered, per region
@@ -309,7 +308,10 @@ export class GBBONextWeekCard extends LitElement {
       console.log('Fetching next week data from Airtable...');
       this.records = await airtableService.fetchRecords('tblCV1RozeH3oz1DW');
       this.selectNextWeek();
-      
+      // Wait for the vote-status/standings data too, so the card doesn't
+      // render its first pass with viewerHasVoted still false and then flash
+      // to the correct banner once this resolves a moment later
+      await this.loadWeekStandings();
     } catch (error) {
       this.error = error.message;
       console.error('Failed to fetch next week data:', error);
@@ -530,8 +532,8 @@ export class GBBONextWeekCard extends LitElement {
 
         <h2>${title ? title : 'Next Week: Coming Soon'}</h2>
 
-        <gbbo-vote-status-banners .weekId="${displayWeek.id}"></gbbo-vote-status-banners>
-        
+        ${this.renderVoteStatusBanner(displayWeek)}
+
         ${description ? html`
           <p class="week-description">${description}</p>
         ` : ''}
@@ -565,6 +567,29 @@ export class GBBONextWeekCard extends LitElement {
     return !!own?.picks;
   }
 
+  // Nags the current profile to vote for the displayed week, or confirms
+  // they already have - reuses the standings fetch above instead of looking
+  // up the viewer's own nomination separately
+  renderVoteStatusBanner(displayWeek) {
+    if (!this.weekStandings || this.standingsWeekId !== displayWeek.id) return '';
+
+    return this.viewerHasVoted ? html`
+      <gbbo-banner
+        variant="confirmed"
+        message="✓ You've already voted."
+        ctaText="View your picks"
+        ctaHref="/vote"
+      ></gbbo-banner>
+    ` : html`
+      <gbbo-banner
+        variant="reminder"
+        message="Don't miss out on potential points!"
+        ctaText="Vote now"
+        ctaHref="/vote"
+      ></gbbo-banner>
+    `;
+  }
+
   // Only worth showing once someone has actually voted for this week -
   // otherwise it's just an empty table of zero points and "No vote yet"
   renderWeekStandings(displayWeek) {
@@ -588,9 +613,9 @@ export class GBBONextWeekCard extends LitElement {
         ` : html`
           <gbbo-banner
             variant="confirmed"
-            message="Vote to see everyone's picks this week, or view week-by-week and last year's winners"
-            ctaText="here"
-            ctaHref="/standings"
+            message="You must vote to see everyone's picks this week."
+            ctaText="Vote now"
+            ctaHref="/vote"
           ></gbbo-banner>
         `}
     `;

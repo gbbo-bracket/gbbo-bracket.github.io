@@ -31,14 +31,11 @@ A Great British Bake Off bracket - Built with **LitElement**.
   Finalists. There's no separate Finals page any more
 - **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
   selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
-  Channel 4 in the UK or Netflix in the US. Once anyone has voted for that week, a standings card
-  for it shows underneath with points and picks - but everyone else's picks stay hidden until the
-  visitor has cast their own, so no one gets spoiled before voting
-- **Vote reminders**: A banner under the nav on the home page nags whoever is picked in Site
-  settings to vote for any week that's currently open - a light pink warning with a link straight
-  to the Vote page. Once they've saved picks for that week, it switches to a neutral checkmark
-  banner linking to the Vote page to review them instead. Weeks stack into their own banner if more
-  than one is open at once
+  Channel 4 in the UK or Netflix in the US. Right underneath, a banner nags whoever is picked in
+  Site settings to vote for that week - a light pink warning linking to the Vote page, or a neutral
+  checkmark once they've saved their picks. Once anyone has voted for that week, a standings card
+  shows underneath with points and picks - but everyone else's picks stay hidden until the visitor
+  has cast their own, so no one gets spoiled before voting
 - **Shared Page Metadata**: One `<gbbo-metadata>` tag in each page's `<head>` sets the browser tab
   title, the search description, and the picture and blurb that show up when someone shares a link
   in a group chat. Pages that say nothing fall back to shared defaults, so every link looks the same.
