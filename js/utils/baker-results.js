@@ -49,7 +49,7 @@ export async function fetchActiveWeeks() {
 
 /**
  * Fetch a single week from the baker results table by its record ID, whether or
- * not it's currently active - used when a page votes on one fixed week (Finals)
+ * not it's currently active - used when <gbbo-vote> is given a single week-id
  * @param {string} weekId - Record ID of the week in the baker results table
  * @returns {Promise<Object|null>} The formatted week object, or null if it doesn't exist
  */

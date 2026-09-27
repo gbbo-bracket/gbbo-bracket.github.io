@@ -13,7 +13,7 @@ export class GBBOBanner extends LitElement {
     super();
     this.message = 'Cast your vote for finalists before Week 2!';
     this.ctaText = 'Pick your finalists';
-    this.ctaHref = '/finals';
+    this.ctaHref = '/vote';
     this.variant = 'reminder';
   }
 

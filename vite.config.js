@@ -10,7 +10,6 @@ export default defineConfig({
       input: {
         main: 'index.html',
         contestants: 'contestants.html',
-        finals: 'finals.html',
         join: 'join.html',
         rules: 'rules.html',
         standings: 'standings.html',

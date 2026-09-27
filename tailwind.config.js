@@ -6,7 +6,6 @@ export default {
     "./contestants.html",
     "./rules.html",
     "./vote.html",
-    "./finals.html",
     "./components/**/*.js",
     "./js/**/*.js"
   ],
