@@ -3,6 +3,7 @@ import { weeksData } from '../../js/data/weeks-data.js';
 import { UK, US, REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
 import { fetchWeekStandings } from '../../js/utils/nominations.js';
 import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
+import { VOTE_FORM_URL } from '../../js/utils/external-links.js';
 import '../foundations/primary-button.js';
 import '../shared/gbbo-loading-container.js';
 import '../shared/gbbo-banner.js';
@@ -577,14 +578,14 @@ export class GBBONextWeekCard extends LitElement {
         variant="confirmed"
         message="✓ You've already voted."
         ctaText="View your picks"
-        ctaHref="/vote"
+        ctaHref="${VOTE_FORM_URL}"
       ></gbbo-banner>
     ` : html`
       <gbbo-banner
         variant="reminder"
         message="Don't miss out on potential points!"
         ctaText="Vote now"
-        ctaHref="/vote"
+        ctaHref="${VOTE_FORM_URL}"
       ></gbbo-banner>
     `;
   }
@@ -614,7 +615,7 @@ export class GBBONextWeekCard extends LitElement {
             variant="confirmed"
             message="You must vote to see everyone's picks this week."
             ctaText="Vote now"
-            ctaHref="/vote"
+            ctaHref="${VOTE_FORM_URL}"
           ></gbbo-banner>
         `}
     `;
