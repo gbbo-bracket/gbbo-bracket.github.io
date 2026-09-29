@@ -20,6 +20,14 @@ export const participantsData = [
     }
   },
   {
+    id: 'recUuGpl54yoeRgUA',
+    data: {
+      Name: 'Isabel',
+      'Total Points': 0,
+      Emoji: '🍞'
+    }
+  },
+  {
     id: 'rechJKchmSAiyCXzN',
     data: {
       Name: 'Josh',
@@ -57,6 +65,14 @@ export const participantsData = [
       Name: 'Micky',
       'Total Points': 0,
       Emoji: '🎂'
+    }
+  },
+  {
+    id: 'recNKvv5UI217G2cj',
+    data: {
+      Name: 'Owen',
+      'Total Points': 0,
+      Emoji: '🥨'
     }
   },
   {
