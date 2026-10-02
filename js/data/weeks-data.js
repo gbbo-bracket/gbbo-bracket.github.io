@@ -37,11 +37,11 @@ export const weeksData = [
   {
     "id": "rec7y5gnmfggjhBfR",
     "data": {
-      "Description": "On your marks, get set… bake! A new batch of talented amateur bakers compete under the watchful eyes of judges Paul Hollywood, Noel Fielding, Alison Hammond and Nigella Lawson.",
+      "Description": "In a first for the show, the bakers face a series of challenges chosen by the viewers, including a signature that sees an invasion of familiar faces into the tent. They also face a mystery box in the technical round, before a showstopper in which they unleash their inner fashionistas by serving up wearable bakes.",
       "Is active?": true,
       "[US] Air date": "2026-10-09",
       "Record ID": "rec7y5gnmfggjhBfR",
-      "Title": "Week 3",
+      "Title": "Week 3: Audience Choice Week",
       "Results": "Week 3: Bread Week",
       "Air date": "2026-10-06"
     }
