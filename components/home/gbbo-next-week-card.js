@@ -35,7 +35,8 @@ export class GBBONextWeekCard extends LitElement {
     showingPrevious: { type: Boolean },
     region: { type: String },
     weekStandings: { type: Array },
-    profile: { type: Object }
+    profile: { type: Object },
+    selectedWeekId: { type: String }
   };
 
   constructor() {
@@ -53,6 +54,8 @@ export class GBBONextWeekCard extends LitElement {
     this.weekStandings = null;
     this.standingsWeekId = null;
     this.profile = getProfile();
+    this.selectedWeekId = null;
+    this.orderedWeeks = [];
     this.handleRegionChange = this.handleRegionChange.bind(this);
     this.handleProfileChange = this.handleProfileChange.bind(this);
   }
@@ -190,8 +193,10 @@ export class GBBONextWeekCard extends LitElement {
     
     .countdown-row {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 0.75rem;
+      margin-bottom: 1rem;
     }
 
     a.coming-soon-badge {
@@ -210,6 +215,33 @@ export class GBBONextWeekCard extends LitElement {
       text-transform: uppercase;
       letter-spacing: 0.05em;
       font-weight: 600;
+    }
+
+    .week-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .week-nav-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      background: none;
+      border: 1px solid var(--powder-blue);
+      border-radius: 2rem;
+      padding: 0.375rem 0.875rem;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--royal-blue);
+      cursor: pointer;
+    }
+
+    .week-nav-button:hover,
+    .week-nav-button:focus-visible {
+      background-color: rgba(169, 208, 245, 0.35);
     }
 
     .spoiler-banner {
@@ -266,12 +298,34 @@ export class GBBONextWeekCard extends LitElement {
 
   // The week currently on display - either the upcoming one, or the one that
   // just aired when we're still showing it in place of a far-off countdown
-  get displayWeek() {
+  get currentWeek() {
     return this.showingPrevious && this.previousWeek ? this.previousWeek : this.nextWeek;
   }
 
+  // The week on display: whichever one the viewer navigated to, otherwise the current one
+  get displayWeek() {
+    const selected = this.selectedWeekId && this.orderedWeeks.find(week => week.id === this.selectedWeekId);
+    return selected || this.currentWeek;
+  }
+
+  get displayIndex() {
+    const week = this.displayWeek;
+    return this.orderedWeeks.findIndex(candidate => candidate.id === week?.id);
+  }
+
+  // Short label for the arrows, e.g. "Week 2" from "Week 2: Biscuit Week"
+  weekLabel(week) {
+    const title = week.data.Title || '';
+    return title.match(/^Week \d+/i)?.[0] || title || 'Week';
+  }
+
+  goToWeek(week) {
+    // Heading back to the current week drops the override so the countdown resumes
+    this.selectedWeekId = week.id === this.currentWeek?.id ? null : week.id;
+  }
+
   updated(changedProperties) {
-    if (changedProperties.has('nextWeek') || changedProperties.has('previousWeek') || changedProperties.has('showingPrevious')) {
+    if (changedProperties.has('nextWeek') || changedProperties.has('previousWeek') || changedProperties.has('showingPrevious') || changedProperties.has('selectedWeekId')) {
       this.loadWeekStandings();
     }
   }
@@ -347,6 +401,7 @@ export class GBBONextWeekCard extends LitElement {
       .sort((a, b) => b.parsedAirDate - a.parsedAirDate)[0];
 
     this.previousWeek = previousWeek || null;
+    this.orderedWeeks = [...weeksWithDates].sort((a, b) => a.parsedAirDate - b.parsedAirDate);
 
     if (nextWeek) {
       this.nextWeek = nextWeek;
@@ -503,6 +558,46 @@ export class GBBONextWeekCard extends LitElement {
     `;
   }
 
+  // Arrows to step back through earlier weeks, and forward again up to the current one
+  renderWeekNav() {
+    const index = this.displayIndex;
+    const currentIndex = this.orderedWeeks.findIndex(week => week.id === this.currentWeek?.id);
+    if (index < 0) return '';
+
+    const previous = index > 0 ? this.orderedWeeks[index - 1] : null;
+    const next = index < currentIndex ? this.orderedWeeks[index + 1] : null;
+    if (!previous && !next) return '';
+
+    return html`
+      <nav class="week-nav" aria-label="Browse weeks">
+        ${previous ? html`
+          <button class="week-nav-button" @click="${() => this.goToWeek(previous)}" aria-label="Go to ${this.weekLabel(previous)}">
+            <span aria-hidden="true">←</span> ${this.weekLabel(previous)}
+          </button>
+        ` : ''}
+        ${next ? html`
+          <button class="week-nav-button" @click="${() => this.goToWeek(next)}" aria-label="Go to ${this.weekLabel(next)}">
+            ${this.weekLabel(next)} <span aria-hidden="true">→</span>
+          </button>
+        ` : ''}
+      </nav>
+    `;
+  }
+
+  // The countdown badge on the left and the week arrows on the right
+  renderCountdownRow(displayWeek) {
+    const showBadge = this.countdownText && displayWeek === this.currentWeek;
+    const nav = this.renderWeekNav();
+    if (!showBadge && !nav) return '';
+
+    return html`
+      <div class="countdown-row">
+        ${showBadge ? this.renderBadge() : ''}
+        ${nav}
+      </div>
+    `;
+  }
+
   renderNextWeek() {
     if (!this.nextWeek) {
       return html`
@@ -524,11 +619,7 @@ export class GBBONextWeekCard extends LitElement {
 
     return html`
       <div class="next-week-card">
-        ${this.countdownText ? html`
-          <div class="countdown-row">
-            ${this.renderBadge()}
-          </div>
-        ` : ''}
+        ${this.renderCountdownRow(displayWeek)}
 
         <h2>${title ? title : 'Next Week: Coming Soon'}</h2>
 
