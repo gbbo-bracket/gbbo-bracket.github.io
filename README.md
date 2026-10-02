@@ -31,7 +31,9 @@ A Great British Bake Off bracket - Built with **LitElement**.
   Site settings to vote for that week - a light pink warning linking to the Vote page, or a neutral
   checkmark once they've saved their picks. Once anyone has voted for that week, a standings card
   shows underneath with points and picks - but everyone else's picks stay hidden until the visitor
-  has cast their own, so no one gets spoiled before voting
+  has cast their own, so no one gets spoiled before voting. Arrow buttons labelled with the week
+  (like "← Week 1") on the top right of the card let visitors look back at earlier weeks, and step
+  forward again up to the current one
 - **Shared Page Metadata**: One `<gbbo-metadata>` tag in each page's `<head>` sets the browser tab
   title, the search description, and the picture and blurb that show up when someone shares a link
   in a group chat. Pages that say nothing fall back to shared defaults, so every link looks the same.
