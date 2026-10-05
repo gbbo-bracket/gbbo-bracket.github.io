@@ -100,7 +100,7 @@ gbbo-bracket.github.io/
 ├── js/
 │   ├── main.js              # Main application logic
 │   ├── airtable-service.js  # Live Airtable reads/writes (votes)
-│   ├── data/                # Static snapshots of the bakers/participants/weeks tables
+│   ├── data/                # Static snapshots of the bakers/participants/weeks tables, plus baker photo links (kept by hand)
 │   └── utils/               # Bakers, results, nominations, participants, UK/US region, profile
 ├── scripts/
 │   └── sync-static-data.js  # Refreshes js/data/ from Airtable - run by hand (npm run sync-static-data)

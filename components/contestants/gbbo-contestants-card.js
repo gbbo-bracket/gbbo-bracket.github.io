@@ -95,8 +95,8 @@ export class GBBOContestantsCard extends LitElement {
   render() {
     return html`
       <div class="contestants-card ${this.withResults ? this.contestant['Eliminated']?.length ? 'eliminated' : '' : ''}" @click="${this.contestant ? this.openDetailsModal : null}">
-        ${this.contestant?.Image?.[0]?.url ?
-          html`<img class="contestants-image" src="${this.contestant.Image?.[0]?.url}" alt="${this.contestant.name}" />` :
+        ${this.contestant?.imageUrl ?
+          html`<img class="contestants-image" src="${this.contestant.imageUrl}" alt="${this.contestant.name}" />` :
           html`<div class="contestants-image"></div>`
         }
         ${this.hideName ? '' : html`<p class="contestants-name">${this.contestant?.name || 'Baker'}</p>`}
