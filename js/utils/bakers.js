@@ -1,4 +1,5 @@
 import { contestantsData } from '../data/contestants-data.js';
+import { contestantImages } from '../data/contestant-images.js';
 
 /**
  * The contestants, formatted for use in components. Bakers only change when
@@ -10,7 +11,8 @@ export async function fetchContestants() {
   const contestants = contestantsData.map(record => ({
     id: record.id,
     name: record.data.Name || 'Unknown Contestant',
-    ...record.data
+    ...record.data,
+    imageUrl: contestantImages[record.data.Name] || ''
   }));
   return contestants.sort((a, b) => a.name.localeCompare(b.name));
 }

@@ -308,7 +308,7 @@ export class GBBOContestantsModal extends LitElement {
             <div class="modal-title">
               <img 
                 class="modal-contestant-image" 
-                src="${contestant.Image?.[0]?.url || ''}" 
+                src="${contestant.imageUrl || ''}" 
                 alt="${contestant.name || 'Contestant'}"
               />
               <h2 class="modal-contestant-name">${contestant.name || 'Unknown Contestant'}</h2>

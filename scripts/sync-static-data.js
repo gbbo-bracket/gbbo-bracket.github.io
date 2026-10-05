@@ -30,14 +30,19 @@ if (!apiKey) {
 const base = new Airtable({ apiKey, endpointUrl: 'https://api.airtable.com' }).base(BASE_ID);
 
 const TABLES = [
-  { tableId: 'tblr3HgyuPk2rOLQJ', exportName: 'contestantsData', file: 'contestants-data.js', description: 'Bakers/contestants table' },
+  { tableId: 'tblr3HgyuPk2rOLQJ', exportName: 'contestantsData', file: 'contestants-data.js', description: 'Bakers/contestants table', skipFields: ['Image'] },
   { tableId: 'tblX7SVGLgZ59tiWB', exportName: 'participantsData', file: 'participants-data.js', description: 'Participants (standings) table' },
   { tableId: 'tblCV1RozeH3oz1DW', exportName: 'weeksData', file: 'weeks-data.js', description: 'Weeks (baker results) table' }
 ];
 
-async function fetchRecords(tableId) {
+// skipFields are dropped from each record. Baker photos are skipped because
+// Airtable's attachment links expire; they live in js/data/contestant-images.js
+async function fetchRecords(tableId, skipFields = []) {
   const airtableRecords = await base(tableId).select().all();
-  return airtableRecords.map(record => ({ id: record.id, data: record.fields }));
+  return airtableRecords.map(record => ({
+    id: record.id,
+    data: Object.fromEntries(Object.entries(record.fields).filter(([field]) => !skipFields.includes(field)))
+  }));
 }
 
 function writeStaticFile({ exportName, file, description }, records) {
@@ -52,7 +57,7 @@ export const ${exportName} = ${JSON.stringify(records, null, 2)};
 
 async function main() {
   for (const table of TABLES) {
-    const records = await fetchRecords(table.tableId);
+    const records = await fetchRecords(table.tableId, table.skipFields);
     writeStaticFile(table, records);
   }
 }
