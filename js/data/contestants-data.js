@@ -1,6 +1,6 @@
 // Bakers/contestants table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-10-13T00:04:37.450Z
+// Last synced: 2026-10-13T02:34:01.429Z
 export const contestantsData = [
   {
     "id": "rec3S0jFScJilbICm",
@@ -38,7 +38,7 @@ export const contestantsData = [
       "Age": 29,
       "Record ID": "rec87LT8JfgbmdNNz",
       "Bio": "Shannon is a fun-loving, nature-loving foodie who dreams of bringing “a little forest magic” to the Bake Off Tent. Growing up in Bristol, she now lives in the countryside with her fiancé Scott, her two black Staffordshire Bull Terriers and Tyrone the tortoise. Her home life revolves around the great outdoors, from long walks to gardening and cooking with ingredients she has grown herself. Shannon has been baking for as long as she can remember, taught by her beloved nan, and describes her style as whimsical, quirky and rustic. Organised and focused thanks to her day job, Shannon is determined to get her timings just right, however she once rode a horse through a drive-thru, so there’s still plenty of room for chaos!",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 0,
       "Location": "Gloucestershire",
       "Participants 4": [
@@ -48,8 +48,11 @@ export const contestantsData = [
         "rechdUtTRQ0rHrdK2"
       ],
       "Total Star Bakers": 0,
-      "Status": "In Progress",
-      "Occupation": "Project Planner and Scheduler"
+      "Status": "Eliminated",
+      "Occupation": "Project Planner and Scheduler",
+      "Eliminated": [
+        "rec7y5gnmfggjhBfR"
+      ]
     }
   },
   {
@@ -129,12 +132,15 @@ export const contestantsData = [
       "Is Eliminated?": 0,
       "Total Technicals": 0,
       "Location": "Hertfordshire",
-      "Total Star Bakers": 0,
+      "Total Star Bakers": 1,
       "Status": "In Progress",
       "Participants": [
         "rechdUtTRQ0rHrdK2"
       ],
-      "Occupation": "Marketing Graduate"
+      "Occupation": "Marketing Graduate",
+      "Star Baker": [
+        "rec7y5gnmfggjhBfR"
+      ]
     }
   },
   {
@@ -145,8 +151,11 @@ export const contestantsData = [
       "Record ID": "recRJB5E2BsBI8m2Y",
       "Bio": "Self-styled “daddy of Birmingham drag”, Gabe discovered baking after watching the very first series of Bake Off aged 13. Their baking style is “gorgeous but very homemade”, with a preference for savoury, meat-filled bakes and an obsession with meringue. Raised in Grimsby, “the home of fish and chips and zero gay bars”, they now live in the West Midlands with partners Ellis and Tyler, and their two sausage dogs, Dill and Sage. An all-round creative and self-proclaimed “professional nuisance”, Gabe produces theatre shows and performs as their drag persona, Blü Romantic. They are also a costume designer and once made a wedding dress for their best friend. At home, they’re a keen gardener, crafter and dinner party host.",
       "Is Eliminated?": 0,
-      "Total Technicals": 0,
+      "Total Technicals": 1,
       "Location": "West Midlands",
+      "Technical": [
+        "rec7y5gnmfggjhBfR"
+      ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
       "Occupation": "Artist & Drag King"
@@ -189,7 +198,8 @@ export const contestantsData = [
       "Location": "London",
       "Participants 4": [
         "rec6OcJj5f7L91ChV",
-        "recl7ccdPoueVR8rx"
+        "recl7ccdPoueVR8rx",
+        "recgGwmELty0ZGaCD"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
@@ -228,7 +238,8 @@ export const contestantsData = [
         "rec1PqkJjR4FkAFoP",
         "recynGeiKaFs0Y7Xc",
         "recmp0ODZM5lWYJ52",
-        "recUp43bCxHDX18yD"
+        "recUp43bCxHDX18yD",
+        "recgGwmELty0ZGaCD"
       ],
       "Occupation": "Law Student",
       "Star Baker": [
@@ -302,7 +313,8 @@ export const contestantsData = [
       "Participants 3": [
         "recVR5iGS6i8F5Ppn",
         "rec6OcJj5f7L91ChV",
-        "recUp43bCxHDX18yD"
+        "recUp43bCxHDX18yD",
+        "recgGwmELty0ZGaCD"
       ],
       "Occupation": "Political Economy Student"
     }
