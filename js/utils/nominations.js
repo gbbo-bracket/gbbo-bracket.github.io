@@ -1,6 +1,8 @@
 import airtableService from '../airtable-service.js';
 import { fetchNames } from './participants.js';
 import { fetchContestants } from './bakers.js';
+import { participantsData } from '../data/participants-data.js';
+import { weeksData } from '../data/weeks-data.js';
 
 // Table ID for nominations
 const NOMINATIONS_TABLE_ID = 'tblL01LW4xJwPHfiq';
@@ -158,7 +160,8 @@ export async function createFinalistNomination({
 }
 
 /**
- * The points every participant scored for a given week (or Finals), plus
+ * The points every participant scored for a given week (or Finals), their
+ * overall total up to that week (ranked by that total; an unscored week shows the last scored week's total), plus
  * their Star Baker/Technical/Eliminated picks if they voted, for the
  * Standings page's per-week toggles. Participants who haven't been scored
  * for the week yet (or haven't voted at all) show as 0 points with no picks,
@@ -166,7 +169,7 @@ export async function createFinalistNomination({
  * full baker record (not just a name) so Standings can open the same detail
  * modal the Contestants page uses when one is clicked.
  * @param {string} weekId - Record ID of the week in the baker results table
- * @returns {Promise<Array<{id: string, name: string, points: number, picks: ?{starBaker: ?Object, technical: ?Object, eliminated: ?Object}}>>}
+ * @returns {Promise<Array<{id: string, name: string, points: number, total: ?number, picks: ?{starBaker: ?Object, technical: ?Object, eliminated: ?Object}}>>}
  */
 export async function fetchWeekStandings(weekId) {
   const [nominationRecords, participants, contestants] = await Promise.all([
@@ -186,6 +189,26 @@ export async function fetchWeekStandings(weekId) {
     if (participantId) nominationByParticipantId.set(participantId, record.data);
   });
 
+  const totalsByParticipantId = new Map(
+    participantsData.map(record => [record.id, record.data['Total Points By Week']])
+  );
+
+  // Overall total up to and including this week, saved locally when the week
+  // was synced (scripts/sync-static-data.js). A week that has none saved yet,
+  // like the upcoming one, shows the most recent earlier week's total instead.
+  // Null when there is nothing earlier to fall back on.
+  const airDateByWeekId = new Map(weeksData.map(record => [record.id, record.data['Air date']]));
+  const thisAirDate = airDateByWeekId.get(weekId);
+  const getTotal = participantId => {
+    const saved = totalsByParticipantId.get(participantId) || {};
+    if (weekId in saved) return saved[weekId];
+
+    const earlierWeekId = Object.keys(saved)
+      .filter(id => airDateByWeekId.get(id) < thisAirDate)
+      .sort((a, b) => airDateByWeekId.get(b).localeCompare(airDateByWeekId.get(a)))[0];
+    return earlierWeekId ? saved[earlierWeekId] : null;
+  };
+
   return participants
     .map(participant => {
       const nomination = nominationByParticipantId.get(participant.id);
@@ -197,6 +220,7 @@ export async function fetchWeekStandings(weekId) {
         id: participant.id,
         name: participant.name,
         points: parseInt(nomination?.['Total Points']) || 0,
+        total: getTotal(participant.id),
         picks: hasWeeklyPicks ? {
           starBaker: getBaker(nomination['Star Baker']?.[0]),
           technical: getBaker(nomination['Wins Technical']?.[0]),
@@ -204,5 +228,5 @@ export async function fetchWeekStandings(weekId) {
         } : null
       };
     })
-    .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
+    .sort((a, b) => (b.total ?? b.points) - (a.total ?? a.points) || b.points - a.points || a.name.localeCompare(b.name));
 }
