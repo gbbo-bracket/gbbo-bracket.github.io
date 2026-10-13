@@ -8,7 +8,7 @@ import '../foundations/primary-button.js';
 import '../shared/gbbo-loading-container.js';
 import '../shared/gbbo-banner.js';
 import '../shared/gbbo-callout.js';
-import './gbbo-standings.js';
+import '../standings/gbbo-weekly-standings.js';
 
 // Where to watch an episode once it has premiered, per region
 const WATCH_LINKS = {
@@ -258,7 +258,7 @@ export class GBBONextWeekCard extends LitElement {
       justify-content: center;
     }
 
-    gbbo-standings {
+    gbbo-weekly-standings {
       display: block;
       margin-top: 2.5rem;
     }
@@ -698,9 +698,9 @@ export class GBBONextWeekCard extends LitElement {
     return html`
     ${viewerHasVoted ?
         html`
-          <gbbo-standings
+          <gbbo-weekly-standings
             .standings="${standings}"
-          ></gbbo-standings>
+          ></gbbo-weekly-standings>
         ` : html`
           <gbbo-banner
             variant="confirmed"

@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
-import '../home/gbbo-standings.js';
+import './gbbo-final-standings.js';
+import './gbbo-weekly-standings.js';
 import '../shared/gbbo-loading-container.js';
 import { pastYears } from './static-data.js';
 import { weeksData } from '../../js/data/weeks-data.js';
@@ -216,11 +217,20 @@ export class GBBOStandingsPicker extends LitElement {
       ${standings === undefined ? html`
         <gbbo-loading-container></gbbo-loading-container>
       ` : html`
-        <gbbo-standings
-          .standings="${standings}"
-          title="${option.title}"
-          description="${this.description}"
-        ></gbbo-standings>
+        ${option.kind === 'week' ? html`
+          <gbbo-weekly-standings
+            .standings="${standings}"
+            title="${option.title}"
+            description="${this.description}"
+          ></gbbo-weekly-standings>
+        ` : html`
+          <gbbo-final-standings
+            .standings="${standings}"
+            .final="${option.kind === 'archive'}"
+            title="${option.title}"
+            description="${this.description}"
+          ></gbbo-final-standings>
+        `}
       `}
     `;
   }

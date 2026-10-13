@@ -10,8 +10,9 @@ A Great British Bake Off bracket - Built with **LitElement**.
   remembered in the browser instead of a full login - once a profile is picked, the button shows
   that person's name and emoji, and the Vote page shows and saves that person's picks automatically
 - **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points for the
-  current season. Alongside it is a toggle for the final standings from each past season (the
-  per-week and Finals toggles are on hold while that part of the UI gets reconsidered)
+  current season. Alongside it is a toggle for the final standings from each past season - only
+  those final results get the gold/silver/bronze medals and rank colors (the per-week and Finals
+  toggles are on hold while that part of the UI gets reconsidered)
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
   right arrow keys - browse straight through the rest of the bakers without closing it
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table
@@ -30,8 +31,10 @@ A Great British Bake Off bracket - Built with **LitElement**.
   Channel 4 in the UK or Netflix in the US. Right underneath, a banner nags whoever is picked in
   Site settings to vote for that week - a light pink warning linking to the Vote page, or a neutral
   checkmark once they've saved their picks. Once anyone has voted for that week, a standings card
-  shows underneath with points and picks - but everyone else's picks stay hidden until the visitor
-  has cast their own, so no one gets spoiled before voting. Arrow buttons labelled with the week
+  shows underneath, ordered by each person's running total. Each row shows their picks, the points
+  they scored that week (like "+3") and their total so far. A week that hasn't been scored yet shows
+  last week's totals. Everyone else's picks stay hidden until the visitor has cast their own, so no
+  one gets spoiled before voting. Arrow buttons labelled with the week
   (like "← Week 1") on the top right of the card let visitors look back at earlier weeks, and step
   forward again up to the current one
 - **Shared Page Metadata**: One `<gbbo-metadata>` tag in each page's `<head>` sets the browser tab
@@ -103,7 +106,7 @@ gbbo-bracket.github.io/
 │   ├── data/                # Static snapshots of the bakers/participants/weeks tables, plus baker photo links (kept by hand)
 │   └── utils/               # Bakers, results, nominations, participants, UK/US region, profile
 ├── scripts/
-│   └── sync-static-data.js  # Refreshes js/data/ from Airtable - run by hand (npm run sync-static-data)
+│   └── sync-static-data.js  # Refreshes js/data/ from Airtable and saves each week's running totals - run by hand (npm run sync-static-data)
 ├── src/
 │   ├── input.css       # Tailwind CSS input
 │   └── styles.css      # Colour palette and global styles
