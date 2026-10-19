@@ -1,6 +1,6 @@
 // Bakers/contestants table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-10-13T02:34:01.429Z
+// Last synced: 2026-10-19T19:15:39.849Z
 export const contestantsData = [
   {
     "id": "rec3S0jFScJilbICm",
@@ -23,10 +23,14 @@ export const contestantsData = [
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
+      "Participants": [
+        "recNR8ghMKNtCJOrG"
+      ],
       "Participants 3": [
         "recHG4yNeYLMeJBg6",
         "recynGeiKaFs0Y7Xc",
-        "recl7ccdPoueVR8rx"
+        "recl7ccdPoueVR8rx",
+        "rec1S9MwBQY1Mdf79"
       ],
       "Occupation": "NHS Hospital Discharge Lead"
     }
@@ -45,7 +49,8 @@ export const contestantsData = [
         "recaInoMoftrrs64R",
         "recIi3yD9jGcHNNzt",
         "rec1PqkJjR4FkAFoP",
-        "rechdUtTRQ0rHrdK2"
+        "rechdUtTRQ0rHrdK2",
+        "rectVLUiTmro2zUUf"
       ],
       "Total Star Bakers": 0,
       "Status": "Eliminated",
@@ -78,20 +83,24 @@ export const contestantsData = [
       "Total Technicals": 0,
       "Location": "Nottinghamshire",
       "Participants 4": [
-        "recHG4yNeYLMeJBg6"
+        "recHG4yNeYLMeJBg6",
+        "recyKSNNkLcxdDrRe"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
       "Participants": [
         "recxYLJ47l6ae9KEn",
         "rec99LUmmxUhIXnG6",
-        "recaInoMoftrrs64R"
+        "recaInoMoftrrs64R",
+        "recjBTSmi7eKkQ1vH"
       ],
       "Participants 3": [
         "recoKsY64BpyOWKzj",
         "recaInoMoftrrs64R",
         "recIi3yD9jGcHNNzt",
-        "rec1PqkJjR4FkAFoP"
+        "rec1PqkJjR4FkAFoP",
+        "recpG6VRylsDlOAlw",
+        "recr36z7Q003tJFfT"
       ],
       "Occupation": "Retired Garment Technologist"
     }
@@ -106,10 +115,17 @@ export const contestantsData = [
       "Is Eliminated?": 0,
       "Total Technicals": 0,
       "Location": "London",
+      "Participants 4": [
+        "recNR8ghMKNtCJOrG"
+      ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
       "Participants": [
-        "rec6DpCDeIl3SAavO"
+        "rec6DpCDeIl3SAavO",
+        "rectVLUiTmro2zUUf"
+      ],
+      "Participants 3": [
+        "recjBTSmi7eKkQ1vH"
       ],
       "Occupation": "Advertising Post-Producer"
     }
@@ -137,6 +153,10 @@ export const contestantsData = [
       "Participants": [
         "rechdUtTRQ0rHrdK2"
       ],
+      "Participants 3": [
+        "recTjNeLHucc5NJn4",
+        "recl49UIgKcraeC1G"
+      ],
       "Occupation": "Marketing Graduate",
       "Star Baker": [
         "rec7y5gnmfggjhBfR"
@@ -158,6 +178,9 @@ export const contestantsData = [
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
+      "Participants 3": [
+        "rectVLUiTmro2zUUf"
+      ],
       "Occupation": "Artist & Drag King"
     }
   },
@@ -173,7 +196,9 @@ export const contestantsData = [
       "Location": "London",
       "Participants 4": [
         "recynGeiKaFs0Y7Xc",
-        "recmp0ODZM5lWYJ52"
+        "recmp0ODZM5lWYJ52",
+        "recTjNeLHucc5NJn4",
+        "recl49UIgKcraeC1G"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
@@ -199,7 +224,11 @@ export const contestantsData = [
       "Participants 4": [
         "rec6OcJj5f7L91ChV",
         "recl7ccdPoueVR8rx",
-        "recgGwmELty0ZGaCD"
+        "recgGwmELty0ZGaCD",
+        "rec1S9MwBQY1Mdf79",
+        "recYmWDbLBH6zeDY8",
+        "recpG6VRylsDlOAlw",
+        "recr36z7Q003tJFfT"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
@@ -230,6 +259,9 @@ export const contestantsData = [
       "Is Eliminated?": 0,
       "Total Technicals": 0,
       "Location": "West Midlands",
+      "Participants 4": [
+        "recjBTSmi7eKkQ1vH"
+      ],
       "Total Star Bakers": 1,
       "Status": "In Progress",
       "Participants": [
@@ -239,7 +271,13 @@ export const contestantsData = [
         "recynGeiKaFs0Y7Xc",
         "recmp0ODZM5lWYJ52",
         "recUp43bCxHDX18yD",
-        "recgGwmELty0ZGaCD"
+        "recgGwmELty0ZGaCD",
+        "rec1S9MwBQY1Mdf79",
+        "recTjNeLHucc5NJn4",
+        "recl49UIgKcraeC1G"
+      ],
+      "Participants 3": [
+        "recYmWDbLBH6zeDY8"
       ],
       "Occupation": "Law Student",
       "Star Baker": [
@@ -279,14 +317,18 @@ export const contestantsData = [
       "Participants": [
         "recExwfbaEhbw4rec",
         "recoKsY64BpyOWKzj",
-        "recVR5iGS6i8F5Ppn"
+        "recVR5iGS6i8F5Ppn",
+        "recyKSNNkLcxdDrRe",
+        "recpG6VRylsDlOAlw",
+        "recr36z7Q003tJFfT"
       ],
       "Participants 3": [
         "rec6DpCDeIl3SAavO",
         "recxYLJ47l6ae9KEn",
         "rec99LUmmxUhIXnG6",
         "recmp0ODZM5lWYJ52",
-        "rechdUtTRQ0rHrdK2"
+        "rechdUtTRQ0rHrdK2",
+        "recNR8ghMKNtCJOrG"
       ],
       "Occupation": "Hairdresser",
       "Star Baker": [
@@ -310,11 +352,15 @@ export const contestantsData = [
       "Location": "Essex",
       "Total Star Bakers": 0,
       "Status": "In Progress",
+      "Participants": [
+        "recYmWDbLBH6zeDY8"
+      ],
       "Participants 3": [
         "recVR5iGS6i8F5Ppn",
         "rec6OcJj5f7L91ChV",
         "recUp43bCxHDX18yD",
-        "recgGwmELty0ZGaCD"
+        "recgGwmELty0ZGaCD",
+        "recyKSNNkLcxdDrRe"
       ],
       "Occupation": "Political Economy Student"
     }

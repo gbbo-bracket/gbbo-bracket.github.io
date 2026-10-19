@@ -1,6 +1,6 @@
 // Participants (standings) table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-10-13T02:34:01.547Z
+// Last synced: 2026-10-19T19:15:40.064Z
 export const participantsData = [
   {
     "id": "rec1BcV2olvY352Hh",
@@ -8,7 +8,8 @@ export const participantsData = [
       "Weekly Results": [
         "recxYLJ47l6ae9KEn",
         "recNXUGl7gweFrX4n",
-        "recIi3yD9jGcHNNzt"
+        "recIi3yD9jGcHNNzt",
+        "recYmWDbLBH6zeDY8"
       ],
       "Name": "Chirag",
       "Emoji": "🎂",
@@ -25,11 +26,12 @@ export const participantsData = [
     "data": {
       "Weekly Results": [
         "recVR5iGS6i8F5Ppn",
-        "receL6JG9wKMfMqq5"
+        "receL6JG9wKMfMqq5",
+        "recTjNeLHucc5NJn4"
       ],
       "Name": "Erin",
       "Emoji": "🍪",
-      "Total Points": 3,
+      "Total Points": 7,
       "Record ID": "recBxWlWnOkEyTJbE",
       "Total Points By Week": {
         "rec0OQ4med9AQKW2p": 3,
@@ -43,7 +45,8 @@ export const participantsData = [
       "Weekly Results": [
         "recKHkiDLcN4EHEFs",
         "rec99LUmmxUhIXnG6",
-        "recynGeiKaFs0Y7Xc"
+        "recynGeiKaFs0Y7Xc",
+        "rec1S9MwBQY1Mdf79"
       ],
       "Name": "Kat",
       "Emoji": "🍰",
@@ -61,7 +64,8 @@ export const participantsData = [
       "Weekly Results": [
         "recNFEECz4qhfsTB0",
         "recl7ccdPoueVR8rx",
-        "recUp43bCxHDX18yD"
+        "recUp43bCxHDX18yD",
+        "recpG6VRylsDlOAlw"
       ],
       "Name": "Owen",
       "Emoji": "🥨",
@@ -90,23 +94,23 @@ export const participantsData = [
           "id": "att8BeC9kbsOERysM",
           "width": 1080,
           "height": 1080,
-          "url": "https://v5.airtableusercontent.com/v3/u/58/58/1791871200000/sbthNqtEMRhs2MFxm-gy6Q/2v90ssyI5Nxb2SK-aEVR64_CfWYveedRpkDw-GsyKdI-RDtG6u1azUN8Jd76wcF81UyZhf_nqDIe82t_pIxPq-1tgudXZ7Hh0j7YRMT0javgTCyqcjOzgQK_vGWLGtmFm067RvfnVJYotNBxQs2hbA/P_Tu68jp3V_1ElY9_IKZZ8CCW85pZGmey091yNDuc4g",
+          "url": "https://v5.airtableusercontent.com/v3/u/58/58/1792447200000/66OWI0cPSmrUuNeIBJ2qJQ/tISdh4tcrqAwkEcevIzqti12E878p8iQpK0ksbYyaYSByoImSRFSGoUk5plxKoiFavIWcJM9AoM8GRR5L4GYETvxf6T8cfNkzHQYfxAPId96MuVrqpo89tdOiGuPfTS1cD30Lx6CnKXPUlsqficcRA/gMVxx0Cz66Xtq28YlSb_0Jew1CXEdZkGcOhQVbkSa7I",
           "filename": "314557288_125222587028878_7677409942363148477_n.jpg",
           "size": 264668,
           "type": "image/jpeg",
           "thumbnails": {
             "small": {
-              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1791871200000/Nn7DpE7XMWRG72jyILiqow/rWSc0azzzE9bNMsu9aHbd_SYzOhlVDJLkT5MYEy_D_Iv4OEs9ylvcnNa7lFWXdJVg3mVwz77l_sMHTyaNBk1mYyyD-DSl5y9Xs7wgPub0vMq4IcBJPYpyalo-Zrlk7Hv7i27rITdCziAMzlAxs6CVg/fB9OzK4Ej2w_wOUOxmFrWtDpuWq6SLmGBWF7eSTlmvQ",
+              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1792447200000/SrEXdRxlpMshYWhjxh7lKg/MJQAxg9GIRz41OAceCOwD08o287qLogIq8GaD6mj0G4OTJ3EJBx1OLZm5qfQH5gQ7sjWdHNjX0zk4sPZfJazGB6TzNC_sAEhWkx6ZpWA3exQDDzG7eTvVYFslg4lVA1ISNlCD-ijcCT7_bMzZBTjmQ/dfQ4YnpdQCkhHeKUf8pYgXEuP3539SRw3z0d4HtNIqc",
               "width": 36,
               "height": 36
             },
             "large": {
-              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1791871200000/aSYlxhhQLl6Wq1u_nDaM0w/JKNZcN8V25OzMvZoKMmq83YZs1wd805jkQrhlg3mRgdFye5nVBZEbfHPvK5ZM28RNGMUnjswWn31V7xevGdD7fmCrCZN01c_YSSbIeDkZM7ti0kbtlaA9HLacCVcAQbCGQTIDcCs3JH828qpRNa7KQ/MJJtpQ-X_OI2OZTaPgZfCSI8Rgau1P5XxobR7ixHDZM",
+              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1792447200000/N-HDl5KgTQtA55Yqtgyt1w/LeQKDtkJPObR89qtqWuZQr8Pwa2udKOo5pMEYfRDXS4Q20o3vIWltMgxVcFkjMapLslsPePJOO58PEvc1Fnr8gBV7L5kWHetiwHQopqGqKTpqHUHGKiSCiuhhB-yAxMAYHD8dBF_paar4OVccBRpIQ/FZyfCCYlLXUoBaV1HZEA8RDwV5cmSS6ek72pVVD8XQQ",
               "width": 512,
               "height": 512
             },
             "full": {
-              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1791871200000/2GHJ0iljJLQYBEPx7Lx6-g/zzdsXpzHlvBCScqLFLz3TsfDpYmWozdhFXABILym-Pnee8y9A_cmRhi9bLHy75Xcg8hy4cjbDdhQRfAIRGx7jpCQQMAClWyYhfu0XrQYGc34ivsK5RVJ9RtkYtSTjoSLbvFDqXtBn1MzBBVZgZd4gQ/HDV3M65Oil05X_04iN1RkCKw0JOFuLi91zzeOTsFGCI",
+              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1792447200000/dTDgYcu_NzwUNvteYGRS6A/8IEjOOspeZCz3Y5oRDFqbPE7MmUK2nkQjCuVb0EDtodAdM9yRn1QTV73DJ2YKKUqmXkgOeM9Ep_cg4EPcwg6Gga0KrolivNk31r1IPsKYO3zqvITELs1U9Vd0kBH6tnWIKt304lvIO3y5nR0aP1E4Q/rMuFxOVCerr0Tjhxxp_cuMUCDPafPxCnJ2nelQoCEWU",
               "width": 1080,
               "height": 1080
             }
@@ -123,6 +127,9 @@ export const participantsData = [
   {
     "id": "recUuGpl54yoeRgUA",
     "data": {
+      "Weekly Results": [
+        "recjBTSmi7eKkQ1vH"
+      ],
       "Name": "Isabel",
       "Emoji": "🍞",
       "Total Points": 0,
@@ -139,7 +146,8 @@ export const participantsData = [
       "Weekly Results": [
         "rec6OcJj5f7L91ChV",
         "rech19iKLU3J6ec8J",
-        "recHG4yNeYLMeJBg6"
+        "recHG4yNeYLMeJBg6",
+        "recyKSNNkLcxdDrRe"
       ],
       "Name": "Kyndall",
       "Emoji": "🥐",
@@ -157,7 +165,8 @@ export const participantsData = [
       "Weekly Results": [
         "recaInoMoftrrs64R",
         "recVHIkBbSrChTnGl",
-        "recmp0ODZM5lWYJ52"
+        "recmp0ODZM5lWYJ52",
+        "recNR8ghMKNtCJOrG"
       ],
       "Name": "Micky",
       "Emoji": "🎂",
@@ -175,7 +184,8 @@ export const participantsData = [
       "Weekly Results": [
         "recoKsY64BpyOWKzj",
         "recoHfBRV9c4qWc0J",
-        "rechdUtTRQ0rHrdK2"
+        "rechdUtTRQ0rHrdK2",
+        "recl49UIgKcraeC1G"
       ],
       "Name": "Maggie",
       "Emoji": "🥖",
@@ -192,33 +202,35 @@ export const participantsData = [
     "data": {
       "Weekly Results": [
         "recExwfbaEhbw4rec",
-        "recxJp1RPAXc4ZYu4"
+        "recxJp1RPAXc4ZYu4",
+        "rectVLUiTmro2zUUf",
+        "recr36z7Q003tJFfT"
       ],
       "Name": "Ryan",
       "Emoji": "🥧",
-      "Total Points": 3,
+      "Total Points": 6,
       "Profile Pic": [
         {
           "id": "attlCkUpuxfzalCo6",
           "width": 768,
           "height": 1024,
-          "url": "https://v5.airtableusercontent.com/v3/u/58/58/1791871200000/NfYCNFNPv0m91y6z9pnrVw/Re6SdQBhy9GwaUypm0efHUwPJzoQXhjx_8OF7hmq249fqAsT9w2c9sWxES7gXBDDxztbYMSAoUSgG9EY0yWPVHX4gjAI8_Vi4d3gllLoDQaSTeU6XBUXtxtb0XPX5jjxv3POjV1GTOkKoJ2wADd7wECeivHUltjep-heTbmJZLJMJOU6k2CyOdCf4DMXgnFHx3hQ4e9T0H9f5DvJDA2IHQ/YVH6pLy9YwqzSDseB5Pz2GONbN35dq60xyNxQGL_OXU",
+          "url": "https://v5.airtableusercontent.com/v3/u/58/58/1792447200000/sbB_gDQvNbLZL5BGV-NxbA/g9alVMc9kw0eoSj3dO4u1KS063rIBrWLGdCXL5deD9-IdQKxCumWiKBox7_zuFeZHUTJfxXMG6QaMkje9IZTlCJxdYJNToKHPY57jCFW3IFiPeY-rvtGoPvMSfoBEMMs6FlTcuBP9XsdUojtY5z1ScfT-ZK0xRIQbTn8RwdyxQIFQLUAm9D98EJIC9Im50Sfcjw7qpsChdFcquPrroZDKw/Oy_Cw1fKOJzE9jrHrMytP_jhUk8VTF7KSl-ocFtuWa4",
           "filename": "63280738657__58533864-72DB-4980-A3E9-26FE4CBA3FFD.jpg",
           "size": 256733,
           "type": "image/jpeg",
           "thumbnails": {
             "small": {
-              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1791871200000/Je3bPUrZQcf0YN-iEmY-_Q/nO6J4X7-H_xGtQRMiqSVavrM8YPmnO_agy05gDqUSgi7ud7u45Ymv20cYUERo_iJUPZv7B0qWWd7yXz-k6FWNX4h6fZFvEwT7HiDA4aHVDzUy8pA6pr_ht0gzN_9XrHADaXqbslZyKh3gGMtHWArjQ/scDyNMJdwUXpG9R-Rh4CGM-RK2tw0z-dGq-1yn_Rr8w",
+              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1792447200000/Pr4sHGNoTY5tbVZqTgE9Sw/N8xFIJoW2KP4PcL7OTxn7ZS6P5jWLP7Un2lsAgsRU1KuMVRjelSkgyJGZOmyct89U7G3oEtLP-oufI71xO4PckyK2GMyQEYi3NUFu1PMRN5sXpVbjzBbEp9pPapEDKp5CYno61Z-Awm94UXDLRzbqA/v_VvyP16VWSX-q3KgK4k0uXwi0jX77Dj1XGwufiBIBs",
               "width": 27,
               "height": 36
             },
             "large": {
-              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1791871200000/9iNdecZYBCeK5aMwsIshNA/xJOrogEssrWRATJsOlu3eo3nrhx94QIfZnTHLwv0wKKNufPFleJZGLC_2qHiAAkB8ssyPMJWgBrzXWsyyWstgE_PDCtrIhq97kb090l-QBF-meak14Qp3exJMZLwUIybJcTO_MAsuSWvMUr5-jSp4w/aN2Vq6UG38RElkqKbno4ulDZilTGfEHzSpAlWp4xRiI",
+              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1792447200000/-HIqvTLzjAvqQ0wLAqgzYg/bYNHX6sKDxOWLAYWQew9rY71CWsh4u4qqC43IwtzxMG0N64_1__08_VgPFBASR4BwW0XDFDrqTYCQc6365s0GPqaibuqxavvUotJYLFh5I9xaPtN7p_YV1rAjKEMTPuFWA7kpfhEiFXC2ucHz80klQ/MG7-iVby7CjFfpLRifHm5jbl1qSRMHEUSIZLyZomwz4",
               "width": 512,
               "height": 683
             },
             "full": {
-              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1791871200000/IxyQISq_mwn2CoUTRpKoOg/BBHgGFiO3e0VjpnrOm-1rtD0aXlfXyElyrtIk0P8IMkYNJeh1X8gQnG5fatJVYjOl2aRKBpOj6sdJN2GN_HcYfPm1dfe3Nknfz5U1GF1PzomVRfw1WorTWOiGEkFbTdrUVegkoOEwm8roh_QYHppaQ/IOwaOq6bp0-0jy21VZYq2Jar0r5xhg0bOLkKthw8rk0",
+              "url": "https://v5.airtableusercontent.com/v3/u/58/58/1792447200000/tLsWv1eavzX62vvfzyzHJg/go7P6xVJId_9sXmICS3JMu72IpThdd_hmpQsaKX_cdOkXJe3SWosWervWcPBsiLTPfel1EjJR3LBpbRlF0TFeRd0I3EtCNRC4ez6-ecE0SfpZ6Ig-wMaHRHiUmmN_64JEqAJlsTb2Q5ycQNDSHKxeg/6OyPt9VhlC3beSOx9YXjSMIgzAzd-c-RDRAclUNnGKE",
               "width": 768,
               "height": 1024
             }
