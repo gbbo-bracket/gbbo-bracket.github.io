@@ -1,6 +1,6 @@
 // Bakers/contestants table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-10-13T02:34:01.429Z
+// Last synced: 2026-10-19T20:20:55.131Z
 export const contestantsData = [
   {
     "id": "rec3S0jFScJilbICm",
@@ -23,10 +23,14 @@ export const contestantsData = [
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
+      "Participants": [
+        "recNR8ghMKNtCJOrG"
+      ],
       "Participants 3": [
         "recHG4yNeYLMeJBg6",
         "recynGeiKaFs0Y7Xc",
-        "recl7ccdPoueVR8rx"
+        "recl7ccdPoueVR8rx",
+        "rec1S9MwBQY1Mdf79"
       ],
       "Occupation": "NHS Hospital Discharge Lead"
     }
@@ -45,7 +49,8 @@ export const contestantsData = [
         "recaInoMoftrrs64R",
         "recIi3yD9jGcHNNzt",
         "rec1PqkJjR4FkAFoP",
-        "rechdUtTRQ0rHrdK2"
+        "rechdUtTRQ0rHrdK2",
+        "rectVLUiTmro2zUUf"
       ],
       "Total Star Bakers": 0,
       "Status": "Eliminated",
@@ -78,20 +83,24 @@ export const contestantsData = [
       "Total Technicals": 0,
       "Location": "Nottinghamshire",
       "Participants 4": [
-        "recHG4yNeYLMeJBg6"
+        "recHG4yNeYLMeJBg6",
+        "recyKSNNkLcxdDrRe"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
       "Participants": [
         "recxYLJ47l6ae9KEn",
         "rec99LUmmxUhIXnG6",
-        "recaInoMoftrrs64R"
+        "recaInoMoftrrs64R",
+        "recjBTSmi7eKkQ1vH"
       ],
       "Participants 3": [
         "recoKsY64BpyOWKzj",
         "recaInoMoftrrs64R",
         "recIi3yD9jGcHNNzt",
-        "rec1PqkJjR4FkAFoP"
+        "rec1PqkJjR4FkAFoP",
+        "recpG6VRylsDlOAlw",
+        "recr36z7Q003tJFfT"
       ],
       "Occupation": "Retired Garment Technologist"
     }
@@ -106,10 +115,17 @@ export const contestantsData = [
       "Is Eliminated?": 0,
       "Total Technicals": 0,
       "Location": "London",
+      "Participants 4": [
+        "recNR8ghMKNtCJOrG"
+      ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
       "Participants": [
-        "rec6DpCDeIl3SAavO"
+        "rec6DpCDeIl3SAavO",
+        "rectVLUiTmro2zUUf"
+      ],
+      "Participants 3": [
+        "recjBTSmi7eKkQ1vH"
       ],
       "Occupation": "Advertising Post-Producer"
     }
@@ -137,6 +153,10 @@ export const contestantsData = [
       "Participants": [
         "rechdUtTRQ0rHrdK2"
       ],
+      "Participants 3": [
+        "recTjNeLHucc5NJn4",
+        "recl49UIgKcraeC1G"
+      ],
       "Occupation": "Marketing Graduate",
       "Star Baker": [
         "rec7y5gnmfggjhBfR"
@@ -154,10 +174,14 @@ export const contestantsData = [
       "Total Technicals": 1,
       "Location": "West Midlands",
       "Technical": [
-        "rec7y5gnmfggjhBfR"
+        "rec7y5gnmfggjhBfR",
+        "recB2YnrWbhkDUk7J"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
+      "Participants 3": [
+        "rectVLUiTmro2zUUf"
+      ],
       "Occupation": "Artist & Drag King"
     }
   },
@@ -173,7 +197,9 @@ export const contestantsData = [
       "Location": "London",
       "Participants 4": [
         "recynGeiKaFs0Y7Xc",
-        "recmp0ODZM5lWYJ52"
+        "recmp0ODZM5lWYJ52",
+        "recTjNeLHucc5NJn4",
+        "recl49UIgKcraeC1G"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
@@ -193,20 +219,27 @@ export const contestantsData = [
       "Age": 31,
       "Record ID": "recdomCK6tJ6s9BoV",
       "Bio": "Molly is a caring and determined baker who started baking over 25 years ago, inspired by her grandmother. She loves traditional bakes and classic flavours, with hazelnut, fresh fruit and mint among her favourites. During a difficult period with her health in 2020, Molly turned to baking to stay motivated and keep connected to friends and family, taking her skills to a new level. Living in London with her husband Ash and their sausage dog, Lando, Molly works for a disability charity, reviewing accessibility in transport. A musical theatre fanatic, she has been involved in many drama groups and supports her local theatre. She is also a huge Formula 1 fan, clearing her diary for every race, and is currently 25% through a 350,000-stich cross-stich landscape of Rivendell.",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 0,
       "Location": "London",
       "Participants 4": [
         "rec6OcJj5f7L91ChV",
         "recl7ccdPoueVR8rx",
-        "recgGwmELty0ZGaCD"
+        "recgGwmELty0ZGaCD",
+        "rec1S9MwBQY1Mdf79",
+        "recYmWDbLBH6zeDY8",
+        "recpG6VRylsDlOAlw",
+        "recr36z7Q003tJFfT"
       ],
       "Total Star Bakers": 0,
-      "Status": "In Progress",
+      "Status": "Eliminated",
       "Participants": [
         "recHG4yNeYLMeJBg6"
       ],
-      "Occupation": "Accessibility Coordinator"
+      "Occupation": "Accessibility Coordinator",
+      "Eliminated": [
+        "recB2YnrWbhkDUk7J"
+      ]
     }
   },
   {
@@ -230,6 +263,9 @@ export const contestantsData = [
       "Is Eliminated?": 0,
       "Total Technicals": 0,
       "Location": "West Midlands",
+      "Participants 4": [
+        "recjBTSmi7eKkQ1vH"
+      ],
       "Total Star Bakers": 1,
       "Status": "In Progress",
       "Participants": [
@@ -239,7 +275,13 @@ export const contestantsData = [
         "recynGeiKaFs0Y7Xc",
         "recmp0ODZM5lWYJ52",
         "recUp43bCxHDX18yD",
-        "recgGwmELty0ZGaCD"
+        "recgGwmELty0ZGaCD",
+        "rec1S9MwBQY1Mdf79",
+        "recTjNeLHucc5NJn4",
+        "recl49UIgKcraeC1G"
+      ],
+      "Participants 3": [
+        "recYmWDbLBH6zeDY8"
       ],
       "Occupation": "Law Student",
       "Star Baker": [
@@ -279,18 +321,23 @@ export const contestantsData = [
       "Participants": [
         "recExwfbaEhbw4rec",
         "recoKsY64BpyOWKzj",
-        "recVR5iGS6i8F5Ppn"
+        "recVR5iGS6i8F5Ppn",
+        "recyKSNNkLcxdDrRe",
+        "recpG6VRylsDlOAlw",
+        "recr36z7Q003tJFfT"
       ],
       "Participants 3": [
         "rec6DpCDeIl3SAavO",
         "recxYLJ47l6ae9KEn",
         "rec99LUmmxUhIXnG6",
         "recmp0ODZM5lWYJ52",
-        "rechdUtTRQ0rHrdK2"
+        "rechdUtTRQ0rHrdK2",
+        "recNR8ghMKNtCJOrG"
       ],
       "Occupation": "Hairdresser",
       "Star Baker": [
-        "rec0OQ4med9AQKW2p"
+        "rec0OQ4med9AQKW2p",
+        "recB2YnrWbhkDUk7J"
       ]
     }
   },
@@ -310,11 +357,15 @@ export const contestantsData = [
       "Location": "Essex",
       "Total Star Bakers": 0,
       "Status": "In Progress",
+      "Participants": [
+        "recYmWDbLBH6zeDY8"
+      ],
       "Participants 3": [
         "recVR5iGS6i8F5Ppn",
         "rec6OcJj5f7L91ChV",
         "recUp43bCxHDX18yD",
-        "recgGwmELty0ZGaCD"
+        "recgGwmELty0ZGaCD",
+        "recyKSNNkLcxdDrRe"
       ],
       "Occupation": "Political Economy Student"
     }
