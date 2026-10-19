@@ -1,6 +1,6 @@
 // Bakers/contestants table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-10-19T19:15:39.849Z
+// Last synced: 2026-10-19T20:20:55.131Z
 export const contestantsData = [
   {
     "id": "rec3S0jFScJilbICm",
@@ -174,7 +174,8 @@ export const contestantsData = [
       "Total Technicals": 1,
       "Location": "West Midlands",
       "Technical": [
-        "rec7y5gnmfggjhBfR"
+        "rec7y5gnmfggjhBfR",
+        "recB2YnrWbhkDUk7J"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
@@ -218,7 +219,7 @@ export const contestantsData = [
       "Age": 31,
       "Record ID": "recdomCK6tJ6s9BoV",
       "Bio": "Molly is a caring and determined baker who started baking over 25 years ago, inspired by her grandmother. She loves traditional bakes and classic flavours, with hazelnut, fresh fruit and mint among her favourites. During a difficult period with her health in 2020, Molly turned to baking to stay motivated and keep connected to friends and family, taking her skills to a new level. Living in London with her husband Ash and their sausage dog, Lando, Molly works for a disability charity, reviewing accessibility in transport. A musical theatre fanatic, she has been involved in many drama groups and supports her local theatre. She is also a huge Formula 1 fan, clearing her diary for every race, and is currently 25% through a 350,000-stich cross-stich landscape of Rivendell.",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 0,
       "Location": "London",
       "Participants 4": [
@@ -231,11 +232,14 @@ export const contestantsData = [
         "recr36z7Q003tJFfT"
       ],
       "Total Star Bakers": 0,
-      "Status": "In Progress",
+      "Status": "Eliminated",
       "Participants": [
         "recHG4yNeYLMeJBg6"
       ],
-      "Occupation": "Accessibility Coordinator"
+      "Occupation": "Accessibility Coordinator",
+      "Eliminated": [
+        "recB2YnrWbhkDUk7J"
+      ]
     }
   },
   {
@@ -332,7 +336,8 @@ export const contestantsData = [
       ],
       "Occupation": "Hairdresser",
       "Star Baker": [
-        "rec0OQ4med9AQKW2p"
+        "rec0OQ4med9AQKW2p",
+        "recB2YnrWbhkDUk7J"
       ]
     }
   },
