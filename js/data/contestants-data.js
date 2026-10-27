@@ -1,6 +1,6 @@
 // Bakers/contestants table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-10-19T20:20:55.131Z
+// Last synced: 2026-10-27T10:33:35.258Z
 export const contestantsData = [
   {
     "id": "rec3S0jFScJilbICm",
@@ -21,18 +21,24 @@ export const contestantsData = [
       "Technical": [
         "rec0OQ4med9AQKW2p"
       ],
-      "Total Star Bakers": 0,
+      "Total Star Bakers": 1,
       "Status": "In Progress",
       "Participants": [
-        "recNR8ghMKNtCJOrG"
+        "recNR8ghMKNtCJOrG",
+        "recxPLVrdjKfeIbEi",
+        "rec3fEqijjkkJdAFL"
       ],
       "Participants 3": [
         "recHG4yNeYLMeJBg6",
         "recynGeiKaFs0Y7Xc",
         "recl7ccdPoueVR8rx",
-        "rec1S9MwBQY1Mdf79"
+        "rec1S9MwBQY1Mdf79",
+        "recB4qE412S4qZvgv"
       ],
-      "Occupation": "NHS Hospital Discharge Lead"
+      "Occupation": "NHS Hospital Discharge Lead",
+      "Star Baker": [
+        "recdfWXjNYjHRkDUb"
+      ]
     }
   },
   {
@@ -80,11 +86,14 @@ export const contestantsData = [
       ],
       "Bio": "Gary is a methodical and precise baker who discovered his love of baking later in life. He bought his first cookbook in a gift shop five years ago and hasn’t looked back, developing a traditional yet creative style with a focus on impeccable presentation and bold flavours, particularly citrus. Born and bred in Chesterfield, Gary now lives on a smallholding in Nottinghamshire with his wife of over 30 years, Donna. Their countryside home is filled with animals, including sheep, horses, chickens and miniature pygmy goats and Shetland ponies. Having beat prostate cancer himself, Gary is passionate about raising awareness and funds for cancer charities through bake sales and coffee mornings. When he’s not baking, Gary is usually out walking with his two Border Collies, Ollie and Alfie, who are his pride and joy.",
       "Is Eliminated?": 0,
-      "Total Technicals": 0,
+      "Total Technicals": 1,
       "Location": "Nottinghamshire",
       "Participants 4": [
         "recHG4yNeYLMeJBg6",
         "recyKSNNkLcxdDrRe"
+      ],
+      "Technical": [
+        "recdfWXjNYjHRkDUb"
       ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
@@ -92,7 +101,8 @@ export const contestantsData = [
         "recxYLJ47l6ae9KEn",
         "rec99LUmmxUhIXnG6",
         "recaInoMoftrrs64R",
-        "recjBTSmi7eKkQ1vH"
+        "recjBTSmi7eKkQ1vH",
+        "recICVxybNgslRGgF"
       ],
       "Participants 3": [
         "recoKsY64BpyOWKzj",
@@ -100,7 +110,9 @@ export const contestantsData = [
         "recIi3yD9jGcHNNzt",
         "rec1PqkJjR4FkAFoP",
         "recpG6VRylsDlOAlw",
-        "recr36z7Q003tJFfT"
+        "recr36z7Q003tJFfT",
+        "recQiH3AdVcUKtiWA",
+        "recICVxybNgslRGgF"
       ],
       "Occupation": "Retired Garment Technologist"
     }
@@ -112,14 +124,14 @@ export const contestantsData = [
       "Age": 50,
       "Record ID": "recJnt9rEeNBet8ta",
       "Bio": "Nikki is a colourful character with a colourful baking style. She started baking with her mum at seven and has always found baking to be a form of therapy. Her kitchen soundtrack depends on the bake: nostalgic R&B for tried and tested desserts and classical music to bring in the moment of calm needed for experimentation. Nikki is happiest surrounded by others and loves nothing more than feeding her family and friends. She has been with her “soul mate” Tom for 22 years, and they have a 16-year-old daughter, Ava. A former podium dancer at Basingstoke’s Ziggy’s Night Club in the 90s, Nikki still loves hitting the dance floor at R&B clubs with her cousins. She also enjoys theatre trips with her family and long walks, recently completing a 100-mile walk to raise money for breast cancer.",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 0,
       "Location": "London",
       "Participants 4": [
         "recNR8ghMKNtCJOrG"
       ],
       "Total Star Bakers": 0,
-      "Status": "In Progress",
+      "Status": "Eliminated",
       "Participants": [
         "rec6DpCDeIl3SAavO",
         "rectVLUiTmro2zUUf"
@@ -127,7 +139,10 @@ export const contestantsData = [
       "Participants 3": [
         "recjBTSmi7eKkQ1vH"
       ],
-      "Occupation": "Advertising Post-Producer"
+      "Occupation": "Advertising Post-Producer",
+      "Eliminated": [
+        "recKwUz5UrZLyj0Uj"
+      ]
     }
   },
   {
@@ -148,14 +163,23 @@ export const contestantsData = [
       "Is Eliminated?": 0,
       "Total Technicals": 0,
       "Location": "Hertfordshire",
+      "Participants 4": [
+        "recE1cp89oIvdZaPQ"
+      ],
       "Total Star Bakers": 1,
       "Status": "In Progress",
       "Participants": [
-        "rechdUtTRQ0rHrdK2"
+        "rechdUtTRQ0rHrdK2",
+        "recEm8erUQXbU7X8q"
       ],
       "Participants 3": [
         "recTjNeLHucc5NJn4",
-        "recl49UIgKcraeC1G"
+        "recl49UIgKcraeC1G",
+        "recFmSmVF2Z2Q4NuY",
+        "recxPLVrdjKfeIbEi",
+        "rec1dunKfVmW4Xqeo",
+        "rec3fEqijjkkJdAFL",
+        "recmFdTSjTQFTLXxi"
       ],
       "Occupation": "Marketing Graduate",
       "Star Baker": [
@@ -173,6 +197,9 @@ export const contestantsData = [
       "Is Eliminated?": 0,
       "Total Technicals": 1,
       "Location": "West Midlands",
+      "Participants 4": [
+        "recB4qE412S4qZvgv"
+      ],
       "Technical": [
         "rec7y5gnmfggjhBfR",
         "recB2YnrWbhkDUk7J"
@@ -192,24 +219,35 @@ export const contestantsData = [
       "Age": 28,
       "Record ID": "recVRyhab75dYzqb7",
       "Bio": "Yannis is challenging the stigma that Bangladeshi men don’t belong in the kitchen, one pastry at a time! Working in a busy NICU, he loves how a cake can bring joy to the ward and has won over the nurses with his bakes. Born in Vienna before moving to London aged 11, Yannis’ baking has been influenced by many food cultures. His first baking memory is making bhapa pitha with his grandmother, while his school days introduced him to classic Austrian treats. Watching Bake Off also helped Yannis learn English, making the show especially close to his heart. Outside the kitchen, he is also a bhangra dancer, and his wedding shimmy has become legendary! For Yannis, baking and medicine have a lot in common: both are about caring for people.",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 0,
       "Location": "London",
       "Participants 4": [
         "recynGeiKaFs0Y7Xc",
         "recmp0ODZM5lWYJ52",
         "recTjNeLHucc5NJn4",
-        "recl49UIgKcraeC1G"
+        "recl49UIgKcraeC1G",
+        "recQiH3AdVcUKtiWA",
+        "recEm8erUQXbU7X8q",
+        "recFmSmVF2Z2Q4NuY",
+        "recxPLVrdjKfeIbEi",
+        "rec1dunKfVmW4Xqeo",
+        "rec3fEqijjkkJdAFL",
+        "recmFdTSjTQFTLXxi",
+        "recICVxybNgslRGgF"
       ],
       "Total Star Bakers": 0,
-      "Status": "In Progress",
+      "Status": "Eliminated",
       "Participants": [
         "recl7ccdPoueVR8rx"
       ],
       "Participants 3": [
         "recExwfbaEhbw4rec"
       ],
-      "Occupation": "Paediatric Doctor"
+      "Occupation": "Paediatric Doctor",
+      "Eliminated": [
+        "recdfWXjNYjHRkDUb"
+      ]
     }
   },
   {
@@ -278,10 +316,13 @@ export const contestantsData = [
         "recgGwmELty0ZGaCD",
         "rec1S9MwBQY1Mdf79",
         "recTjNeLHucc5NJn4",
-        "recl49UIgKcraeC1G"
+        "recl49UIgKcraeC1G",
+        "recB4qE412S4qZvgv"
       ],
       "Participants 3": [
-        "recYmWDbLBH6zeDY8"
+        "recYmWDbLBH6zeDY8",
+        "recEm8erUQXbU7X8q",
+        "recE1cp89oIvdZaPQ"
       ],
       "Occupation": "Law Student",
       "Star Baker": [
@@ -324,7 +365,11 @@ export const contestantsData = [
         "recVR5iGS6i8F5Ppn",
         "recyKSNNkLcxdDrRe",
         "recpG6VRylsDlOAlw",
-        "recr36z7Q003tJFfT"
+        "recr36z7Q003tJFfT",
+        "recQiH3AdVcUKtiWA",
+        "recFmSmVF2Z2Q4NuY",
+        "rec1dunKfVmW4Xqeo",
+        "recmFdTSjTQFTLXxi"
       ],
       "Participants 3": [
         "rec6DpCDeIl3SAavO",
@@ -358,7 +403,8 @@ export const contestantsData = [
       "Total Star Bakers": 0,
       "Status": "In Progress",
       "Participants": [
-        "recYmWDbLBH6zeDY8"
+        "recYmWDbLBH6zeDY8",
+        "recE1cp89oIvdZaPQ"
       ],
       "Participants 3": [
         "recVR5iGS6i8F5Ppn",
