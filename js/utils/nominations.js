@@ -1,8 +1,7 @@
 import airtableService from '../airtable-service.js';
 import { fetchNames } from './participants.js';
 import { fetchContestants } from './bakers.js';
-import { participantsData } from '../data/participants-data.js';
-import { weeksData } from '../data/weeks-data.js';
+import { fetchWeekRecords } from './baker-results.js';
 
 // Table ID for nominations
 const NOMINATIONS_TABLE_ID = 'tblL01LW4xJwPHfiq';
@@ -172,42 +171,40 @@ export async function createFinalistNomination({
  * @returns {Promise<Array<{id: string, name: string, points: number, total: ?number, picks: ?{starBaker: ?Object, technical: ?Object, eliminated: ?Object}}>>}
  */
 export async function fetchWeekStandings(weekId) {
-  const [nominationRecords, participants, contestants] = await Promise.all([
-    airtableService.fetchFilteredRecords({
-      filterByFormula: `{Week Record ID} = "${weekId}"`
-    }, NOMINATIONS_TABLE_ID),
+  const [nominationRecords, participants, contestants, weekRecords] = await Promise.all([
+    airtableService.fetchRecords(NOMINATIONS_TABLE_ID),
     fetchNames(),
-    fetchContestants()
+    fetchContestants(),
+    fetchWeekRecords()
   ]);
 
   const bakerById = new Map(contestants.map(contestant => [contestant.id, contestant]));
   const getBaker = id => id ? (bakerById.get(id) || null) : null;
 
   const nominationByParticipantId = new Map();
-  nominationRecords.forEach(record => {
-    const participantId = record.data['Participant']?.[0];
-    if (participantId) nominationByParticipantId.set(participantId, record.data);
-  });
+  nominationRecords
+    .filter(record => record.data['Week']?.[0] === weekId)
+    .forEach(record => {
+      const participantId = record.data['Participant']?.[0];
+      if (participantId) nominationByParticipantId.set(participantId, record.data);
+    });
 
-  const totalsByParticipantId = new Map(
-    participantsData.map(record => [record.id, record.data['Total Points By Week']])
-  );
-
-  // Overall total up to and including this week, saved locally when the week
-  // was synced (scripts/sync-static-data.js). A week that has none saved yet,
-  // like the upcoming one, shows the most recent earlier week's total instead.
-  // Null when there is nothing earlier to fall back on.
-  const airDateByWeekId = new Map(weeksData.map(record => [record.id, record.data['Air date']]));
+  // Overall total up to and including this week: the points from every
+  // scored nomination in this week or an earlier one. A week that hasn't been
+  // scored yet, like the upcoming one, therefore shows the most recent earlier
+  // week's total. Null when nothing has been scored yet by this week.
+  const airDateByWeekId = new Map(weekRecords.map(record => [record.id, record.data['Air date']]));
   const thisAirDate = airDateByWeekId.get(weekId);
-  const getTotal = participantId => {
-    const saved = totalsByParticipantId.get(participantId) || {};
-    if (weekId in saved) return saved[weekId];
-
-    const earlierWeekId = Object.keys(saved)
-      .filter(id => airDateByWeekId.get(id) < thisAirDate)
-      .sort((a, b) => airDateByWeekId.get(b).localeCompare(airDateByWeekId.get(a)))[0];
-    return earlierWeekId ? saved[earlierWeekId] : null;
-  };
+  const scoredByThisWeek = nominationRecords.filter(record => {
+    const airDate = airDateByWeekId.get(record.data['Week']?.[0]);
+    return airDate && airDate <= thisAirDate && record.data['Total Points'] !== undefined;
+  });
+  const totalByParticipantId = new Map();
+  scoredByThisWeek.forEach(record => {
+    const participantId = record.data['Participant']?.[0];
+    totalByParticipantId.set(participantId, (totalByParticipantId.get(participantId) || 0) + (parseInt(record.data['Total Points']) || 0));
+  });
+  const getTotal = participantId => scoredByThisWeek.length ? (totalByParticipantId.get(participantId) || 0) : null;
 
   return participants
     .map(participant => {

@@ -1,5 +1,5 @@
 import { LitElement, html, css } from 'lit';
-import { weeksData } from '../../js/data/weeks-data.js';
+import { fetchWeekRecords } from '../../js/utils/baker-results.js';
 import { UK, US, REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
 import { fetchWeekStandings } from '../../js/utils/nominations.js';
 import { PROFILE_CHANGE_EVENT, getProfile } from '../../js/utils/profile.js';
@@ -360,7 +360,7 @@ export class GBBONextWeekCard extends LitElement {
     this.error = '';
     
     try {
-      this.records = weeksData;
+      this.records = await fetchWeekRecords();
       this.selectNextWeek();
       // Wait for the vote-status/standings data too, so the card doesn't
       // render its first pass with viewerHasVoted still false and then flash

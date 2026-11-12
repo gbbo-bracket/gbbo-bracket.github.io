@@ -1,6 +1,6 @@
 import { css, html } from 'lit';
 import { GBBOStandingsTable } from './gbbo-standings-table.js';
-import { participantsData } from '../../js/data/participants-data.js';
+import { fetchNames, fetchTotalPoints } from '../../js/utils/participants.js';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 const RANK_CLASSES = ['first', 'second', 'third'];
@@ -43,29 +43,45 @@ export class GBBOFinalStandings extends GBBOStandingsTable {
     super();
     this.final = false;
     this.currentStandings = null;
+    this.loadingCurrent = false;
   }
 
   willUpdate(changedProperties) {
     // The picker swaps the standings whenever a toggle is clicked, so react to
     // every change rather than only reading the value once on connect.
     if (changedProperties.has('standings') && !Array.isArray(this.standings)) {
-      // Computed once and remembered so switching back is instant
-      this.currentStandings ??= this.processStandingsData(participantsData);
-      this.standings = this.currentStandings;
+      if (this.currentStandings) {
+        // Fetched once and remembered so switching back is instant
+        this.standings = this.currentStandings;
+      } else {
+        this.loadCurrentStandings();
+      }
     }
 
     if (this.standings) this.loading = false;
   }
 
-  processStandingsData(records) {
-    // Extract participant names and total points, then sort by points descending
-    return records
-      .map(record => ({
-        name: record.data.Name || record.data.Participant || 'Unknown',
-        points: parseInt(record.data['Total Points'] || 0)
-      }))
-      .filter(participant => participant.name !== 'Unknown')
-      .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
+  // The current season's running totals are fetched live from Airtable; the
+  // participant names come from the static roster
+  async loadCurrentStandings() {
+    if (this.loadingCurrent) return;
+    this.loadingCurrent = true;
+    this.loading = true;
+    this.error = null;
+
+    try {
+      const [participants, totals] = await Promise.all([fetchNames(), fetchTotalPoints()]);
+      this.currentStandings = participants
+        .map(participant => ({ name: participant.name, points: totals.get(participant.id) || 0 }))
+        .sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
+      this.standings = this.currentStandings;
+    } catch (error) {
+      console.error('Failed to load standings:', error);
+      this.error = error.message;
+      this.loading = false;
+    } finally {
+      this.loadingCurrent = false;
+    }
   }
 
   get columns() {
