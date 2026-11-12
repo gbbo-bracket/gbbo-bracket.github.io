@@ -3,6 +3,7 @@ export default {
   content: [
     "./index.html",
     "./standings.html",
+    "./finals.html",
     "./contestants.html",
     "./rules.html",
     "./vote.html",

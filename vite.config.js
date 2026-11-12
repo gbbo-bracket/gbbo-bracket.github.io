@@ -15,6 +15,7 @@ export default defineConfig({
         contestants: 'contestants.html',
         rules: 'rules.html',
         standings: 'standings.html',
+        finals: 'finals.html',
         vote: 'vote.html'
       }
     },
