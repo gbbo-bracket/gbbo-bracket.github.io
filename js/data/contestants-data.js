@@ -1,6 +1,6 @@
 // Bakers/contestants table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-11-12T07:53:55.764Z
+// Last synced: 2026-11-12T08:51:26.369Z
 export const contestantsData = [
   {
     "id": "rec3S0jFScJilbICm",
