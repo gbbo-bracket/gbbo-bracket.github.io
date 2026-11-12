@@ -10,11 +10,14 @@ A Great British Bake Off bracket - Built with **LitElement**.
   remembered in the browser instead of a full login - once a profile is picked, the button shows
   that person's name and emoji, and the Vote page shows and saves that person's picks automatically
 - **Standings**: A leaderboard page, linked from the nav, ranking everyone by total points for the
-  current season. Alongside it is a toggle for the final standings from each past season - only
+  current season. Alongside it is a toggle for the final standings from each past season, newest
+  first (2026 | 2025 | 2024) - only
   those final results get the gold/silver/bronze medals and rank colors (the per-week and Finals
   toggles are on hold while that part of the UI gets reconsidered)
 - **Contestants**: Tapping a baker opens their profile, and arrows in the pop-up - or the left and
-  right arrow keys - browse straight through the rest of the bakers without closing it
+  right arrow keys - browse straight through the rest of the bakers without closing it. Each baker's
+  card shows their star baker and technical wins in one row, and an eliminated baker's name is
+  struck through and their photo faded
 - **Voting**: Every week currently open for voting loads on the page at once, each in its own table
   for whoever is picked in Site settings, with a Save button of its own. The three picks - Star
   Baker, Technical Winner, Eliminated - are baker cards. Tapping one opens the same profile pop-up

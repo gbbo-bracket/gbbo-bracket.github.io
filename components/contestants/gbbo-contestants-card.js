@@ -29,10 +29,6 @@ export class GBBOContestantsCard extends LitElement {
       cursor: pointer;
     }
 
-    .contestants-card.eliminated {
-      border: 1px solid var(--icing-pink);
-    }
-
     .contestants-card.eliminated::before {
       content: '';
       position: absolute;
@@ -53,6 +49,23 @@ export class GBBOContestantsCard extends LitElement {
       font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
+    }
+
+    .contestants-results {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    .results-separator {
+      color: rgba(33, 65, 119, 0.35);
+    }
+
+    .contestants-name.struck {
+      text-decoration: line-through;
     }
 
     .contestants-image {
@@ -92,6 +105,27 @@ export class GBBOContestantsCard extends LitElement {
     this.closeModal();
   }
 
+  // Stars and technicals share one row, e.g. "⭐⭐ | 🧁"
+  renderResults() {
+    const groups = [
+      ['Star Baker', '⭐'],
+      ['Technical', '🧁']
+    ]
+      .map(([field, emoji]) => (this.contestant[field] || []).map(() => emoji).join(''))
+      .filter(Boolean);
+
+    if (!groups.length) return '';
+
+    return html`
+      <div class="contestants-results">
+        ${groups.map((group, i) => html`
+          ${i > 0 ? html`<span class="results-separator" aria-hidden="true">|</span>` : ''}
+          <span>${group}</span>
+        `)}
+      </div>
+    `;
+  }
+
   render() {
     return html`
       <div class="contestants-card ${this.withResults ? this.contestant['Eliminated']?.length ? 'eliminated' : '' : ''}" @click="${this.contestant ? this.openDetailsModal : null}">
@@ -99,32 +133,8 @@ export class GBBOContestantsCard extends LitElement {
           html`<img class="contestants-image" src="${this.contestant.imageUrl}" alt="${this.contestant.name}" />` :
           html`<div class="contestants-image"></div>`
         }
-        ${this.hideName ? '' : html`<p class="contestants-name">${this.contestant?.name || 'Baker'}</p>`}
-        ${this.withResults ? html`
-          <div class="contestants-results">
-            ${this.contestant['Star Baker']?.length ? html`
-              <div>
-                ${this.contestant['Star Baker'].map(() => html`
-                  <span>⭐</span>
-                `)}
-              </div>
-            ` : ''}
-            ${this.contestant['Technical']?.length ? html`
-              <div>
-                ${this.contestant['Technical'].map(() => html`
-                  <span>🧁</span>
-                `)}
-              </div>
-            ` : ''}
-            ${this.contestant['Eliminated']?.length ? html`
-              <div>
-                ${this.contestant['Eliminated'].map(() => html`
-                  <span>❌</span>
-                `)}
-              </div>
-            ` : ''}
-          </div>
-        ` : ''}
+        ${this.hideName ? '' : html`<p class="contestants-name ${this.withResults && this.contestant?.['Eliminated']?.length ? 'struck' : ''}">${this.contestant?.name || 'Baker'}</p>`}
+        ${this.withResults ? this.renderResults() : ''}
       </div>
 
       <gbbo-contestants-modal 
