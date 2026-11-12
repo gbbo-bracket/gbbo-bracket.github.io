@@ -24,6 +24,16 @@ const picksSubmitted = finalsPicks
   .filter(person => person.winner)
   .sort((a, b) => a.name.localeCompare(b.name));
 
+// The three bakers picked most often to reach the Finals, counting every pick
+// of them whether as the All-around Winner or as one of the other two finalists
+const TOP_PICKS_COUNT = 3;
+
+const topPicks = [...picksSubmitted
+  .flatMap(person => [person.winner, ...person.finalists])
+  .reduce((counts, name) => counts.set(name, (counts.get(name) || 0) + 1), new Map())]
+  .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+  .slice(0, TOP_PICKS_COUNT);
+
 /**
  * Everyone's Finals picks: a card per participant who submitted them, showing
  * their All-around Winner and the two other finalists they picked. The picks are static data (js/data/finals-picks-data.js).
@@ -54,6 +64,52 @@ export class GBBOFinalsPicks extends LitElement {
       color: var(--body-text);
       margin-bottom: .5rem;
       max-width: 36rem;
+    }
+
+    .favorites {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .favorites h3 {
+      margin: 0;
+    }
+
+    /* On desktop the heading sits beside the favorites instead of above them */
+    @media (min-width: 768px) {
+      .favorites {
+        flex-direction: row;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    }
+
+    .tally {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .tally-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.4rem 1rem 0.4rem 0.4rem;
+      background: rgba(255, 253, 245, 0.9);
+      border: 1px solid rgba(247, 198, 217, 0.5);
+      border-radius: 999px;
+      color: var(--body-text);
+    }
+
+    .tally-item strong {
+      color: var(--royal-blue);
+    }
+
+    .tally-item .photo {
+      width: 2.25rem;
+      height: 2.25rem;
     }
 
     .grid {
@@ -219,6 +275,18 @@ export class GBBOFinalsPicks extends LitElement {
   render() {
     return html`
       <h2>Finals</h2>
+      <div class="favorites">
+        <h3>League Favorites:</h3>
+        <div class="tally">
+          ${topPicks.map(([name, count]) => html`
+            <div class="tally-item">
+              ${this.renderPhoto(name)}
+              <span><strong>${name}</strong> · ${count} ${count === 1 ? 'pick' : 'picks'}</span>
+            </div>
+          `)}
+        </div>
+      </div>
+
       <div class="grid">
         ${picksSubmitted.map(person => this.renderPerson(person))}
       </div>
