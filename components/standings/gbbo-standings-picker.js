@@ -3,7 +3,7 @@ import './gbbo-final-standings.js';
 import './gbbo-weekly-standings.js';
 import '../shared/gbbo-loading-container.js';
 import { pastYears } from './static-data.js';
-import { weeksData } from '../../js/data/weeks-data.js';
+import { fetchWeekRecords } from '../../js/utils/baker-results.js';
 import { REGION_CHANGE_EVENT, getRegion, getAirDate, parseAirDate } from '../../js/utils/region.js';
 import { FINALS_WEEK_ID, fetchWeekStandings } from '../../js/utils/nominations.js';
 
@@ -132,7 +132,7 @@ export class GBBOStandingsPicker extends LitElement {
   // visitor's region, since the UK and US see different episodes air first.
   async loadWeekOptions() {
     try {
-      const records = weeksData;
+      const records = await fetchWeekRecords();
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 

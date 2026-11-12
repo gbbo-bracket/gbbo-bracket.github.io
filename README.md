@@ -105,11 +105,11 @@ gbbo-bracket.github.io/
 │   └── home/ contestants/ rules/ standings/ finals/ vote/   # Per-page components
 ├── js/
 │   ├── main.js              # Main application logic
-│   ├── airtable-service.js  # Live Airtable reads/writes (votes)
-│   ├── data/                # Static snapshots of the bakers/participants/weeks tables, plus baker photo links (kept by hand)
+│   ├── airtable-service.js  # Live Airtable reads/writes (results, points, votes)
+│   ├── data/                # Saved copies of the baker and participant names, plus baker photo links and Finals picks (the rest loads live)
 │   └── utils/               # Bakers, results, nominations, participants, UK/US region, profile
 ├── scripts/
-│   └── sync-static-data.js  # Refreshes js/data/ from Airtable and saves each week's running totals - run by hand (npm run sync-static-data)
+│   └── sync-static-data.js  # Refreshes the saved baker and participant names from Airtable - run by hand when one is added (npm run sync-static-data)
 ├── src/
 │   ├── input.css       # Tailwind CSS input
 │   └── styles.css      # Colour palette and global styles
