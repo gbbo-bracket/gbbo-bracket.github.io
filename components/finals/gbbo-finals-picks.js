@@ -8,8 +8,21 @@ const eliminatedBakers = new Set(
   contestantsData.filter(baker => baker.data['Is Eliminated?']).map(baker => baker.data.Name)
 );
 
-// Only participants who submitted Finals picks get a card
-const picksSubmitted = finalsPicks.filter(person => person.winner);
+// Finals points a participant can still earn: 7 if their All-around Winner is
+// still in, plus 3 for each other finalist who is still in
+const WINNER_POINTS = 7;
+const FINALIST_POINTS = 3;
+
+function possiblePoints(person) {
+  const winnerPoints = eliminatedBakers.has(person.winner) ? 0 : WINNER_POINTS;
+  const finalistPoints = person.finalists.filter(name => !eliminatedBakers.has(name)).length * FINALIST_POINTS;
+  return winnerPoints + finalistPoints;
+}
+
+// Only participants who submitted Finals picks get a card, in alphabetical order
+const picksSubmitted = finalsPicks
+  .filter(person => person.winner)
+  .sort((a, b) => a.name.localeCompare(b.name));
 
 /**
  * Everyone's Finals picks: a card per participant who submitted them, showing
@@ -85,7 +98,15 @@ export class GBBOFinalsPicks extends LitElement {
       font-family: 'Playfair Display', serif;
       font-size: 1.35rem;
       color: var(--heading-text);
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .possible-points {
       margin: 0 0 0.75rem;
+      font-size: 0.9rem;
+      color: var(--earl-grey);
+      font-style: italic;
     }
 
     .pick {
@@ -188,6 +209,7 @@ export class GBBOFinalsPicks extends LitElement {
     return html`
       <section class="person">
         <h4 class="person-name">${person.emoji} ${person.name}</h4>
+        <p class="possible-points">Possible finals points: +${possiblePoints(person)}</p>
         ${this.renderPick('All-around Winner 👑', person.winner, 'winner')}
         ${person.finalists.map(name => this.renderPick('Finalist', name))}
       </section>
