@@ -16,7 +16,7 @@ const CURRENT_YEAR = '2026';
 const STATIC_OPTIONS = {
   current: { id: 'current', label: CURRENT_YEAR, title: 'Current Standings', kind: 'current' },
   finals: { id: FINALS_WEEK_ID, label: 'Finals', title: `${CURRENT_YEAR} Finals Standings`, kind: 'week' },
-  archive: Object.keys(pastYears).map(year => ({
+  archive: Object.keys(pastYears).sort((a, b) => b - a).map(year => ({
     id: year,
     label: year,
     title: `${year} Final Results`,

@@ -96,6 +96,7 @@ export class GBBOContestantsData extends LitElement {
       
       .records-grid {
         grid-template-columns: 1fr;
+        justify-items: center;
       }
     }
   `;
@@ -127,7 +128,7 @@ export class GBBOContestantsData extends LitElement {
   render() {
     return html`
       <gbbo-card title="Contestants">
-      <p>Star baker wins are denoted with a ⭐, technical wins are denoted with a 🧁, and eliminated bakers are denoted with a ❌.</p>
+      <p>Star baker wins are denoted with a ⭐, technical wins are denoted with a 🧁</p>
         ${this.loading ? html`
           <gbbo-loading-container></gbbo-loading-container>
         `  : ''}
