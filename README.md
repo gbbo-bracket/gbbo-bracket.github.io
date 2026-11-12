@@ -25,7 +25,10 @@ A Great British Bake Off bracket - Built with **LitElement**.
   closed
 - **Finals**: When Finals is marked active, it shows up on the Vote page after any open weeks, in
   the same kind of table but with three baker cards for the All-around Winner and the two other
-  Finalists. There's no separate Finals page any more
+  Finalists.
+- **Finals Picks**: A separate page at `/finals` showing everyone's Finals picks - their choice for the
+  All-around Winner and the two other Finalists - plus a tally of the most popular winner picks. The
+  picks are saved in the site's files since voting is closed and they won't change
 - **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
   selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
   Channel 4 in the UK or Netflix in the US. Right underneath, a banner nags whoever is picked in
@@ -99,7 +102,7 @@ gbbo-bracket.github.io/
 ├── components/         # LitElement web components
 │   ├── foundations/    # Shared building blocks (card, primary-button)
 │   ├── shared/         # Header, footer, banners, callouts, loading states, site settings pop-up
-│   └── home/ contestants/ rules/ standings/ vote/   # Per-page components
+│   └── home/ contestants/ rules/ standings/ finals/ vote/   # Per-page components
 ├── js/
 │   ├── main.js              # Main application logic
 │   ├── airtable-service.js  # Live Airtable reads/writes (votes)
