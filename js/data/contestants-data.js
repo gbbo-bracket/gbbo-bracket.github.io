@@ -1,6 +1,6 @@
 // Bakers/contestants table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-10-27T10:33:35.258Z
+// Last synced: 2026-11-12T07:53:55.764Z
 export const contestantsData = [
   {
     "id": "rec3S0jFScJilbICm",
@@ -26,14 +26,20 @@ export const contestantsData = [
       "Participants": [
         "recNR8ghMKNtCJOrG",
         "recxPLVrdjKfeIbEi",
-        "rec3fEqijjkkJdAFL"
+        "rec3fEqijjkkJdAFL",
+        "recuXsTV2y8dtlyCJ",
+        "recd4YJ5kSCjXXx75",
+        "recHE7AOxX7XweHSS"
       ],
       "Participants 3": [
         "recHG4yNeYLMeJBg6",
         "recynGeiKaFs0Y7Xc",
         "recl7ccdPoueVR8rx",
         "rec1S9MwBQY1Mdf79",
-        "recB4qE412S4qZvgv"
+        "recB4qE412S4qZvgv",
+        "recG4jYn8DoBZmBuK",
+        "recGEjCN79pw19MQ7",
+        "rec2vHsVVMC6WA6fr"
       ],
       "Occupation": "NHS Hospital Discharge Lead",
       "Star Baker": [
@@ -85,24 +91,28 @@ export const contestantsData = [
         "recoHfBRV9c4qWc0J"
       ],
       "Bio": "Gary is a methodical and precise baker who discovered his love of baking later in life. He bought his first cookbook in a gift shop five years ago and hasn’t looked back, developing a traditional yet creative style with a focus on impeccable presentation and bold flavours, particularly citrus. Born and bred in Chesterfield, Gary now lives on a smallholding in Nottinghamshire with his wife of over 30 years, Donna. Their countryside home is filled with animals, including sheep, horses, chickens and miniature pygmy goats and Shetland ponies. Having beat prostate cancer himself, Gary is passionate about raising awareness and funds for cancer charities through bake sales and coffee mornings. When he’s not baking, Gary is usually out walking with his two Border Collies, Ollie and Alfie, who are his pride and joy.",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 1,
       "Location": "Nottinghamshire",
       "Participants 4": [
         "recHG4yNeYLMeJBg6",
-        "recyKSNNkLcxdDrRe"
+        "recyKSNNkLcxdDrRe",
+        "recTdhh3AlizzewZu",
+        "recfi3bm8oo7cqF0f"
       ],
       "Technical": [
         "recdfWXjNYjHRkDUb"
       ],
       "Total Star Bakers": 0,
-      "Status": "In Progress",
+      "Status": "Eliminated",
       "Participants": [
         "recxYLJ47l6ae9KEn",
         "rec99LUmmxUhIXnG6",
         "recaInoMoftrrs64R",
         "recjBTSmi7eKkQ1vH",
-        "recICVxybNgslRGgF"
+        "recICVxybNgslRGgF",
+        "recMfk8siVxW1hWYV",
+        "recfBhjtQA6WFS02X"
       ],
       "Participants 3": [
         "recoKsY64BpyOWKzj",
@@ -112,9 +122,13 @@ export const contestantsData = [
         "recpG6VRylsDlOAlw",
         "recr36z7Q003tJFfT",
         "recQiH3AdVcUKtiWA",
-        "recICVxybNgslRGgF"
+        "recICVxybNgslRGgF",
+        "recA6qtblw3ITP3vc"
       ],
-      "Occupation": "Retired Garment Technologist"
+      "Occupation": "Retired Garment Technologist",
+      "Eliminated": [
+        "recqvs8LQaL0ZnVAM"
+      ]
     }
   },
   {
@@ -160,14 +174,16 @@ export const contestantsData = [
         "receL6JG9wKMfMqq5"
       ],
       "Bio": "A passionate Portuguese polyglot pocket rocket, Clara is a bundle of energy and believes “the first bite of a bake is always with the eyes”. She loves creating colourful, chaotically beautiful designs, balanced with fresh, fruity flavours. Originally from Aveiro in Portugal, Clara moved to the UK at 18 to study marketing. She began baking cakes two years ago as a creative outlet, and then recreating Portuguese classics like Tarte de Nata for her British fiancé Kieran and his family. Clara’s greatest loves are her spaniel Gigi and pygmy hedgehog, Pecan, and she is happiest when surrounded by animals. A self-confessed “fantasy girly”, Clara is bringing plenty of colour, warmth and Portuguese sunshine to the Tent.",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 0,
       "Location": "Hertfordshire",
       "Participants 4": [
-        "recE1cp89oIvdZaPQ"
+        "recE1cp89oIvdZaPQ",
+        "recuXsTV2y8dtlyCJ",
+        "rec62c9tA9yvrxAOT"
       ],
       "Total Star Bakers": 1,
-      "Status": "In Progress",
+      "Status": "Eliminated",
       "Participants": [
         "rechdUtTRQ0rHrdK2",
         "recEm8erUQXbU7X8q"
@@ -182,6 +198,9 @@ export const contestantsData = [
         "recmFdTSjTQFTLXxi"
       ],
       "Occupation": "Marketing Graduate",
+      "Eliminated": [
+        "rec1Sdw6UHpzpizQl"
+      ],
       "Star Baker": [
         "rec7y5gnmfggjhBfR"
       ]
@@ -198,18 +217,32 @@ export const contestantsData = [
       "Total Technicals": 1,
       "Location": "West Midlands",
       "Participants 4": [
-        "recB4qE412S4qZvgv"
+        "recB4qE412S4qZvgv",
+        "reczd4Q1ZjKqZCsmf",
+        "recA5NStqazOU8gMU",
+        "recMfk8siVxW1hWYV",
+        "recGEjCN79pw19MQ7",
+        "recfBhjtQA6WFS02X",
+        "recA6qtblw3ITP3vc",
+        "rec2vHsVVMC6WA6fr"
       ],
       "Technical": [
         "rec7y5gnmfggjhBfR",
         "recB2YnrWbhkDUk7J"
       ],
-      "Total Star Bakers": 0,
+      "Total Star Bakers": 1,
       "Status": "In Progress",
-      "Participants 3": [
-        "rectVLUiTmro2zUUf"
+      "Participants": [
+        "recG4jYn8DoBZmBuK"
       ],
-      "Occupation": "Artist & Drag King"
+      "Participants 3": [
+        "rectVLUiTmro2zUUf",
+        "recfi3bm8oo7cqF0f"
+      ],
+      "Occupation": "Artist & Drag King",
+      "Star Baker": [
+        "recqvs8LQaL0ZnVAM"
+      ]
     }
   },
   {
@@ -302,7 +335,10 @@ export const contestantsData = [
       "Total Technicals": 0,
       "Location": "West Midlands",
       "Participants 4": [
-        "recjBTSmi7eKkQ1vH"
+        "recjBTSmi7eKkQ1vH",
+        "recG4jYn8DoBZmBuK",
+        "recMBlBaMlPR1i15q",
+        "rec4wZoJqT9U9RBc3"
       ],
       "Total Star Bakers": 1,
       "Status": "In Progress",
@@ -317,7 +353,10 @@ export const contestantsData = [
         "rec1S9MwBQY1Mdf79",
         "recTjNeLHucc5NJn4",
         "recl49UIgKcraeC1G",
-        "recB4qE412S4qZvgv"
+        "recB4qE412S4qZvgv",
+        "reczd4Q1ZjKqZCsmf",
+        "recA5NStqazOU8gMU",
+        "recejwY7Rrro0NPJd"
       ],
       "Participants 3": [
         "recYmWDbLBH6zeDY8",
@@ -355,7 +394,8 @@ export const contestantsData = [
       "Total Technicals": 1,
       "Location": "West Yorkshire",
       "Technical": [
-        "recKwUz5UrZLyj0Uj"
+        "recKwUz5UrZLyj0Uj",
+        "recqvs8LQaL0ZnVAM"
       ],
       "Total Star Bakers": 1,
       "Status": "In Progress",
@@ -369,7 +409,14 @@ export const contestantsData = [
         "recQiH3AdVcUKtiWA",
         "recFmSmVF2Z2Q4NuY",
         "rec1dunKfVmW4Xqeo",
-        "recmFdTSjTQFTLXxi"
+        "recmFdTSjTQFTLXxi",
+        "recGEjCN79pw19MQ7",
+        "recMBlBaMlPR1i15q",
+        "rec4wZoJqT9U9RBc3",
+        "recTdhh3AlizzewZu",
+        "recA6qtblw3ITP3vc",
+        "rec2vHsVVMC6WA6fr",
+        "recfi3bm8oo7cqF0f"
       ],
       "Participants 3": [
         "rec6DpCDeIl3SAavO",
@@ -377,12 +424,22 @@ export const contestantsData = [
         "rec99LUmmxUhIXnG6",
         "recmp0ODZM5lWYJ52",
         "rechdUtTRQ0rHrdK2",
-        "recNR8ghMKNtCJOrG"
+        "recNR8ghMKNtCJOrG",
+        "reczd4Q1ZjKqZCsmf",
+        "recejwY7Rrro0NPJd",
+        "recuXsTV2y8dtlyCJ",
+        "recA5NStqazOU8gMU",
+        "recd4YJ5kSCjXXx75",
+        "recMfk8siVxW1hWYV",
+        "recHE7AOxX7XweHSS",
+        "recTdhh3AlizzewZu",
+        "rec62c9tA9yvrxAOT"
       ],
       "Occupation": "Hairdresser",
       "Star Baker": [
         "rec0OQ4med9AQKW2p",
-        "recB2YnrWbhkDUk7J"
+        "recB2YnrWbhkDUk7J",
+        "rec1Sdw6UHpzpizQl"
       ]
     }
   },
@@ -398,20 +455,32 @@ export const contestantsData = [
       "Record ID": "recp2HILIYq41Nrrx",
       "Bio": "Moyin is a high achiever who balances his studies with athletics, baking and a part-time job. He started baking with his mum at five and by 14 had mastered the tricky art of macaronage! His bakes are fun and precise, with flavours inspired by his Nigerian heritage, including grains of paradise and groundnuts. A competitive sprinter, Moyin was crowned U20 County Champion in the 100m, and his pre-race motivational playlist features Afrobeats, R&B and conscious rap. He lives with his mum, sister and grandmother, and regularly visits family in Nigeria, Canada and the USA. Outside of baking, Moyin loves fashion, collecting vinyl and visiting comedy clubs. He’s also a dedicated matcha latte fan, pre-ordering his for a swift pick-up on the way to seminars on Global Political Thought.",
       "Is Eliminated?": 0,
-      "Total Technicals": 0,
+      "Total Technicals": 1,
       "Location": "Essex",
+      "Participants 4": [
+        "recejwY7Rrro0NPJd",
+        "recd4YJ5kSCjXXx75",
+        "recHE7AOxX7XweHSS"
+      ],
+      "Technical": [
+        "rec1Sdw6UHpzpizQl"
+      ],
       "Total Star Bakers": 0,
       "Status": "In Progress",
       "Participants": [
         "recYmWDbLBH6zeDY8",
-        "recE1cp89oIvdZaPQ"
+        "recE1cp89oIvdZaPQ",
+        "rec62c9tA9yvrxAOT"
       ],
       "Participants 3": [
         "recVR5iGS6i8F5Ppn",
         "rec6OcJj5f7L91ChV",
         "recUp43bCxHDX18yD",
         "recgGwmELty0ZGaCD",
-        "recyKSNNkLcxdDrRe"
+        "recyKSNNkLcxdDrRe",
+        "recMBlBaMlPR1i15q",
+        "recfBhjtQA6WFS02X",
+        "rec4wZoJqT9U9RBc3"
       ],
       "Occupation": "Political Economy Student"
     }
