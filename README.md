@@ -43,6 +43,10 @@ A Great British Bake Off bracket - Built with **LitElement**.
   one gets spoiled before voting. Arrow buttons labelled with the week
   (like "← Week 1") on the top right of the card let visitors look back at earlier weeks, and step
   forward again up to the current one
+  - When the episode is the Finals, the card shows everyone's Finals picks in the same table instead
+    of the trailer: 🏆 for their All-around Winner and 🍰 for the two other finalists, with
+    eliminated bakers crossed out. Everyone's picks show right away since voting is closed, and
+    "This Week" fills in once the finale is scored
 - **Shared Page Metadata**: One `<gbbo-metadata>` tag in each page's `<head>` sets the browser tab
   title, the search description, and the picture and blurb that show up when someone shares a link
   in a group chat. Pages that say nothing fall back to shared defaults, so every link looks the same.

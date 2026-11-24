@@ -2,6 +2,7 @@ import airtableService from '../airtable-service.js';
 import { fetchNames } from './participants.js';
 import { fetchContestants } from './bakers.js';
 import { fetchWeekRecords } from './baker-results.js';
+import { finalsPicks } from '../data/finals-picks-data.js';
 
 // Table ID for nominations
 const NOMINATIONS_TABLE_ID = 'tblL01LW4xJwPHfiq';
@@ -180,6 +181,20 @@ export async function fetchWeekStandings(weekId) {
 
   const bakerById = new Map(contestants.map(contestant => [contestant.id, contestant]));
   const getBaker = id => id ? (bakerById.get(id) || null) : null;
+  const bakerByName = new Map(contestants.map(contestant => [contestant.name, contestant]));
+
+  // Finals picks are static data (voting is closed), shown as the All-around
+  // Winner and the two other finalists instead of the weekly three picks
+  const isFinals = weekId === FINALS_WEEK_ID;
+  const getFinalsPicks = name => {
+    const entry = finalsPicks.find(person => person.name === name);
+    if (!entry?.winner) return null;
+    return {
+      winner: bakerByName.get(entry.winner) || null,
+      finalist1: bakerByName.get(entry.finalists[0]) || null,
+      finalist2: bakerByName.get(entry.finalists[1]) || null
+    };
+  };
 
   const nominationByParticipantId = new Map();
   nominationRecords
@@ -218,7 +233,7 @@ export async function fetchWeekStandings(weekId) {
         name: participant.name,
         points: parseInt(nomination?.['Total Points']) || 0,
         total: getTotal(participant.id),
-        picks: hasWeeklyPicks ? {
+        picks: isFinals ? getFinalsPicks(participant.name) : hasWeeklyPicks ? {
           starBaker: getBaker(nomination['Star Baker']?.[0]),
           technical: getBaker(nomination['Wins Technical']?.[0]),
           eliminated: getBaker(nomination['Eliminated']?.[0])

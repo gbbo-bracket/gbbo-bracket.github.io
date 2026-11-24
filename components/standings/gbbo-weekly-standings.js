@@ -10,6 +10,13 @@ const PICK_FIELDS = [
   { key: 'eliminated', icon: '❌', label: 'Eliminated' }
 ];
 
+// The Finals picks: the All-around Winner and the two other finalists
+const FINALS_PICK_FIELDS = [
+  { key: 'winner', icon: '🏆', label: 'All-around Winner' },
+  { key: 'finalist1', icon: '🍰', label: 'Finalist' },
+  { key: 'finalist2', icon: '🍰', label: 'Finalist' }
+];
+
 /**
  * One week's results, ranked by each participant's overall total up to that
  * week: the participant, their Star Baker / Technical / Eliminated picks, the
@@ -67,6 +74,11 @@ export class GBBOWeeklyStandings extends GBBOStandingsTable {
       .pick-tag:disabled {
         cursor: default;
         opacity: 0.6;
+      }
+
+      /* Finals picks for a baker who is out of the competition */
+      .pick-tag.out .pick-name {
+        text-decoration: line-through;
       }
 
       .no-picks {
@@ -135,16 +147,17 @@ export class GBBOWeeklyStandings extends GBBOStandingsTable {
       return html`<span class="no-picks">No vote yet</span>`;
     }
 
-    return PICK_FIELDS.map(field => {
+    const fields = 'winner' in picks ? FINALS_PICK_FIELDS : PICK_FIELDS;
+    return fields.map(field => {
       const baker = picks[field.key];
       return html`
         <button
           type="button"
-          class="pick-tag"
+          class="pick-tag ${fields === FINALS_PICK_FIELDS && baker?.['Is Eliminated?'] ? 'out' : ''}"
           title="${field.label}"
           ?disabled="${!baker}"
           @click="${() => this.openBakerModal(baker)}"
-        >${field.icon} ${baker?.name || 'Unknown'}</button>
+        >${field.icon} <span class="pick-name">${baker?.name || 'Unknown'}</span></button>
       `;
     });
   }
