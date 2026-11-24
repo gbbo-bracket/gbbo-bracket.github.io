@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { repeat } from 'lit/directives/repeat.js';
 import '../shared/gbbo-loading-container.js';
 
 /**
@@ -267,8 +268,8 @@ export class GBBOStandingsTable extends LitElement {
               <tr>${columns.map(column => html`<th class="${column.className}">${column.label}</th>`)}</tr>
             </thead>
             <tbody>
-              ${this.standings.map((participant, index) => html`
-                <tr>
+              ${repeat(this.standings, participant => participant.id ?? participant.name, (participant, index) => html`
+                <tr data-key="${participant.id ?? participant.name}">
                   ${columns.map(column => html`
                     <td class="${column.className} ${column.cellClass?.(participant, index) ?? ''}">${column.render(participant, index)}</td>
                   `)}

@@ -6,7 +6,9 @@ export class GBBOBanner extends LitElement {
     ctaText: { type: String },
     ctaHref: { type: String },
     // 'reminder' (default) or 'confirmed' - confirmed swaps in a checkmark and a calmer color
-    variant: { type: String }
+    variant: { type: String },
+    // Links to other pages on this site open in the same tab
+    ctaSameTab: { type: Boolean }
   };
 
   constructor() {
@@ -15,6 +17,7 @@ export class GBBOBanner extends LitElement {
     this.ctaText = '';
     this.ctaHref = '';
     this.variant = 'reminder';
+    this.ctaSameTab = false;
   }
 
   // Styled like gbbo-callout - a neutral box for a confirmed vote, with a
@@ -68,7 +71,7 @@ export class GBBOBanner extends LitElement {
       <div class="banner ${this.variant === 'reminder' ? 'reminder' : 'confirmed'}">
         ${this.message}
         ${this.ctaText && this.ctaHref ? html`
-          <a class="banner-cta" href="${this.ctaHref}" target="_blank" rel="noopener noreferrer">${this.ctaText}</a>
+          <a class="banner-cta" href="${this.ctaHref}" target="${this.ctaSameTab ? '_self' : '_blank'}" rel="${this.ctaSameTab ? '' : 'noopener noreferrer'}">${this.ctaText}</a>
         ` : ''}
       </div>
     `;
