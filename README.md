@@ -29,9 +29,10 @@ A Great British Bake Off bracket - Built with **LitElement**.
 - **Finals**: When Finals is marked active, it shows up on the Vote page after any open weeks, in
   the same kind of table but with three baker cards for the All-around Winner and the two other
   Finalists.
-- **Finals Picks**: A separate page at `/finals` showing everyone's Finals picks - their choice for the
-  All-around Winner and the two other Finalists - plus a tally of the most popular winner picks. The
-  picks are saved in the site's files since voting is closed and they won't change
+- **Finals Page**: A separate page at `/finals` showing the Finals standings in the same table as the home
+  page, with a "Pick a finalist..." picker above it. Tapping one of the three finalists re-scores
+  everyone's picks as if that baker won, and the rows slide into their new places (with ▲/▼ showing how
+  far each person moved). Tapping the baker again goes back to the real standings
 - **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
   selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
   Channel 4 in the UK or Netflix in the US, and it stays on every episode that has already aired. Right underneath, a banner nags whoever is picked in
@@ -46,7 +47,8 @@ A Great British Bake Off bracket - Built with **LitElement**.
   - When the episode is the Finals, the card shows everyone's Finals picks in the same table instead
     of the trailer: 🏆 for their All-around Winner and 🍰 for the two other finalists, with
     eliminated bakers crossed out. Everyone's picks show right away since voting is closed, and
-    "This Week" fills in once the finale is scored
+    "This Week" fills in once the finale is scored, with a banner above it linking to the Finals
+    page's "what if" picker
 - **Shared Page Metadata**: One `<gbbo-metadata>` tag in each page's `<head>` sets the browser tab
   title, the search description, and the picture and blurb that show up when someone shares a link
   in a group chat. Pages that say nothing fall back to shared defaults, so every link looks the same.

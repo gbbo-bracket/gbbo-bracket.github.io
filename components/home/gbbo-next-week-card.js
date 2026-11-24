@@ -665,6 +665,13 @@ export class GBBONextWeekCard extends LitElement {
   renderFinalsStandings(displayWeek) {
     if (!this.weekStandings || this.standingsWeekId !== displayWeek.id) return '';
     return html`
+      <gbbo-banner
+        variant="confirmed"
+        message="🏆 Who will win?"
+        ctaText="See how the standings may change for each finalist"
+        ctaHref="/finals"
+        ctaSameTab
+      ></gbbo-banner>
       <gbbo-weekly-standings .standings="${this.weekStandings}"></gbbo-weekly-standings>
     `;
   }
