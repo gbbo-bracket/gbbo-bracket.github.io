@@ -1,6 +1,7 @@
 import { css, html } from 'lit';
 import { GBBOStandingsTable } from './gbbo-standings-table.js';
 import '../contestants/gbbo-contestants-modal.js';
+import '../shared/gbbo-rank-change.js';
 
 // The three picks shown per participant, and how to label/icon each one -
 // matches the icons already used on the Contestants page
@@ -27,7 +28,8 @@ export class GBBOWeeklyStandings extends GBBOStandingsTable {
   static properties = {
     ...GBBOStandingsTable.properties,
     modalContestant: { type: Object },
-    modalOpen: { type: Boolean }
+    modalOpen: { type: Boolean },
+    showRankChange: { type: Boolean }
   };
 
   static styles = [
@@ -123,6 +125,7 @@ export class GBBOWeeklyStandings extends GBBOStandingsTable {
     super();
     this.modalContestant = null;
     this.modalOpen = false;
+    this.showRankChange = false;
   }
 
   willUpdate() {
@@ -162,14 +165,33 @@ export class GBBOWeeklyStandings extends GBBOStandingsTable {
     });
   }
 
+  // Places each participant moved this week (positive = up), by comparing
+  // their rank on the total before this week's points with their rank now.
+  // Empty until the week has been scored, or when totals are missing.
+  get rankChanges() {
+    const rows = this.standings || [];
+    const scored = rows.some(p => p.points > 0) && rows.every(p => p.total != null);
+    if (!this.showRankChange || !scored) return new Map();
+
+    const rankOf = (totalOf) => {
+      const totals = rows.map(totalOf);
+      return rows.map((_, i) => totals.filter(other => other > totals[i]).length + 1);
+    };
+    const before = rankOf(p => p.total - p.points);
+    const now = rankOf(p => p.total);
+    return new Map(rows.map((p, i) => [p.name, before[i] - now[i]]));
+  }
+
   get columns() {
+    const changes = this.rankChanges;
     // The picks column is left out when nobody has any to show
     const hasPicks = this.standings.some(participant => participant.picks);
 
     // Some weeks have no overall total saved (see sync-static-data.js), so
     // those rows show a dash there
     return [
-      { label: 'Participant', className: 'participant-name', render: participant => participant.name },
+      { label: 'Participant', className: 'participant-name', render: participant => html`${participant.name}${changes.get(participant.name)
+          ? html`<gbbo-rank-change .change="${changes.get(participant.name)}"></gbbo-rank-change>` : ''}` },
       ...(hasPicks ? [{
         label: 'Picks',
         className: 'picks-cell',

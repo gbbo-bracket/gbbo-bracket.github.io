@@ -318,6 +318,13 @@ export class GBBONextWeekCard extends LitElement {
     return title.match(/^Week \d+/i)?.[0] || title || 'Week';
   }
 
+  // Week 1 isn't open for voting, so Week 2 is the first week of results and
+  // has no earlier standings to move up or down from
+  hasRankHistory(week) {
+    const number = Number(this.weekLabel(week).match(/\d+/)?.[0]);
+    return number ? number > 2 : this.orderedWeeks.findIndex(w => w.id === week.id) > 1;
+  }
+
   goToWeek(week) {
     // Heading back to the current week drops the override so the countdown resumes
     this.selectedWeekId = week.id === this.currentWeek?.id ? null : week.id;
@@ -672,7 +679,7 @@ export class GBBONextWeekCard extends LitElement {
         ctaHref="/finals"
         ctaSameTab
       ></gbbo-banner>
-      <gbbo-weekly-standings .standings="${this.weekStandings}"></gbbo-weekly-standings>
+      <gbbo-weekly-standings .standings="${this.weekStandings}" showRankChange></gbbo-weekly-standings>
     `;
   }
 
@@ -728,6 +735,7 @@ export class GBBONextWeekCard extends LitElement {
         html`
           <gbbo-weekly-standings
             .standings="${standings}"
+            ?showRankChange="${this.hasRankHistory(displayWeek)}"
           ></gbbo-weekly-standings>
         ` : html`
           <gbbo-banner
