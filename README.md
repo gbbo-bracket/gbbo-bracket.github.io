@@ -41,7 +41,8 @@ A Great British Bake Off bracket - Built with **LitElement**.
   shows underneath, ordered by each person's running total. Each row shows their picks, the points
   they scored that week (like "+3") and their total so far. A week that hasn't been scored yet shows
   last week's totals. Everyone else's picks stay hidden until the visitor has cast their own, so no
-  one gets spoiled before voting. Arrow buttons labelled with the week
+  one gets spoiled before voting. Once a week has been scored (from Week 3 on), a small ▲/▼ chip next
+  to each name shows how many places they moved that week; no chip means their rank stayed the same. Arrow buttons labelled with the week
   (like "← Week 1") on the top right of the card let visitors look back at earlier weeks, and step
   forward again up to the current one
   - When the episode is the Finals, the card shows everyone's Finals picks in the same table instead

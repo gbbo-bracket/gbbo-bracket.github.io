@@ -1,5 +1,6 @@
 import { css, html } from 'lit';
 import { GBBOWeeklyStandings } from './gbbo-weekly-standings.js';
+import '../shared/gbbo-rank-change.js';
 
 const prefersReducedMotion = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
@@ -24,26 +25,6 @@ export class GBBOFinalsStandings extends GBBOWeeklyStandings {
     css`
       tbody tr {
         position: relative;
-      }
-
-      .move {
-        display: inline-block;
-        margin-left: 0.5rem;
-        padding: 0.05rem 0.45rem;
-        border-radius: 999px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        vertical-align: middle;
-      }
-
-      .move.up {
-        background: rgba(190, 228, 210, 0.6);
-        color: #1f6b4a;
-      }
-
-      .move.down {
-        background: rgba(247, 198, 217, 0.6);
-        color: var(--berry-red);
       }
     `
   ];
@@ -98,8 +79,8 @@ export class GBBOFinalsStandings extends GBBOWeeklyStandings {
     const before = this.baselineOrder.indexOf(participant.name);
     const now = this.standings.findIndex(p => p.name === participant.name);
     const delta = before - now;
-    if (before < 0 || delta === 0) return '';
-    return html`<span class="move ${delta > 0 ? 'up' : 'down'}" title="Compared with the standings right now">${delta > 0 ? '▲' : '▼'} ${Math.abs(delta)}</span>`;
+    if (before < 0) return '';
+    return html`<gbbo-rank-change .change="${delta}" label="Compared with the standings right now"></gbbo-rank-change>`;
   }
 
   get columns() {

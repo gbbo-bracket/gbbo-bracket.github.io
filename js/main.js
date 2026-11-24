@@ -19,6 +19,7 @@ import '../components/shared/gbbo-footer.js';
 import '../components/vote/gbbo-vote.js';
 import '../components/shared/gbbo-banner.js';
 import '../components/shared/gbbo-callout.js';
+import '../components/shared/gbbo-rank-change.js';
 
 // Main application class
 class GBBOApp {
