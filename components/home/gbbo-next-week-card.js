@@ -155,8 +155,7 @@ export class GBBONextWeekCard extends LitElement {
       }
     }
     
-    .video-container,
-    .placeholder-image {
+    .video-container {
       display: block;
       position: relative;
       width: 100%;
@@ -449,8 +448,8 @@ export class GBBONextWeekCard extends LitElement {
    * US episodes land at midnight local time.
    * @returns {Date} The moment the countdown is counting down to
    */
-  getTargetDate() {
-    const targetDate = new Date(this.nextWeek.parsedAirDate);
+  getTargetDate(week = this.nextWeek) {
+    const targetDate = new Date(week.parsedAirDate);
 
     if (this.region === US) {
       // Already midnight local on the air date
@@ -523,8 +522,8 @@ export class GBBONextWeekCard extends LitElement {
    * The countdown badge - once the episode has premiered, the whole badge
    * links out to where it can be watched in the selected region
    */
-  renderBadge() {
-    if (!this.premiered) {
+  renderBadge(week) {
+    if (!this.hasAired(week)) {
       return html`<div class="coming-soon-badge">${this.countdownText}</div>`;
     }
 
@@ -532,9 +531,14 @@ export class GBBONextWeekCard extends LitElement {
     return html`
       <a class="coming-soon-badge" href="${href}" target="_blank" rel="noopener noreferrer">
         <img src="${logo}" alt="Watch on ${name}">
-        ${this.countdownText}
+        Watch now
       </a>
     `;
+  }
+
+  // Whether the episode has already premiered in the selected region
+  hasAired(week) {
+    return !!week?.parsedAirDate && this.getTargetDate(week).getTime() <= Date.now();
   }
 
   renderLoading() {
@@ -586,13 +590,15 @@ export class GBBONextWeekCard extends LitElement {
 
   // The countdown badge on the left and the week arrows on the right
   renderCountdownRow(displayWeek) {
-    const showBadge = this.countdownText && displayWeek === this.currentWeek;
+    // Aired episodes always get the "Watch now" link, even when browsing back
+    // to earlier weeks; the countdown only shows for the upcoming one
+    const showBadge = this.hasAired(displayWeek) || (this.countdownText && displayWeek === this.currentWeek);
     const nav = this.renderWeekNav();
     if (!showBadge && !nav) return '';
 
     return html`
       <div class="countdown-row">
-        ${showBadge ? this.renderBadge() : ''}
+        ${showBadge ? this.renderBadge(displayWeek) : ''}
         ${nav}
       </div>
     `;
@@ -640,9 +646,7 @@ export class GBBONextWeekCard extends LitElement {
               allowfullscreen>
             </iframe>
           </div>
-        ` : html`
-          <img class="placeholder-image" src="./images/series-17.jpg" alt="GBBO Week Trailer">
-        `}
+        ` : ''}
 
         ${this.renderWeekStandings(displayWeek)}`}
       </div>

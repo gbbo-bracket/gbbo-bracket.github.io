@@ -1,6 +1,6 @@
 // Participants (names) table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-11-12T08:51:26.616Z
+// Last synced: 2026-11-24T20:57:27.590Z
 export const participantsData = [
   {
     "id": "rec1BcV2olvY352Hh",
@@ -35,13 +35,6 @@ export const participantsData = [
     "data": {
       "Name": "Tarin",
       "Emoji": "🧁"
-    }
-  },
-  {
-    "id": "recUuGpl54yoeRgUA",
-    "data": {
-      "Name": "Isabel",
-      "Emoji": "🍞"
     }
   },
   {

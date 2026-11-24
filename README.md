@@ -34,7 +34,7 @@ A Great British Bake Off bracket - Built with **LitElement**.
   picks are saved in the site's files since voting is closed and they won't change
 - **Next episode**: The home page counts down to the next episode for whichever region (UK/US) is
   selected. Once it has premiered, the countdown turns into a "Watch now" button that links to
-  Channel 4 in the UK or Netflix in the US. Right underneath, a banner nags whoever is picked in
+  Channel 4 in the UK or Netflix in the US, and it stays on every episode that has already aired. Right underneath, a banner nags whoever is picked in
   Site settings to vote for that week - a light pink warning linking to the Vote page, or a neutral
   checkmark once they've saved their picks. Once anyone has voted for that week, a standings card
   shows underneath, ordered by each person's running total. Each row shows their picks, the points

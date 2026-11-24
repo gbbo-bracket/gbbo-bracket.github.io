@@ -49,12 +49,6 @@ export const finalsPicks = [
     ]
   },
   {
-    "name": "Isabel",
-    "emoji": "🍞",
-    "winner": null,
-    "finalists": []
-  },
-  {
     "name": "Kyndall",
     "emoji": "🥐",
     "winner": "Tom",

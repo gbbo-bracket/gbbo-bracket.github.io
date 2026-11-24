@@ -1,6 +1,6 @@
 // Bakers/contestants table, synced from Airtable.
 // Regenerate with: npm run sync-static-data
-// Last synced: 2026-11-12T08:51:26.369Z
+// Last synced: 2026-11-24T20:57:27.425Z
 export const contestantsData = [
   {
     "id": "rec3S0jFScJilbICm",
@@ -15,21 +15,31 @@ export const contestantsData = [
         "recNFEECz4qhfsTB0"
       ],
       "Bio": "Known as “the Cake Lady”, Connie can’t remember a time when she didn’t bake. After over 20 years working for the NHS, baking is her way to unwind after a busy day. She is best known for her hearty carrot cakes, with favourite flavours including rum fruit, lemon and lavender. She keeps a jar of fruit permanently soaking in rum, wine and cinnamon – “you can smell the cake before you see it!” A devoted fan of black-and-white films, Connie loves an audiobook and often has a thriller series playing in the background while she bakes. She has been married to Myke, a musician and music teacher, for 23 years, and together they run a music centre in London where Connie loves to try out her new recipes on the students.",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 1,
       "Location": "London",
+      "Participants 4": [
+        "recrv6UlMy22sI2RC",
+        "recjRfTdDZPPNfD8L",
+        "rec3hiCGRC9c9gfwk",
+        "recz0VRM3ALQos2w3",
+        "recXf8in3kAagvEDK",
+        "recT5RLmxdYwRh5OI",
+        "recU9cLAMAJ8MKzn4"
+      ],
       "Technical": [
         "rec0OQ4med9AQKW2p"
       ],
       "Total Star Bakers": 1,
-      "Status": "In Progress",
+      "Status": "Eliminated",
       "Participants": [
         "recNR8ghMKNtCJOrG",
         "recxPLVrdjKfeIbEi",
         "rec3fEqijjkkJdAFL",
         "recuXsTV2y8dtlyCJ",
         "recd4YJ5kSCjXXx75",
-        "recHE7AOxX7XweHSS"
+        "recHE7AOxX7XweHSS",
+        "recBCcHAh8A2fDVsJ"
       ],
       "Participants 3": [
         "recHG4yNeYLMeJBg6",
@@ -39,9 +49,13 @@ export const contestantsData = [
         "recB4qE412S4qZvgv",
         "recG4jYn8DoBZmBuK",
         "recGEjCN79pw19MQ7",
-        "rec2vHsVVMC6WA6fr"
+        "rec2vHsVVMC6WA6fr",
+        "recyYU6Za0VBDyWM3"
       ],
       "Occupation": "NHS Hospital Discharge Lead",
+      "Eliminated": [
+        "recRvqhL0L5ELVFxX"
+      ],
       "Star Baker": [
         "recdfWXjNYjHRkDUb"
       ]
@@ -213,7 +227,7 @@ export const contestantsData = [
       "Age": 32,
       "Record ID": "recRJB5E2BsBI8m2Y",
       "Bio": "Self-styled “daddy of Birmingham drag”, Gabe discovered baking after watching the very first series of Bake Off aged 13. Their baking style is “gorgeous but very homemade”, with a preference for savoury, meat-filled bakes and an obsession with meringue. Raised in Grimsby, “the home of fish and chips and zero gay bars”, they now live in the West Midlands with partners Ellis and Tyler, and their two sausage dogs, Dill and Sage. An all-round creative and self-proclaimed “professional nuisance”, Gabe produces theatre shows and performs as their drag persona, Blü Romantic. They are also a costume designer and once made a wedding dress for their best friend. At home, they’re a keen gardener, crafter and dinner party host.",
-      "Is Eliminated?": 0,
+      "Is Eliminated?": 1,
       "Total Technicals": 1,
       "Location": "West Midlands",
       "Participants 4": [
@@ -224,22 +238,33 @@ export const contestantsData = [
         "recGEjCN79pw19MQ7",
         "recfBhjtQA6WFS02X",
         "recA6qtblw3ITP3vc",
-        "rec2vHsVVMC6WA6fr"
+        "rec2vHsVVMC6WA6fr",
+        "recyYU6Za0VBDyWM3",
+        "rec65mn9TQFZ71mW8",
+        "recHPlESUmIoUZ2Bi",
+        "recsISDiqL31mMREM",
+        "recNXphwmfaJKFFLT",
+        "rec26qRRZ0u4swdW2",
+        "rec0olVT5OcGXEf9s"
       ],
       "Technical": [
         "rec7y5gnmfggjhBfR",
         "recB2YnrWbhkDUk7J"
       ],
       "Total Star Bakers": 1,
-      "Status": "In Progress",
+      "Status": "Eliminated",
       "Participants": [
-        "recG4jYn8DoBZmBuK"
+        "recG4jYn8DoBZmBuK",
+        "recT5RLmxdYwRh5OI"
       ],
       "Participants 3": [
         "rectVLUiTmro2zUUf",
         "recfi3bm8oo7cqF0f"
       ],
       "Occupation": "Artist & Drag King",
+      "Eliminated": [
+        "recwuDOaTh9zmallR"
+      ],
       "Star Baker": [
         "recqvs8LQaL0ZnVAM"
       ]
@@ -332,13 +357,18 @@ export const contestantsData = [
       ],
       "Bio": "Mo is a self-confessed “chaotic and random” character who is determined to make his family proud. Born and bred in the West Midlands, he lives with his family, and their three cats, Pablo, Simba and Gucci. Studying law at university with ambitions of becoming a solicitor, Mo’s wider family are often surprised to discover that he’s also a keen baker. His love of baking started at three, when he would pretend to cook with Play-Doh. At nine, he stumbled across a video about mug cakes and was hooked. Starting out with boxed vanilla cake mixes from the corner shop, Mo has since graduated to precise, professional-looking bakes, often infusing Asian flavours with traditional British classics. When he’s not baking or studying, Mo is in the gym lifting weights or getting to grips with calisthenics.",
       "Is Eliminated?": 0,
-      "Total Technicals": 0,
+      "Total Technicals": 1,
       "Location": "West Midlands",
       "Participants 4": [
         "recjBTSmi7eKkQ1vH",
         "recG4jYn8DoBZmBuK",
         "recMBlBaMlPR1i15q",
-        "rec4wZoJqT9U9RBc3"
+        "rec4wZoJqT9U9RBc3",
+        "recfewbzYJsTGwJNH",
+        "recYKXJyMRcbKHi0B"
+      ],
+      "Technical": [
+        "recwuDOaTh9zmallR"
       ],
       "Total Star Bakers": 1,
       "Status": "In Progress",
@@ -356,16 +386,22 @@ export const contestantsData = [
         "recB4qE412S4qZvgv",
         "reczd4Q1ZjKqZCsmf",
         "recA5NStqazOU8gMU",
-        "recejwY7Rrro0NPJd"
+        "recejwY7Rrro0NPJd",
+        "rec3hiCGRC9c9gfwk",
+        "rec0olVT5OcGXEf9s"
       ],
       "Participants 3": [
         "recYmWDbLBH6zeDY8",
         "recEm8erUQXbU7X8q",
-        "recE1cp89oIvdZaPQ"
+        "recE1cp89oIvdZaPQ",
+        "rec3hiCGRC9c9gfwk",
+        "recHPlESUmIoUZ2Bi",
+        "recNXphwmfaJKFFLT"
       ],
       "Occupation": "Law Student",
       "Star Baker": [
-        "recKwUz5UrZLyj0Uj"
+        "recKwUz5UrZLyj0Uj",
+        "recwuDOaTh9zmallR"
       ]
     }
   },
@@ -395,7 +431,8 @@ export const contestantsData = [
       "Location": "West Yorkshire",
       "Technical": [
         "recKwUz5UrZLyj0Uj",
-        "recqvs8LQaL0ZnVAM"
+        "recqvs8LQaL0ZnVAM",
+        "recRvqhL0L5ELVFxX"
       ],
       "Total Star Bakers": 1,
       "Status": "In Progress",
@@ -416,7 +453,14 @@ export const contestantsData = [
         "recTdhh3AlizzewZu",
         "recA6qtblw3ITP3vc",
         "rec2vHsVVMC6WA6fr",
-        "recfi3bm8oo7cqF0f"
+        "recfi3bm8oo7cqF0f",
+        "recrv6UlMy22sI2RC",
+        "recjRfTdDZPPNfD8L",
+        "recz0VRM3ALQos2w3",
+        "recYKXJyMRcbKHi0B",
+        "recfewbzYJsTGwJNH",
+        "recHPlESUmIoUZ2Bi",
+        "recsISDiqL31mMREM"
       ],
       "Participants 3": [
         "rec6DpCDeIl3SAavO",
@@ -433,7 +477,17 @@ export const contestantsData = [
         "recMfk8siVxW1hWYV",
         "recHE7AOxX7XweHSS",
         "recTdhh3AlizzewZu",
-        "rec62c9tA9yvrxAOT"
+        "rec62c9tA9yvrxAOT",
+        "recrv6UlMy22sI2RC",
+        "recjRfTdDZPPNfD8L",
+        "recXf8in3kAagvEDK",
+        "recBCcHAh8A2fDVsJ",
+        "recT5RLmxdYwRh5OI",
+        "recYKXJyMRcbKHi0B",
+        "rec65mn9TQFZ71mW8",
+        "recsISDiqL31mMREM",
+        "rec26qRRZ0u4swdW2",
+        "recU9cLAMAJ8MKzn4"
       ],
       "Occupation": "Hairdresser",
       "Star Baker": [
@@ -460,17 +514,24 @@ export const contestantsData = [
       "Participants 4": [
         "recejwY7Rrro0NPJd",
         "recd4YJ5kSCjXXx75",
-        "recHE7AOxX7XweHSS"
+        "recHE7AOxX7XweHSS",
+        "recBCcHAh8A2fDVsJ"
       ],
       "Technical": [
         "rec1Sdw6UHpzpizQl"
       ],
-      "Total Star Bakers": 0,
+      "Total Star Bakers": 1,
       "Status": "In Progress",
       "Participants": [
         "recYmWDbLBH6zeDY8",
         "recE1cp89oIvdZaPQ",
-        "rec62c9tA9yvrxAOT"
+        "rec62c9tA9yvrxAOT",
+        "recyYU6Za0VBDyWM3",
+        "recXf8in3kAagvEDK",
+        "rec65mn9TQFZ71mW8",
+        "recNXphwmfaJKFFLT",
+        "rec26qRRZ0u4swdW2",
+        "recU9cLAMAJ8MKzn4"
       ],
       "Participants 3": [
         "recVR5iGS6i8F5Ppn",
@@ -480,9 +541,15 @@ export const contestantsData = [
         "recyKSNNkLcxdDrRe",
         "recMBlBaMlPR1i15q",
         "recfBhjtQA6WFS02X",
-        "rec4wZoJqT9U9RBc3"
+        "rec4wZoJqT9U9RBc3",
+        "recz0VRM3ALQos2w3",
+        "recfewbzYJsTGwJNH",
+        "rec0olVT5OcGXEf9s"
       ],
-      "Occupation": "Political Economy Student"
+      "Occupation": "Political Economy Student",
+      "Star Baker": [
+        "recRvqhL0L5ELVFxX"
+      ]
     }
   },
   {
