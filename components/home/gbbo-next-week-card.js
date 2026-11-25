@@ -298,6 +298,9 @@ export class GBBONextWeekCard extends LitElement {
   // The week currently on display - either the upcoming one, or the one that
   // just aired when we're still showing it in place of a far-off countdown
   get currentWeek() {
+    // With no upcoming episode, keep showing the most recent one so last
+    // season's results stay up until the next season is scheduled
+    if (!this.nextWeek) return this.previousWeek;
     return this.showingPrevious && this.previousWeek ? this.previousWeek : this.nextWeek;
   }
 
@@ -612,16 +615,8 @@ export class GBBONextWeekCard extends LitElement {
   }
 
   renderNextWeek() {
-    if (!this.nextWeek) {
-      return html`
-        <div class="next-week-card">
-          <h2>That's all for now!</h2>
-          <p>All weeks have been completed! Check back for the next season.</p>
-        </div>
-      `;
-    }
-
     const displayWeek = this.displayWeek;
+    if (!displayWeek) return '';
     const { data } = displayWeek;
     const title = data.Title || '';
     const description = data.Description || '';
